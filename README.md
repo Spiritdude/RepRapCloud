@@ -70,13 +70,15 @@ Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one,
 </ul>
 under that identity, after than if you mix CLI and CGI it may cause premission problems, e.g. www-data not having the permission to write files under directories created under your user identity.
 
-<b>Solution</b>
+<h3>Solution</h3>
 
-1) Uniform Use: Do not mix CLI and CGI, e.g. use <tt>rrcloud</tt> and <tt>*.cloud</tt> as CLI on a local machine, and on a sever only used it to receive requests but not operated via CLI.
+<h4>Uniform Use</h4>
+Do not mix CLI and CGI, e.g. use <tt>rrcloud</tt> and <tt>*.cloud</tt> as CLI on a local machine, and on a sever only used it to receive requests but not operated via CLI.
 
-2) Mixed Use: make user <tt>www-data</tt> part of your group (/etc/group), so user <tt>www-data</tt> can write into directories created by you (your login) - this way you can use the mixed operation.
+<h4>Mixed Use</h4>
+Make user <tt>www-data</tt> part of your group (/etc/group), so user <tt>www-data</tt> can write into directories created by you (your login) - this way you can use the mixed operation.
 
-<b>Note:</b> do not use <tt>rrcloud</tt> on itself, e.g. call <tt>rrcloud --s=localhost info</tt> and which calls the same local <tt>rrcloud</tt>.
+<b>Note:</b> do not use <tt>rrcloud</tt> on itself, e.g. call <tt>rrcloud --s=localhost info</tt> and which calls the same local <tt>rrcloud</tt>, it will mix up state of the tasks and fail to deliver accurate results.
 
 <h2>Usage: Command Line</h2>
 
