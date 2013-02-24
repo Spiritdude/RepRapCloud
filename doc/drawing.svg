@@ -248,8 +248,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.18375635"
-     inkscape:cx="611.174"
-     inkscape:cy="-2155.124"
+     inkscape:cx="1402.9834"
+     inkscape:cy="-2117.0301"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -296,8 +296,8 @@
        inkscape:export-xdpi="19.290001"
        inkscape:export-ydpi="19.290001" />
     <rect
-       inkscape:export-ydpi="19.290001"
-       inkscape:export-xdpi="19.290001"
+       inkscape:export-ydpi="25.709999"
+       inkscape:export-xdpi="25.709999"
        inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\doc\workflow.png"
        y="1963.9071"
        x="-480"
@@ -548,7 +548,7 @@
        sodipodi:cy="252.36218"
        sodipodi:cx="120"
        id="path4385"
-       style="fill:#d5ffb9;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;opacity:1"
        sodipodi:type="arc"
        transform="matrix(1.3333334,0,0,1,1400,2140)" />
     <text
@@ -688,7 +688,7 @@
        sodipodi:cy="252.36218"
        sodipodi:cx="120"
        id="path4430"
-       style="fill:#d5ffb9;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;opacity:1"
        sodipodi:type="arc" />
     <text
        sodipodi:linespacing="125%"
@@ -754,7 +754,7 @@
        height="40"
        width="40"
        id="rect5558"
-       style="fill:#c5ffb9;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
     <rect
        style="fill:#b9ceff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect5560"
@@ -766,35 +766,35 @@
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="1963.1572"
-       y="3093.8647"
+       y="3087.8647"
        id="text5562"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5564"
          x="1963.1572"
-         y="3093.8647">program</tspan></text>
+         y="3087.8647">program (planned)</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="1967.1978"
-       y="3172.677"
+       y="3166.677"
        id="text5566"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5568"
          x="1967.1978"
-         y="3172.677">file</tspan></text>
+         y="3166.677">file</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="1967.1978"
-       y="3253.4487"
+       y="3247.4487"
        id="text5570"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5572"
          x="1967.1978"
-         y="3253.4487">remote service</tspan></text>
+         y="3247.4487">remote service</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:97.50389099px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -1591,5 +1591,23 @@
          y="3680.0356"
          x="2219.3164"
          sodipodi:role="line">for RepRapCloud, Creative Commons CC-BY</tspan></text>
+    <rect
+       style="fill:#c5ffb9;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect4088"
+       width="40"
+       height="40"
+       x="1900"
+       y="2972.3623" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4090"
+       y="3007.8647"
+       x="1963.1572"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         y="3007.8647"
+         x="1963.1572"
+         id="tspan4092"
+         sodipodi:role="line">program</tspan></text>
   </g>
 </svg>
