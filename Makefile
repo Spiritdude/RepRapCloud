@@ -32,6 +32,10 @@ clean::
 
 # --- developers only below
 
+github::
+	git remote add origin git@github.com:Spiritdude/RepRapCloud.git
+	git push -u origin master
+
 dist::	clean
 	cd ..; tar cfz Backup/rrcloud-${VERSION}.tar.gz "--exclude=*.git/*" RepRapCloud/
 
