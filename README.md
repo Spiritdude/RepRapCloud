@@ -92,7 +92,7 @@ Make user <tt>www-data</tt> part of your group (/etc/group), so user <tt>www-dat
 % ./slicer.cloud tests/cube.stl --output=tests/cube.gcode
 </pre>
 
-Note: <tt>*.cloud</tt> is just symbolical links (sym-links) to <tt>rrcloud</tt>, depending on the name <tt>rrcloudM/tt> behaves accordingly.
+Note: <tt>*.cloud</tt> is just symbolical links (sym-links) to <tt>rrcloud</tt>, depending on the name <tt>rrcloud</tt> behaves accordingly.
 
 <h3>Remote</h3>
 
