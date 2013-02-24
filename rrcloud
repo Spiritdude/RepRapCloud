@@ -370,7 +370,7 @@ sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or r
       }
       
    } else {
-      print STDERR "ERROR: don't what to do, no input file? (me=$me{type})\n";
+      print STDERR "ERROR: don't know what to do, no input file? (me=$me{type})\n";
       exit 1;
    }
    print STDERR "tasks/in/$fn\n" if($verbose>1);
