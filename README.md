@@ -33,6 +33,7 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
 <li>not yet but planned:
 <ul>
+<li>support of native arguments (e.g. of openscad or slic3r command-line arguments)
 <li>print3d
 <li>multi-stage openscad -> slic3r -> print3d
 </ul>
