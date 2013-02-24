@@ -26,6 +26,8 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 </ul>
 
 <h2>What Works</h2>
+<img src="doc/workflow.png">
+
 <ul>
 <li><b>openscad</b> (single input/ouput)
 <li><b>slic3r</b>
