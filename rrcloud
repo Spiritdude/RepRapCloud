@@ -52,7 +52,7 @@ $APPNAME = 'RepRapCloud';
 # Disclaimer:
 # There is no security or encryption done, very likely this service can be abused to take over a server.
 #
-# == DO NOT RUN ON PUBLIC SITES until a proper code review as occured! ==
+# == DO NOT RUN ON PUBLIC SITES until a proper code review has occured! ==
 
 use CGI;
 use IO::Handle;
