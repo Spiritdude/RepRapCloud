@@ -1,0 +1,701 @@
+#!/usr/bin/perl
+
+# -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
+#
+$VERSION = '0.010';
+$APPNAME = 'RepRapCloud';
+#
+# History:
+# 2013/02/23: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
+# 2013/02/23: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
+# 2013/02/23: 0.007: directory support as input (experimental, disabled)
+# 2013/02/22: 0.005: multiple input files supported, added 'echo' service
+# 2013/02/19: 0.002: remote stuff slowly working, not yet complete
+# 2013/02/18: 0.001: first version, simple services of openscad, slic3r working
+#
+# Description:
+#
+# Notions: cli (command-line interface), cgi (common gateway interface = web)
+#
+# The main aim is provide a very simple framework to provide remote (a)synchronous services:
+#    + 3d triangulation (openscad): .scad to .stl 
+#    + 3d slicing (slic3r): .stl to .gcode
+#    - 3d printing: .gcode to machine(s)
+#    - 3d raytracing (povray): .stl/.pov to .png (just for sake of fun)
+#
+# Examples:
+#  rrcloud openscad cube.scad -ocube.stl
+#      or
+#  openscad.cloud cube.scad -ocube.stl
+#     creates cube.stl
+#
+# further aim (not yet implemented):
+#  rrcloud openscad+slic3r:conf=prusa1.conf+print3d cube.scad
+#     would print cube.scad (.stl -> .gcode with profile prusa1.conf) to default 3d printer
+#
+# rrcloud is a
+#   x command-line program, working locally
+#   x command-line client, sending off to remote server and retrieve info and then data
+#   x alias for all services <service>.cloud (e.g. openscad.cloud, slic3r.cloud) being command-line compatible with originals
+#   x command-line server, receiving tasks and do them, and answer to client queries
+#   - command-line dispatcher to handle queue of sequential tasks (e.g. .scad -> .stl -> .gcode -> printing)
+#   x web-server, so there also a web-interface for AJAX and web-browser
+#
+#  x = implemented
+#  - = to do
+#
+# all in one ;-) (seriously: as most of the code is common anyway)
+#
+# Limitations:
+# - one/many file input, one file output
+# 
+# Disclaimer:
+# There is no security or encryption done, very likely this service can be abused to take over a server.
+#
+# == DO NOT RUN ON PUBLIC SITES until a proper code review as occured! ==
+
+use CGI;
+use IO::Handle;
+use File::Copy;
+use Cwd;
+use Time::HiRes qw(time);
+use POSIX;
+
+my $verbose = 0;     # -- 0, 1 or 2 -- for debugging
+
+my(%arg,@err);
+
+$arg{port} = 4468;   # -- don't change it unless you must
+
+# -- create folders if necessary
+mkdir "tasks" unless(-d "tasks");
+foreach (qw(in out info log queue)) {
+   mkdir "tasks/$_" unless(-d "tasks/$_");
+}
+
+# -- become aware what we can do
+foreach my $s (<services/*>) {
+   my $c = readConfig($s);
+   $s =~ s/.+\///; $s =~ s/\..*$//;
+   $service{$s} = $c;
+}
+print STDERR "supported services: ",join(", ",keys %service),"\n" if($verbose);
+
+my($q,%in,%me);
+
+if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
+   my($s) = $1; my @a;
+   my $lout;
+   
+   $s =~ s/^.+\///;           # -- remove any path in front/head, leave cmd/service 
+
+   $me{type} = 'cli';
+   $arg{synchronous}++;       # -- enforce synchronous
+   $in{service} = $s;
+   
+   foreach my $f ('./.rrcloudrc','./rrcloudrc',"$ENV{HOME}/.rrcloudrc") {
+      if(open(F,$f)) {
+         print STDERR "parsing $f ...\n" if($verbose);
+         while(<F>) {
+            chop;
+            next if(/^\s*#/);          # -- ignore comments
+            s/\s*#.*//;                # -- remove trailing comments
+            $arg{$1} = $2 if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/);
+         }
+         close(F);
+      }
+   }
+   my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
+   if($#s>=0) {
+      $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
+   }
+   $arg{timeout} = 30*60 unless($arg{timeout});
+   
+   my $out = $service{$s}->{output};     # -- e.g. '-o=$fileOut'
+   $out =~ s/\$fileOut//;                # -- e.g. '-o='
+   my $in = $service{$s}->{input};       # -- e.g. '--load=$fileIn'
+   $in =~ s/\$fileIn//;                  # -- e.g. '--load='
+   
+   my $n = 0;
+   while($#ARGV>=0) {
+      my $a = shift(@ARGV);
+      if(-e $a) {
+         $in{"fileIn$n"} = $a;
+         $n++;
+         
+      } elsif(index($a,$out)==0) {               # -- original output?
+         my $o = $a;
+         $lout = substr($o,length($out));        # -- original filename to write things to
+
+      } elsif(index($a,$in)==0) {                # -- additional input
+         $in{"fileIn$n"} = substr($a,length($in));
+         $in{"prearg$n"} = $in;                  # -- remember prearg(ument) for this input file (e.g. '--load=')
+         $n++;
+      }
+      push(@a,$a);
+   }
+   my $cmd = $service{$s}->{cmd};
+   unless($arg{s}) {                             # -- no server defined, we execute locally
+      print STDERR "local: $cmd @a\n" if($verbose);
+      exec($cmd,@a);
+
+   } elsif($lout) {
+      print STDERR "remote ($arg{s}): $cmd @a\n" if($verbose);
+      $in{args} = join(' ',@a);
+      my(%r) = myExecRemote($arg{s},service=>$s,%in);
+      if(-f $r{out}) {
+         copy($r{out},$lout);
+      } else {
+         print STDERR "ERROR: remote service failed, no results\n";
+         exit -1;
+      }
+   } else {
+      print STDERR "ERROR: likely wrong command-line argument for output, something like '$out' ($service{$s}->{output}) expected\n";
+      exit -1;
+   }
+   exit 0;
+}
+   
+if($#ARGV>=0||$ENV{HOME}) {               # -- likely cli
+   my $n = 0;
+   while($#ARGV>=0) {
+      $_ = shift(@ARGV);
+      $arg{$1} = $2, next if(/^--([^=\s]+)=(\S+)/);
+      $arg{$1}++, next if(/^--([^=\s]+)/);
+      $in{service} = $_, next unless($in{service});
+      if(-e $_) {
+         $in{"fileIn$n"} = $_, $n++, next;
+      } else {
+         $in{id} = $_, next;
+      }
+   }
+   $me{type} = 'cli';
+   
+} else {                                  # -- we are a cgi
+   $q = CGI->new;
+   %in = $q->Vars;
+   $me{type} = 'cgi';
+}
+
+# -- debugging
+if(0) {
+   print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+   foreach(sort keys %in) {
+      print "$_: $in{$_}\n";
+   }
+}
+if(0) {
+   foreach(sort keys %ENV) {
+      print "$_: $ENV{$_}\n";
+   }
+}
+
+$in{service} =~ s/\W//;    # -- sanetize input
+
+$in{service} = 'info' if($me{type}eq'cli'&&!$in{service});
+
+if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf") {  # -- demand a task to be executed
+   my @fin;
+   
+   for(my $n=0; $in{"fileIn$n"}; $n++) {
+      my $f = acquireFileIn("fileIn$n");
+      $in{"fileIn$n"} = $f;
+      push(@fin,$f);
+   }
+   
+   if($arg{s}) {     # -- we are a client, contacting the remote server
+      my(%r) = postServer($arg{s},service=>$in{service},%in);
+
+      if($r{id}) {                  # -- we store the info, query later again for completeness
+         $r{in} = join(",",@fin);   # -- make sure we maintain the in(put)-files locally
+         $r{server} = $arg{s};      # -- back-reference (important!)
+         putTaskInfo($r{id},%r);
+
+      } else {
+         print STDERR "ERROR: http://$arg{s}:$arg{port} doesn't seem to support $APPNAME\n";
+      }
+      
+   } else {          # -- we are local, or a server which received a request, something to compute here
+      startTask($in{service},%in);
+   }
+
+} elsif($in{service} eq 'status'||$in{service} eq 'info') {
+   my(@t);
+   
+   if($in{id}) {                    # -- query info
+      push(@t,$in{id});
+   } else {
+      @t = getTaskList();
+   }
+   my $n = 0;
+   print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+   
+   print "[\n" if($in{format}eq'json'&&!$in{id});
+   foreach my $id (@t) {
+      my %i = getTaskInfo($id);
+      if($i{server}&&$i{status}eq'busy') { #&&$me{type}ne'cgi') {
+         print STDERR "update status of $id\n" if($verbose);
+         my(%r) = postServer($i{server},service=>$in{service},id=>$id);
+         foreach (sort keys %r) {
+            next if($_ eq 'in');
+            $i{$_} = $r{$_} if(defined $r{$_});
+         }
+         putTaskInfo($id,%i);
+         if($i{status}eq'complete') {
+            # -- retrieve resulting data from $i{server}/$r{out} -> $r{out}
+            print STDERR "results of $id retrieving remotely http://$i{server}:$arg{port}/$r{out}\n" if($verbose);
+            getRemoteFile($i{server},$r{out});
+         }
+         # -- at each query when 'busy' we download the log file
+         getRemoteFile($i{server},"tasks/log/$id");
+      }
+      if($me{type}eq'cli') {
+         print "=== id: $id\n";
+         foreach my $k (sort keys %i) {
+            print "\t$k: $i{$k}\n";
+         }
+         print "\n";
+      } elsif($me{type}eq'cgi') {
+         print ", // #$n, $id\n" if($in{format}eq'json'&&$n>0);
+         print "{\n" if($in{format}eq'json');
+         foreach my $k (sort keys %i) {
+            if($in{format}eq'json') {
+               print "\t$k: \"$i{$k}\",\n";
+            } else {
+               print "$k: $i{$k}\n";
+            }
+         }
+         print "}\n" if($in{format}eq'json');
+         if($ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {
+            print "log (seen by browser only):\n";
+            open(F,"tasks/log/$id");
+            while(<F>) {
+               print $_;
+            }
+            print "\n";
+            close(F);
+         }
+         print "\n";
+      }
+      $n++;
+   }
+   print "]\n" if($in{format}eq'json'&&!$in{id});
+
+# } elsif($in{service} eq 'kill') {   
+# } elsif($in{service} eq 'sleep') {   
+# } elsif($in{service} eq 'suspend') {   
+
+} else {
+   if($me{type}eq'cgi') {
+      if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
+         my(@t) = reverse getTaskList();
+         print "Content-type: text/html\n\n";
+         print "<html><head><title>$APPNAME @ $ENV{SERVER_NAME} ($VERSION): ",$#t+1," tasks</title><link rel='shortcut icon' href='/www/favicon.png'/></head><body><link rel=stylesheet href='/www/style.css'/>";
+         print "<h1><img src='www/logo.png' height=48 align=absmiddle> $APPNAME @ $ENV{SERVER_NAME}</h1>\n";
+         print "Total ",($#t+1)," tasks in pool<p>";
+         if($#t>=0) {
+            print "<table cellspacing=2 cellpadding=2>";
+            print "<tr><th>",join("</th><th>",(qw(id service compute client status date time comment))),"</th></tr>";
+            foreach my $id (@t) {
+               my %i = getTaskInfo($id);
+               if(1) {
+                  print "<tr class=task$i{status}><td>",join("</td><td>",(
+                        "<a href='/?service=info&id=$i{id}'>$i{id}</a>",
+                        $i{service},
+                        $i{server}?$i{server}:"local",
+                        $i{server}?"":$i{client},
+                        $i{status},
+                        prettyDate($i{ctime}),
+                        ($i{etime}?sprintf("%.3f",$i{etime}-$i{ctime})."s":''),
+                        $i{error}
+                     )),"</td></tr>";
+                  
+               } else {
+                  print "<b>$id</b>:<br>";
+                  foreach (sort keys %i) {
+                     print "<li>$_: $i{$_}\n";
+                  }
+                  print "<p>log:<br><tt>\n";
+                  open(F,"tasks/log/$id");
+                  while(<F>) {
+                     print "$_<br/>\n";
+                  }
+                  print "</tt>\n";
+                  close(F);
+                  print "<hr>";
+               }
+            }
+            print "</table>";
+         }
+         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION</div>";
+         print "</body></html>";
+      } else {
+         print "Content-type: text/plain\n\nrequested service '$in{service}' does not exist (yet)" 
+      }
+   } else {
+      print STDERR "ERROR: requested service '$in{service}' does not exist (yet).\n";
+   }
+}
+
+sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or retrieved a file-upload and store it (cgi)
+   my($fi) = @_;
+   my($fn) = uniq();
+
+   print STDERR "acquire file $fi -> $in{$fi} ($me{type}): " if($verbose>1);
+   $fi = $in{$fi} if($in{$fi}&&$me{type}eq'cli');
+   
+   my($fh) = $q?$q->upload($fi):0;
+   my($ext) = (($q&&$q->param($fi)?$q->param($fi):$fi)=~/\.([^\.]+)$/);    # -- some programs require proper extension, so we retrieve it now
+   
+   # -- info http://perldoc.perl.org/CGI.html#PROCESSING-A-FILE-UPLOAD-FIELD
+   if($me{type}eq'cgi'&&-f $q->tmpFileName($fh)) {                         # -- uploaded file copy into tasks/in/
+      if($ext eq 'tgz') {
+         mkdir "tasks/in/$fn" unless(-d "tasks/in/$fn");
+         # `cd tasks/in/$fn && tar xfz $q->tmpFileName($fh)`;                # -- untar if its .tgz into tasks/in/$fn
+         
+      } else {
+         $fn .= ".$ext" if($ext);     
+         copy($q->tmpFileName($fh),"tasks/in/$fn") || 
+            push(@err,"file copy failed to tasks/in/$fn due '$!'");        # -- be aware of file permissions
+      }
+
+   } elsif($me{type}eq'cli'&&-e $fi) {                                     # -- local file copy into tasks/in/
+      if(-d $fi) {
+         $fn .= ".tgz";
+         # `tar cfz tasks/in/$fn $fi`;                                       # -- tar it when it's a directory
+         
+      } else {
+         $fn .= ".$ext" if($ext);                                          
+         copy($fi,"tasks/in/$fn");
+      }
+      
+   } else {
+      print STDERR "ERROR: don't what to do, no input file? (me=$me{type})\n";
+      exit 1;
+   }
+   print STDERR "tasks/in/$fn\n" if($verbose>1);
+   return "tasks/in/$fn";
+}
+   
+sub getTaskList {
+   opendir(D,"tasks/info");
+   my(@t) = sort grep(!/\./,readdir(D));     # -- ignore . and .. 
+   closedir(D);
+   return @t;
+}
+
+sub startTask {                           # -- service and input file(s), compute something here and now
+   my($s,%in) = @_;
+   my(@cmd);
+   #my $id = ($ENV{HOST}?$ENV{HOST}:$ENV{SERVER_NAME})."@".uniq();
+   my $id = uniq();
+
+   $ENV{PATH} = $service{$s}->{path}      # -- limit search PATH
+      if($service{$s}->{path});
+   
+   push(@cmd,$service{$s}->{cmd});        # -- main executable
+
+   #foreach my $k (sort keys %in) {        # -- pass on the arguments (out of order)
+   #   push(@cmd,"--$1=$in{$k}") if($k=~/^$s\.(\S+)/);
+   #}
+
+   my @fin;
+   for(my $n=0; $in{"fileIn$n"}; $n++) {
+      my $k = "fileIn$n";
+      if($in{"prearg$n"}) {
+         push(@cmd,$in{"prearg$n"}.$in{$k});  # -- and push the input file(s) with prearg(ument) e.g. '--load='
+      } else {
+         push(@cmd,$in{$k});                  # -- and push the input file(s) raw
+      }
+      push(@fin,$in{$k});
+   }
+
+   my $o = $service{$s}->{output};        # -- compose output 
+   my $fn;
+   if($service{$s}->{fileOut}) {
+      $fn = $service{$s}->{fileOut};
+      $fn =~ s/\$id/$id/;
+   } else {
+      $fn = $id;
+   }
+   $o =~ s#\$fileOut#tasks/out/$fn#;      # -- form the output file
+   push(@cmd,$o);
+
+   my $pid = 0;
+   
+   if(!$arg{synchronous}) {
+      $pid = fork();                      # -- the UNIX magick starts here ...
+   }
+   
+   if($pid||$arg{synchronous}) {          # -- if forked, write as parent, or anyway (but not as child & parent)
+      putTaskInfo($id,
+         id=>$id,
+         in=>join(',',@fin),
+         out=>join(',',map { $_="tasks/out/$_" } ($fn)),
+         ctime=>time(),
+         pid=>$pid,
+         args=>$in{args},
+         cmd=>"@cmd",
+         service=>$s,
+         client=>$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost'
+         # server=$ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost
+      );
+   }
+   if($pid==0) {                                # -- we are the child (asynchronous)
+      print STDERR "execute '@cmd' (",($arg{synchronous}?"synchronous":"asynchronous"),")\n" if($verbose);
+      myExec($id,@cmd);                         # -- execute the thing (it forks again), comes back when done
+   }
+   if($pid!=0||$arg{synchronous}) {             # -- parent (asynchronous) or already done job (synchronous)
+      if($me{type}eq'cgi') {
+         print "Content-type: text/plain\n\n";
+         my(%i) = getTaskInfo($id);
+         foreach (sort keys %i) {
+            print "$_: $i{$_}\n";
+         }
+         print "error: ",join(";",@err),"\n" if($#e>=0);
+      }
+   }
+}
+
+sub killTask { 
+   my($id) = @_;
+   # --- coming soon
+}
+
+sub sleepTask {
+   my($id) = @_;
+   # --- coming soon
+}
+
+sub suspendTask {
+   my($id) = @_;
+   # --- coming soon
+}
+
+sub getTaskInfo {
+   my($id) = @_;
+   my(%i);
+   
+   if(open(F,"tasks/info/$id")) {
+      my $s;
+      while(<F>) {
+         $s .= $_;
+      }
+      close(F);
+      %i = string2meta($s);
+      $i{status} = 'busy' unless(defined $i{status});
+   }
+   my(@err);
+   foreach(split(/,/,$i{in})) {
+      $i{status} = 'failed', push(@err,"empty input file: $_") if((stat($_))[7]==0);
+   }
+   if($i{status}eq'complete'||$i{status}eq'failed') {
+      $i{status} = 'failed', push(@err,"empty output file") if((stat($i{out}))[7]==0);
+      push(@err,"empty log file") if((stat("tasks/log/$id"))[7]==0);
+   }
+   $i{error} = join(", ",@err) if($#err>=0);
+   
+   # $i{status} = checkProcess($i{pid},$id,$i{cmd})?"busy":"failed" unless($i{status}eq'complete');
+
+   return %i;
+}
+
+sub putTaskInfo {
+   my($id,%r) = @_;
+   open(F,">tasks/info/$id.new") || print STDERR "cannot update info of $id: $!\n";
+   #sysopen F,"tasks/info/$id",O_CREAT|O_RDWR,0777;
+   print F meta2string(%r);
+   close(F);
+   rename("tasks/info/$id.new","tasks/info/$id");
+}
+
+sub readConfig {
+   my($f) = @_;
+   my %s;
+
+   return unless(open(F,$f));
+   #print STDERR "reading $f\n" if($verbose);
+   while(<F>) {
+      chop;
+      next if(/^\s*#/);       # -- ignore comments
+      s/\s*#.*//;                # -- remove trailing comments
+      $s{$1} = $2 if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/);
+   }
+   close(F);
+   return \%s;
+}
+
+sub uniq {
+   my $fn = int(time())."-".sprintf("%06d",int(rand()*1_000_000));
+   return $fn;
+}
+
+sub checkProcess {
+   my($pid,$id,$cmd) = @_;
+   my(%p);
+   if(open(F,"/proc/$pid/cmdline")) {
+      $_ = <F>; chop;
+      s/\0/ /g;
+      close(F);
+   }
+   return 1 if($_ eq $cmd);
+   return 0;
+}
+
+sub myExec {
+   my($id,@a) = @_;
+   my($pid);
+   if(($pid=fork())==0) {                    # -- real perl magic here ...
+      open STDOUT, '>', "tasks/log/$id";
+      open STDERR, ">&STDOUT";
+      STDOUT->autoflush(1);
+      STDERR->autoflush(1);
+      exec(@a);
+      # -- never reaches here
+      
+   } else {
+      wait;
+      open(F,">>tasks/info/$id");            # -- program has finished, we update the info file (our lightweight db)
+      print F "status: complete\n";
+      print F "etime: ",time(),"\n";
+      close(F);
+   }
+}
+
+sub postServer {
+   my($s,%i) = @_; 
+   my(@cmd,%r);
+   
+   push(@cmd,'curl','-s');
+
+   foreach(keys %i) {
+      my $f; $f = '@' if(-f $i{$_});      # -- is a file
+      push(@cmd,'-F',"$_=$f$i{$_}");
+   }
+   push(@cmd,"http://$s:$arg{port}");
+   
+   print STDERR "-> $s: request service/info ('@cmd')\n" if($verbose);
+
+   # -- insecure: $_ = `@cmd`;      # -- we request the service or info remotely, and receive a feedback
+
+   my $pid = open(READ,"-|");       # -- more secure, but complicate ... see http://perldoc.perl.org/perlipc.html
+   if($pid==0) {
+      exec(@cmd);
+   } else {
+      my $res;
+      while(<READ>) {
+         $res .= $_;
+      }
+      close(READ);
+      $_ = $res;
+   }
+   
+   print STDERR "<- $s responds: $_\n" if($verbose);
+
+   %r = string2meta($_);
+   $r{server} = $s;                 # -- add back-reference (important!)
+
+   return %r;
+}
+
+sub myExecRemote {
+   my($s,%i) = @_;
+   
+   my @fin;
+   for(my $n=0; $i{"fileIn$n"}; $n++) {
+      my $f = acquireFileIn("fileIn$n");
+      $i{"fileIn$n"} = $f;
+      push(@fin,$f);
+   }
+   $i{in} = join(",",@fin);
+   
+   my(%r) = postServer($s,%i);
+   my $st = time();
+
+   $r{in} = $i{in};
+   
+   print STDERR "ERROR: $s doesn't run RepRapCloud\n" if(!$r{id});
+   
+   while($r{id}) {
+      my(%q) = postServer($s,service=>'info',id=>$r{id});
+      if($q{status}eq'complete'||$q{status}eq'failed') {
+         if($q{status}eq'complete') {
+            getRemoteFile($s,$r{out});
+         }
+         getRemoteFile($s,"tasks/log/$r{id}");
+         foreach (keys %q) {
+            next if($_ eq 'in');
+            $r{$_} = $q{$_};
+         }
+         putTaskInfo($r{id},%r);
+         last;
+      } elsif($in{status}) {
+         ;
+      } else {
+         print STDERR "ERROR: $s doesn't run RepRapCloud\n";
+         last;
+      }
+      sleep $w; $w += 2; $w = 10 if($w>10);
+      last if($arg{timeout}&&(time()-$st)>$arg{timeout});
+   }    
+   return %r;
+}
+
+sub getRemoteFile {
+   my($s,$p) = @_;
+
+   # -- insecure: `wget -q http://$s:$arg{port}/$p -O $p`;
+   if(fork()==0) {      # -- properly done:
+      # exec('wget','-q',"http://$s:$arg{port}/$p",'-O',$p);     # -- more secure
+      exec('curl','-s',"http://$s:$arg{port}/$p",'-o',$p);     # -- more secure
+   } else {
+      wait;
+   }
+}
+
+sub string2meta {
+   my($s) = @_;
+   my(%r);
+   #print "string -> data:\n" if($verbose);
+   foreach (split(/\n/,$s)) {       # -- processing feedback
+      $r{$1} = $2 if(/^([^\s:]+): (\S.+)\s*$/);
+      #print STDERR "\t$1: $2\n" if($1&&$verbose);
+   }
+   return %r;
+}
+
+sub meta2string {
+   my(%r) = @_;
+   my($s);
+   #print STDERR "data -> string:\n" if($verbose);
+   foreach (sort keys %r) {
+      $s .= "$_: $r{$_}\n";
+   }
+   #print STDERR $s if($verbose);
+   return $s;
+}
+
+sub prettyDate {
+   @_ = localtime($_[0]);
+   return sprintf("%04d/%02d/%02d %02d:%02d:%02d",$_[5]+1900,$_[4]+1,$_[3],$_[2],$_[1],$_[0]);
+}
+
+sub prettyTime {
+   my($t) = @_;
+   sprintf("%sd %02dh %02dm %02ds",largeNum(int($t/(24*60*60)),0),int($t/(60*60))%24,int($t/60)%60,int($t)%60);
+}
+
+sub largeNum {
+   my($a,$n) = @_;
+   my($s,$i);
+   $s .= sprintf(".%0${n}d",int(($a-int($a))*100)%100) if($n);
+   while($a||$i==0) {
+      $s = ",$s" if($i&&($i%3)==0);
+      $s = ($a%10).$s;
+      $a = int($a/10);
+      $i++;
+   }
+   return $s;
+}
+
+
