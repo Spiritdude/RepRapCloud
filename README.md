@@ -58,7 +58,7 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 
 <h3>Permissions</h3>
 
-Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one, the CLI is execute under your login, whereas the CGI is executed as user www-data or so (depends on your UNIX).
+Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one, the CLI is execute under your login, whereas the CGI is executed as user <tt>www-data</tt> or so (depends on your UNIX).
 <tt>rrcloud</tt> (and <tt>*.cloud</tt>) create
 <ul>
 <li>tasks/
@@ -69,7 +69,7 @@ Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one,
 <li>info/
 </ul>
 </ul>
-under that identity, after than if you mix CLI and CGI it may cause premission problems, e.g. www-data not having the permission to write files under directories created under your user identity.
+under that identity, after than if you mix CLI and CGI it may cause premission problems, e.g. <tt>www-data</tt> not having the permission to write files under directories created under your user identity.
 
 <h3>Solution</h3>
 
