@@ -4,6 +4,8 @@
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
+<img src="doc/workflow.png">
+
 <pre>
 % slic3r.cloud huge.stl --output=huge.gcode
 </pre>
@@ -26,8 +28,6 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 </ul>
 
 <h2>What Works</h2>
-<img src="doc/workflow.png">
-
 <ul>
 <li><b>openscad</b> (single input/ouput), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt>
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
