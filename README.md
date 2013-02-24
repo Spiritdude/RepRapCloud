@@ -139,4 +139,6 @@ Since the main transportation layer is HTTP, you can use existing load-balancing
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
+That's all for now,
 
+Rene K. Mueller<br>2013/02/24
