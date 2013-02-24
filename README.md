@@ -132,7 +132,7 @@ Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> formats the output a
 You can also force that it returns JSON, e.g. 
 <ul>
 <li><tt>http://server.local/?service=info&format=json</tt> list all tasks (complete, failed or busy)
-<li><tt>http://server.local/?service=info&id=<i>id</i>&format=json</tt> to list info about a particular task
+<li><tt>http://server.local/?service=info&id=taskid&format=json</tt> to list info about a particular task (taskid).
 </ul>
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
