@@ -34,6 +34,7 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 <li>not yet but planned:
 <ul>
 <li>support of native arguments (e.g. of openscad or slic3r command-line arguments)
+<li>multiple input files not referenced by arguments (e.g. huge.scad including aa.scad) - likely by support of directory upload (not yet sure)
 <li>print3d
 <li>multi-stage openscad -> slic3r -> print3d
 </ul>
