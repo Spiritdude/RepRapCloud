@@ -29,8 +29,8 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 <img src="doc/workflow.png">
 
 <ul>
-<li><b>openscad</b> (single input/ouput)
-<li><b>slic3r</b>
+<li><b>openscad</b> (single input/ouput), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt>
+<li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
 <li>not yet but planned:
 <ul>
 <li>print3d
