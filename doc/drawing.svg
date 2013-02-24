@@ -249,7 +249,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.18375635"
      inkscape:cx="611.174"
-     inkscape:cy="-1719.7649"
+     inkscape:cy="-2155.124"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -295,6 +295,16 @@
        inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\workflow.png"
        inkscape:export-xdpi="19.290001"
        inkscape:export-ydpi="19.290001" />
+    <rect
+       inkscape:export-ydpi="19.290001"
+       inkscape:export-xdpi="19.290001"
+       inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\doc\workflow.png"
+       y="1963.9071"
+       x="-480"
+       height="1763.9575"
+       width="2800"
+       id="rect3320"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -1566,5 +1576,20 @@
          id="tspan4150"
          x="1523.1382"
          y="385.51172">Web Access</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text3291"
+       y="3637.3149"
+       x="2219.3164"
+       style="font-size:34.17668533px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         y="3637.3149"
+         x="2228.7952"
+         id="tspan3293"
+         sodipodi:role="line">drawn by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.00, 2013/02/24 </tspan><tspan
+         id="tspan3295"
+         y="3680.0356"
+         x="2219.3164"
+         sodipodi:role="line">for RepRapCloud, Creative Commons CC-BY</tspan></text>
   </g>
 </svg>

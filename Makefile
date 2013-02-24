@@ -33,7 +33,7 @@ clean::
 # --- developers only below
 
 github::
-	git remote add origin git@github.com:Spiritdude/RepRapCloud.git
+	git remote set-url origin git@github.com:Spiritdude/RepRapCloud.git
 	git push -u origin master
 
 dist::	clean
