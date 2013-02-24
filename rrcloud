@@ -6,8 +6,8 @@ $VERSION = '0.010';
 $APPNAME = 'RepRapCloud';
 #
 # History:
-# 2013/02/23: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
-# 2013/02/23: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
+# 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
+# 2013/02/24: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
 # 2013/02/23: 0.007: directory support as input (experimental, disabled)
 # 2013/02/22: 0.005: multiple input files supported, added 'echo' service
 # 2013/02/19: 0.002: remote stuff slowly working, not yet complete

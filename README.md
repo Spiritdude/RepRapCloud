@@ -27,8 +27,8 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 
 <h2>History</h2>
 <ul>
-<li> 2013/02/23: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
-<li> 2013/02/23: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
+<li> 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
+<li> 2013/02/24: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
 <li> 2013/02/23: 0.007: directory support as input (experimental, disabled)
 <li> 2013/02/22: 0.005: multiple input files supported, added 'echo' service
 <li> 2013/02/19: 0.002: remote stuff slowly working, not yet complete
