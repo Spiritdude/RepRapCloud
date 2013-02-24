@@ -127,11 +127,12 @@ The <tt>server.reject-expect-100-with-417 = "disable"</tt> are required for <tt>
             
 <h3>Web Access</h3>
 
-Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> formats the output accordingly, e.g. a web-browser gets a nice formatted list, whereas wget/curl or so gets a simple text list.
+Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), whereas wget/curl or so gets a simple text list.
+
 You can also force that it returns JSON, e.g. 
 <ul>
 <li><tt>http://server.local/?service=info&format=json</tt> list all tasks (complete, failed or busy)
-<li><tt>http://server.local/?service=info&id=<i>id</id></tt> to list info about a particular task
+<li><tt>http://server.local/?service=info&id=<i>id</i>&format=json</tt> to list info about a particular task
 </ul>
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
