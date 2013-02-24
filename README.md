@@ -113,7 +113,9 @@ then
 
 <tt>index.cgi</tt> is just a sym-link to <tt>rrcloud</tt>, you can access the servers remotely via <tt>http://server.local:4468</tt> when you configured your Apache HTTPD or Lighttpd accordingly (document root to <tt>RepRapCloud/</tt>).
 
-<h3>Apache</h3>
+<h3>Apache HTTPD</h3>
+
+(coming soon)
 
 <h3>Lighttpd</h3>
 Add to your <tt>/etc/lighttpd/lighttpd.conf</tt> something like this:
@@ -125,11 +127,11 @@ $SERVER["socket"] == ":4468" {
    cgi.assign = ( ".cgi" => "/usr/bin/perl" )
 }
 </pre>
-The <tt>server.reject-expect-100-with-417 = "disable"</tt> are required for <tt>curl</tt> to work.
+The <tt>server.reject-expect-100-with-417 = "disable"</tt> are required for <tt>curl</tt>-based upload to work.
             
 <h3>Web Access</h3>
 
-Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), whereas wget/curl or so gets a simple text list.
+Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>index.cgi</tt>) formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), whereas wget/curl or so gets a simple text list.
 
 You can also force that it returns JSON, e.g. 
 <ul>
