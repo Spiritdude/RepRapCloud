@@ -25,6 +25,18 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 <li>multiple machines
 </ul>
 
+<h2>What Works</h2>
+<ul>
+<li><b>openscad</b> (single input/ouput)
+<li><b>slic3r</b>
+<li>not yet but planned:
+<ul>
+<li>print3d
+<li>multi-stage openscad -> slic3r -> print3d
+</ul>
+</ul>
+
+
 <h2>History</h2>
 <ul>
 <li> 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
