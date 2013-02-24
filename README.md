@@ -1,8 +1,8 @@
 <h1>RepRap Cloud</h1>
 
-<b>Version: 0.009 (ALPHA)</b>
+<b>Version: 0.010 (ALPHA)</b>
 
-RepRapCloud (rrcloud) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (return immediately telling you the state of task 'busy', 'complete' or 'failed').
+<b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
 <pre>
 % slic3r.cloud huge.stl --output=huge.gcode
