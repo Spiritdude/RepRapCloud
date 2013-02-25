@@ -135,7 +135,7 @@ The <tt>server.reject-expect-100-with-417 = "disable"</tt> are required for <tt>
 
 Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>index.cgi</tt>) formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), 
 
-<img src="/doc/sshot-600x.png">
+<img src="/doc/sshot.png">
 
 whereas wget/curl or so gets a simple text list.
 
