@@ -38,9 +38,8 @@ $APPNAME = 'RepRapCloud';
 #   x command-line program, working locally
 #   x command-line client, sending off to remote server and retrieve info and then data
 #   x alias for all services <service>.cloud (e.g. openscad.cloud, slic3r.cloud) being command-line compatible with originals
-#   x command-line server, receiving tasks and do them, and answer to client queries
+#   x web-server (cgi), receiving tasks and do them, and answer to client queries, plus browser access
 #   - command-line dispatcher to handle queue of sequential tasks (e.g. .scad -> .stl -> .gcode -> printing)
-#   x web-server, so there also a web-interface for AJAX and web-browser
 #
 #  x = implemented
 #  - = to do
