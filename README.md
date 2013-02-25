@@ -139,7 +139,7 @@ Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>in
 
 whereas wget/curl or so gets a simple text list:
 <pre>
-client: 212.4.86.120
+client: xxx.xxx.86.120
 cmd: cp tasks/in/1361787153-873811.txt tasks/out/1361787153-093541
 ctime: 1361787153.89647
 id: 1361787153-093541
@@ -150,7 +150,7 @@ server: xxxxxxxxxx
 service: echo
 status: busy
 
-client: 212.4.86.120
+client: xxx.xxx.86.120
 cmd: openscad tasks/in/1361787155-296870.scad -otasks/out/1361787155-774973.stl
 ctime: 1361787155.83115
 etime: 1361787155.89783
@@ -174,7 +174,7 @@ You can also force that it returns JSON, e.g.
 <pre>
 {
    args: "--load=tests/slic3r.conf tmp/cube.stl --output=tmp/cube.gcode",
-   client: "212.4.86.120",
+   client: "xxx.xxx.86.120",
    cmd: "slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode",
    ctime: "1361787183.93071",
    etime: "1361787185.69113",
