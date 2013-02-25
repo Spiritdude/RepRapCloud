@@ -240,6 +240,17 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
          transform="matrix(-0.8,0,0,-0.8,-10,0)" />
     </marker>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4152">
+      <rect
+         style="opacity:0.5;fill:#2800ff;fill-opacity:1;stroke:#3600ff;stroke-width:9;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect4154"
+         width="445.02036"
+         height="322.47852"
+         x="-399.87338"
+         y="2806.6453" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -308,7 +319,7 @@
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <path
        style="fill:none;stroke:#3600ff;stroke-width:8.60689545;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 50.177639,2962.8905 c 0,0 77.646491,15.5632 172.939911,-23.3447 25.1885,-16.6584 75.1721,-55.4822 139.10211,-58.3778 56.47016,0 89.40713,-5.8442 89.40713,-5.8442"
+       d="m 21.154572,2969.3401 c 0,0 106.669558,9.1136 201.962978,-29.7943 25.1885,-16.6584 75.1721,-55.4822 139.10211,-58.3778 56.47016,0 89.40713,-5.8442 89.40713,-5.8442"
        id="path4136"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
@@ -5720,8 +5731,9 @@ fyQOjeAdON6FTS8AxgZow7gc4H/80X8bls3+cAqVNfjj4ovHOTJxweUdYAHbXyqmpN6Jdj0roOgv
 fWnfraW1fn3xjcYJa2OIZhzsqURE8eyZn35WORGGexZgMTBs5VpcAtDU+8gZwaPvg5NCOPX/ARvf
 J0nQyencAAAAAElFTkSuQmCC
 "
-       height="326.05679"
-       width="454.13702" />
+       height="562.21735"
+       width="783.06512"
+       clip-path="url(#clipPath4152)" />
     <text
        sodipodi:linespacing="125%"
        id="text4138"
