@@ -182,7 +182,7 @@ You can also force that it returns JSON, e.g.
    in: "tasks/in/1361787181-093430.conf,tasks/in/1361787181-792570.stl",
    out: "tasks/out/1361787183-011772.gcode",
    pid: "1062",
-   server: "rrcloud.the-labs.com",
+   server: "xxxxxxxxxxxxxxx",
    service: "slic3r",
    status: "complete",
 }
