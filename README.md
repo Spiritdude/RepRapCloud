@@ -137,13 +137,56 @@ Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>in
 
 <img src="/doc/sshot.png">
 
-whereas wget/curl or so gets a simple text list.
+whereas wget/curl or so gets a simple text list:
+<pre>
+client: 212.4.86.120
+cmd: cp tasks/in/1361787153-873811.txt tasks/out/1361787153-093541
+ctime: 1361787153.89647
+id: 1361787153-093541
+in: tasks/in/1361787152-863093.txt
+out: tasks/out/1361787153-093541
+pid: 32744
+server: xxxxxxxxxx
+service: echo
+status: busy
+
+client: 212.4.86.120
+cmd: openscad tasks/in/1361787155-296870.scad -otasks/out/1361787155-774973.stl
+ctime: 1361787155.83115
+etime: 1361787155.89783
+id: 1361787155-774973
+in: tasks/in/1361787154-479659.scad
+out: tasks/out/1361787155-774973.stl
+pid: 32749
+server: xxxxxxxxxx
+service: openscad
+status: complete
+
+...
+</pre>
 
 You can also force that it returns JSON, e.g. 
 <ul>
 <li><tt>http://server.local/?service=info&format=json</tt> list all tasks (complete, failed or busy)
 <li><tt>http://server.local/?service=info&id=taskid&format=json</tt> to list info about a particular task (taskid).
 </ul>
+
+<pre>
+{
+   args: "--load=tests/slic3r.conf tmp/cube.stl --output=tmp/cube.gcode",
+   client: "212.4.86.120",
+   cmd: "slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode",
+   ctime: "1361787183.93071",
+   etime: "1361787185.69113",
+   id: "1361787183-011772",
+   in: "tasks/in/1361787181-093430.conf,tasks/in/1361787181-792570.stl",
+   out: "tasks/out/1361787183-011772.gcode",
+   pid: "1062",
+   server: "rrcloud.the-labs.com",
+   service: "slic3r",
+   status: "complete",
+}
+</pre>
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
 
