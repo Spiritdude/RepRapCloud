@@ -248,9 +248,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.1824821"
-     inkscape:cx="278.22655"
-     inkscape:cy="-1716.531"
+     inkscape:zoom="0.31009817"
+     inkscape:cx="920"
+     inkscape:cy="-1793.5237"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1433,13 +1433,13 @@
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="-370.93378"
+       x="-364.93378"
        y="2198.5256"
        id="text4109"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4111"
-         x="-370.93378"
+         x="-364.93378"
          y="2198.5256">Local</tspan></text>
     <text
        xml:space="preserve"
@@ -5725,13 +5725,32 @@ J0nQyencAAAAAElFTkSuQmCC
     <text
        sodipodi:linespacing="125%"
        id="text4138"
-       y="2785.5117"
-       x="-376.86185"
+       y="2781.5117"
+       x="-402.86185"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
-         y="2785.5117"
-         x="-376.86185"
+         y="2781.5117"
+         x="-402.86185"
          id="tspan4140"
          sodipodi:role="line">Browser</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:24.5300808px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-397.40738"
+       y="3180.2156"
+       id="text4142"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4144"
+         x="-397.40738"
+         y="3180.2156">text/html</tspan><tspan
+         sodipodi:role="line"
+         x="-397.40738"
+         y="3210.8782"
+         id="tspan4146">text/plain</tspan><tspan
+         sodipodi:role="line"
+         x="-397.40738"
+         y="3241.5408"
+         id="tspan4148">text/plain (json)</tspan></text>
   </g>
 </svg>
