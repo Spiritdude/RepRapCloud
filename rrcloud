@@ -82,7 +82,7 @@ foreach my $s (<services/*>) {
 print STDERR "supported services: ",join(", ",keys %service),"\n" if($verbose);
 
 # -- local and global configuration
-foreach my $f ('./rrcloudrc',"$ENV{HOME}/.rrcloudrc") {
+foreach my $f ("$ENV{HOME}/.rrcloudrc",'./rrcloudrc') {
    if(open(F,$f)) {
       print STDERR "parsing $f ...\n" if($verbose);
       while(<F>) {
