@@ -247,9 +247,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.27907534"
-     inkscape:cx="1151.9712"
-     inkscape:cy="-1905.8696"
+     inkscape:zoom="0.25806866"
+     inkscape:cx="2155.6339"
+     inkscape:cy="-1960.6521"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -521,7 +521,7 @@
        sodipodi:cy="252.36218"
        sodipodi:cx="120"
        id="path4375"
-       style="fill:#ffb9c2;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        sodipodi:type="arc"
        transform="matrix(1.3333334,0,0,1,-40,2140)" />
     <text
@@ -667,12 +667,12 @@
        sodipodi:cy="252.36218"
        sodipodi:cx="120"
        id="path4426"
-       style="fill:#ffb9c2;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        sodipodi:type="arc"
        transform="translate(460,3020)" />
     <path
        sodipodi:type="arc"
-       style="fill:#ffb9c2;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path4428"
        sodipodi:cx="120"
        sodipodi:cy="252.36218"
@@ -1061,7 +1061,7 @@
     <path
        transform="matrix(1.3333334,0,0,1,680,2140)"
        sodipodi:type="arc"
-       style="fill:#ffb9c2;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path6863"
        sodipodi:cx="120"
        sodipodi:cy="252.36218"
@@ -1317,65 +1317,29 @@
        d="m 1717.1221,2392.3622 220.4057,0"
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)" />
     <rect
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect6807"
-       width="160"
-       height="160"
-       x="-319.25815"
-       y="3064.0454"
-       ry="0" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text6809"
-       y="2401.2195"
-       x="1968.3362"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         y="2401.2195"
-         x="1968.3362"
-         id="tspan6811"
-         sodipodi:role="line">3d printer</tspan></text>
-    <rect
        ry="0"
-       y="2880.199"
-       x="-135.40965"
-       height="160"
-       width="160"
+       y="2875.7632"
+       x="-130.8297"
+       height="176.29593"
+       width="176.29593"
        id="rect6813"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="1968.3362"
-       y="2141.2195"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="2062.9026"
+       y="2125.7578"
        id="text6815"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6817"
-         x="1968.3362"
-         y="2141.2195">3d printer</tspan></text>
-    <rect
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect6819"
-       width="160"
-       height="160"
-       x="-503.10645"
-       y="3247.8918"
-       ry="0" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text6821"
-       y="2661.2195"
-       x="1968.3362"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         y="2661.2195"
-         x="1968.3362"
-         id="tspan6823"
-         sodipodi:role="line">3d printer</tspan></text>
+         x="2062.9026"
+         y="2125.7578">3d printer</tspan><tspan
+         sodipodi:role="line"
+         x="2062.9026"
+         y="2175.7578"
+         id="tspan4120">reprap</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
        d="m 1858,2389.505 0,-260 80,0"
@@ -1419,78 +1383,18 @@
          id="tspan4142">for RepRapCloud, Creative Commons CC-BY</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
-       d="m 1353.8875,3132.3622 84.5648,0"
+       d="m 1353.8875,3052.3622 84.5648,0"
        id="path4081"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
-    <rect
-       ry="0"
-       y="3233.7505"
-       x="-1196.0706"
-       height="160"
-       width="160"
-       id="rect4083"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="1468.3362"
-       y="3141.2195"
-       id="text4085"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4087"
-         x="1468.3362"
-         y="3141.2195">3d printer</tspan></text>
-    <rect
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect4089"
-       width="160"
-       height="160"
-       x="-1012.2224"
-       y="3049.9041"
-       ry="0" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text4091"
-       y="2881.2195"
-       x="1468.3362"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         y="2881.2195"
-         x="1468.3362"
-         id="tspan4093"
-         sodipodi:role="line">3d printer</tspan></text>
-    <rect
-       ry="0"
-       y="3417.5969"
-       x="-1379.9182"
-       height="160"
-       width="160"
-       id="rect4095"
-       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="1468.3362"
-       y="3401.2195"
-       id="text4097"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4099"
-         x="1468.3362"
-         y="3401.2195">3d printer</tspan></text>
     <path
        inkscape:connector-curvature="0"
        id="path4101"
-       d="m 1358,3129.505 0,-260 80,0"
+       d="m 1358,3049.505 0,-260 80,0"
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
-       d="m 1358,3135.505 0,260 80,0"
+       d="m 1358,3055.505 0,260 80,0"
        id="path4103"
        inkscape:connector-curvature="0" />
     <rect
@@ -1575,13 +1479,13 @@
          y="3637.3149"
          x="2228.7952"
          id="tspan3293"
-         sodipodi:role="line">drawn by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.02, 2013/02/25 </tspan><tspan
+         sodipodi:role="line">drawn by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.03, 2013/02/25 </tspan><tspan
          id="tspan3295"
          y="3680.0359"
          x="2219.3164"
          sodipodi:role="line">for RepRapCloud, Creative Commons CC-BY</tspan></text>
     <rect
-       style="fill:#ffb9c2;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect4088"
        width="40"
        height="40"
@@ -1598,5 +1502,180 @@
          x="1963.1572"
          id="tspan4092"
          sodipodi:role="line">program</tspan></text>
+    <g
+       id="g4110"
+       transform="translate(670.36425,-402.99354)">
+      <rect
+         transform="matrix(1,0,-0.81397303,0.58090267,0,0)"
+         y="5204.2388"
+         x="6812.1772"
+         height="135.70561"
+         width="261.57812"
+         id="rect4090"
+         style="fill:#dadada;fill-opacity:1;stroke:#000000;stroke-width:3.93613124;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="rect4092"
+         d="m 2522.625,2792.3125 0,272.3437 18.4687,0 0,-233.125 221.0625,0 0,233.125 18.4688,0 0,-272.3437 -258,0 z"
+         style="fill:#dadada;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4097"
+         d="m 2538.7532,2901.3253 225.7455,0"
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 2538.7532,2921.3253 225.7455,0"
+         id="path4099"
+         inkscape:connector-curvature="0" />
+      <rect
+         y="2883.4089"
+         x="2635.5012"
+         height="60.915451"
+         width="39.415878"
+         id="rect4101"
+         style="fill:#dadada;fill-opacity:1;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <path
+         transform="translate(2700,8)"
+         d="m -7.166523,3012.4065 c 0,19.7898 -16.04281,35.8326 -35.832619,35.8326 -19.789809,0 -35.832618,-16.0428 -35.832618,-35.8326 0,-19.7898 16.042809,-35.8326 35.832618,-35.8326 19.789809,0 35.832619,16.0428 35.832619,35.8326 z"
+         sodipodi:ry="35.832619"
+         sodipodi:rx="35.832619"
+         sodipodi:cy="3012.4065"
+         sodipodi:cx="-42.999142"
+         id="path4104"
+         style="fill:#00ff1c;fill-opacity:1;stroke:#4dde00;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:nodetypes="cssc"
+         inkscape:connector-curvature="0"
+         id="path4106"
+         d="m 2655.3551,2882.0548 c 0,0 0,-34.5215 -0.4199,-48.5831 -1.4531,-48.4211 -0.6088,-64.5545 15.0446,-89.3308 42.719,-67.6161 65.8528,17.4372 65.8528,17.4372"
+         style="fill:none;stroke:#29ff00;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4108"
+         d="m 2643.691,2945.6421 0,14.7439 11.2731,5.8467 11.7633,-6.1009 0,-14.9981"
+         style="fill:#dfdfdf;fill-opacity:1;stroke:#000000;stroke-width:0.72874755px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <rect
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4148"
+       width="176.29593"
+       height="176.29593"
+       x="-317.5058"
+       y="3062.439"
+       ry="0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4150"
+       y="2389.7578"
+       x="2062.9026"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         y="2389.7578"
+         x="2062.9026"
+         id="tspan4152"
+         sodipodi:role="line">3d printer</tspan><tspan
+         id="tspan4154"
+         y="2439.7578"
+         x="2062.9026"
+         sodipodi:role="line">reprap</tspan></text>
+    <rect
+       ry="0"
+       y="3247.7004"
+       x="-502.76758"
+       height="176.29593"
+       width="176.29593"
+       id="rect4156"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="2062.9026"
+       y="2651.7578"
+       id="text4158"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4160"
+         x="2062.9026"
+         y="2651.7578">3d printer</tspan><tspan
+         sodipodi:role="line"
+         x="2062.9026"
+         y="2701.7578"
+         id="tspan4162">reprap</tspan></text>
+    <rect
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4183"
+       width="176.29593"
+       height="176.29593"
+       x="-953.90222"
+       y="2991.7285"
+       ry="0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4185"
+       y="2789.7578"
+       x="1562.9026"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         y="2789.7578"
+         x="1562.9026"
+         id="tspan4187"
+         sodipodi:role="line">3d printer</tspan><tspan
+         id="tspan4189"
+         y="2839.7578"
+         x="1562.9026"
+         sodipodi:role="line">reprap</tspan></text>
+    <rect
+       ry="0"
+       y="3175.5757"
+       x="-1137.7496"
+       height="176.29593"
+       width="176.29593"
+       id="rect4191"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="1562.9026"
+       y="3049.7578"
+       id="text4193"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4195"
+         x="1562.9026"
+         y="3049.7578">3d printer</tspan><tspan
+         sodipodi:role="line"
+         x="1562.9026"
+         y="3099.7578"
+         id="tspan4197">reprap</tspan></text>
+    <rect
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
+       style="fill:#f5b9ff;fill-opacity:1;stroke:#000000;stroke-width:2.20369911;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4199"
+       width="176.29593"
+       height="176.29593"
+       x="-1323.011"
+       y="3360.8372"
+       ry="0" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text4201"
+       y="3311.7578"
+       x="1562.9026"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       xml:space="preserve"><tspan
+         y="3311.7578"
+         x="1562.9026"
+         id="tspan4203"
+         sodipodi:role="line">3d printer</tspan><tspan
+         id="tspan4205"
+         y="3361.7578"
+         x="1562.9026"
+         sodipodi:role="line">reprap</tspan></text>
   </g>
 </svg>
