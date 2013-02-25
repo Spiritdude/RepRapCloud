@@ -1491,17 +1491,17 @@
     <text
        sodipodi:linespacing="125%"
        id="text3291"
-       y="3637.3149"
-       x="2219.3164"
-       style="font-size:34.17668533px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       y="3650.1865"
+       x="2279.3164"
+       style="font-size:25.29189682px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        xml:space="preserve"><tspan
-         y="3637.3149"
-         x="2228.7952"
+         y="3650.1865"
+         x="2286.3311"
          id="tspan3293"
-         sodipodi:role="line">drawn by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.04, 2013/02/25 </tspan><tspan
+         sodipodi:role="line">by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.04, 2013/02/25 </tspan><tspan
          id="tspan3295"
-         y="3680.0359"
-         x="2219.3164"
+         y="3681.8015"
+         x="2279.3164"
          sodipodi:role="line">for RepRapCloud, Creative Commons CC-BY</tspan></text>
     <rect
        style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
@@ -5735,22 +5735,22 @@ J0nQyencAAAAAElFTkSuQmCC
          sodipodi:role="line">Browser</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:24.5300808px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="-397.40738"
-       y="3180.2156"
+       style="font-size:28.8422718px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="-397.48318"
+       y="3183.355"
        id="text4142"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4144"
-         x="-397.40738"
-         y="3180.2156">text/html</tspan><tspan
+         x="-397.48318"
+         y="3183.355">text/html</tspan><tspan
          sodipodi:role="line"
-         x="-397.40738"
-         y="3210.8782"
+         x="-397.48318"
+         y="3219.4077"
          id="tspan4146">text/plain</tspan><tspan
          sodipodi:role="line"
-         x="-397.40738"
-         y="3241.5408"
+         x="-397.48318"
+         y="3255.4607"
          id="tspan4148">text/plain (json)</tspan></text>
   </g>
 </svg>
