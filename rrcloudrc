@@ -1,0 +1,3 @@
+#servers = myserver.local
+#slic3r.servers = myserver.local  # only for slic3r
+timeout = 600    # 600secs = 10mins (increase when you expect huge slicing/openscad tasks)

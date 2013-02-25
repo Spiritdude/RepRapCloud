@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.010';
+$VERSION = '0.011';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
 # 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
 # 2013/02/24: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
 # 2013/02/23: 0.007: directory support as input (experimental, disabled)
@@ -81,6 +82,26 @@ foreach my $s (<services/*>) {
 }
 print STDERR "supported services: ",join(", ",keys %service),"\n" if($verbose);
 
+# -- local and global configuration
+foreach my $f ('./.rrcloudrc','./rrcloudrc',"$ENV{HOME}/.rrcloudrc") {
+   if(open(F,$f)) {
+      print STDERR "parsing $f ...\n" if($verbose);
+      while(<F>) {
+         chop;
+         next if(/^\s*#/);          # -- ignore comments
+         s/\s*#.*//;                # -- remove trailing comments
+         $arg{$1} = $2 if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/);
+      }
+      close(F);
+   }
+}
+my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
+if($#s>=0) {
+   $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
+}
+$arg{timeout} = 30*60 unless($arg{timeout});
+delete $arg{s} if($arg{local});
+
 my($q,%in,%me);
 
 if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
@@ -92,24 +113,6 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    $me{type} = 'cli';
    $arg{synchronous}++;       # -- enforce synchronous
    $in{service} = $s;
-   
-   foreach my $f ('./.rrcloudrc','./rrcloudrc',"$ENV{HOME}/.rrcloudrc") {
-      if(open(F,$f)) {
-         print STDERR "parsing $f ...\n" if($verbose);
-         while(<F>) {
-            chop;
-            next if(/^\s*#/);          # -- ignore comments
-            s/\s*#.*//;                # -- remove trailing comments
-            $arg{$1} = $2 if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/);
-         }
-         close(F);
-      }
-   }
-   my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
-   if($#s>=0) {
-      $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
-   }
-   $arg{timeout} = 30*60 unless($arg{timeout});
    
    my $out = $service{$s}->{output};     # -- e.g. '-o=$fileOut'
    $out =~ s/\$fileOut//;                # -- e.g. '-o='

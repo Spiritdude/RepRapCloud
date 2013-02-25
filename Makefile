@@ -1,6 +1,7 @@
-VERSION=0.010
+VERSION=0.011
 
 REMOTE_HOST=server.local      # -- edit once you installed it on a 2nd machine
+                              # -- also check rrcloudrc
 
 all::
 	@echo "make install tests clean" 
@@ -15,9 +16,9 @@ deinstall::
 
 tests::
 	rm -rf tmp; mkdir tmp
-	./rrcloud echo tests/test.txt
-	./rrcloud openscad tests/cube.scad
-	./rrcloud slic3r tests/cube.stl
+	./rrcloud --local echo tests/test.txt
+	./rrcloud --local openscad tests/cube.scad
+	./rrcloud --local slic3r tests/cube.stl
 	#./rrcloud povray tests/scene.pov
 	./rrcloud --s=$(REMOTE_HOST) echo tests/test.txt
 	./rrcloud --s=$(REMOTE_HOST) openscad tests/cube.scad

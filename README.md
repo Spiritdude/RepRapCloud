@@ -1,6 +1,6 @@
 <h1>RepRap Cloud</h1>
 
-<b>Version: 0.010 (ALPHA)</b>
+<b>Version: 0.011 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -43,6 +43,7 @@ does the same, except the results are not yet exported but reside in <tt>tasks/i
 
 <h2>History</h2>
 <ul>
+<li> 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
 <li> 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
 <li> 2013/02/24: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
 <li> 2013/02/23: 0.007: directory support as input (experimental, disabled)
