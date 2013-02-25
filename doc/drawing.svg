@@ -302,7 +302,7 @@
        inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\doc\workflow.png"
        y="1963.9071"
        x="-480"
-       height="1763.9575"
+       height="1686.5626"
        width="2800"
        id="rect3320"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
@@ -1424,12 +1424,12 @@
        x="-407.93936"
        y="2152.8652" />
     <rect
-       y="2607.6084"
-       x="100.16604"
-       height="917.04114"
-       width="1639.0438"
+       y="2607.5764"
+       x="100.13411"
+       height="878.40759"
+       width="1639.1077"
        id="rect4107"
-       style="fill:none;stroke:#000000;stroke-width:3.00234175;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6.00468382, 12.00936762;stroke-dashoffset:0" />
+       style="fill:none;stroke:#000000;stroke-width:2.93847656;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:5.87695322, 11.75390642;stroke-dashoffset:0" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -1491,16 +1491,16 @@
     <text
        sodipodi:linespacing="125%"
        id="text3291"
-       y="3645.2988"
+       y="3585.2988"
        x="2279.3164"
        style="font-size:28.66574669px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        xml:space="preserve"><tspan
-         y="3645.2988"
-         x="2287.2668"
+         y="3585.2988"
+         x="2287.2666"
          id="tspan3293"
          sodipodi:role="line">by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.04, 2013/02/25 </tspan><tspan
          id="tspan3295"
-         y="3681.1311"
+         y="3621.1311"
          x="2279.3164"
          sodipodi:role="line">for RepRapCloud, Creative Commons CC-BY</tspan></text>
     <rect
