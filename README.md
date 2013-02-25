@@ -132,7 +132,11 @@ The <tt>server.reject-expect-100-with-417 = "disable"</tt> are required for <tt>
             
 <h3>Web Access</h3>
 
-Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>index.cgi</tt>) formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), whereas wget/curl or so gets a simple text list.
+Depending of the program (HTTP_USER_AGENT) <tt>rrcloud</tt> (respectively <tt>index.cgi</tt>) formats the output accordingly, e.g. a web-browser gets a nice formatted list (<tt>http://server.local:4468/</tt>), 
+
+<img src="/doc/sshot-600x.png">
+
+whereas wget/curl or so gets a simple text list.
 
 You can also force that it returns JSON, e.g. 
 <ul>
