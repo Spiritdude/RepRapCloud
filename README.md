@@ -146,7 +146,7 @@ id: 1361787153-093541
 in: tasks/in/1361787152-863093.txt
 out: tasks/out/1361787153-093541
 pid: 32744
-server: xxxxxxxxxx
+server: server.local
 service: echo
 status: busy
 
@@ -158,7 +158,7 @@ id: 1361787155-774973
 in: tasks/in/1361787154-479659.scad
 out: tasks/out/1361787155-774973.stl
 pid: 32749
-server: xxxxxxxxxx
+server: server.local
 service: openscad
 status: complete
 
@@ -182,7 +182,7 @@ You can also force that it returns JSON, e.g.
    in: "tasks/in/1361787181-093430.conf,tasks/in/1361787181-792570.stl",
    out: "tasks/out/1361787183-011772.gcode",
    pid: "1062",
-   server: "xxxxxxxxxxxxxxx",
+   server: "server.local",
    service: "slic3r",
    status: "complete",
 }
