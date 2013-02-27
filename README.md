@@ -16,7 +16,7 @@ which uses <tt>myserver.local</tt> and starts there the slicing task for <tt>hug
 % rrcloud --s=myserver.local slic3r huge.stl
 </pre>
 
-does the same, except the results are not yet exported but reside in <tt>tasks/in/*</tt>.
+does nearly the same, except it returns right away, and if you call <tt>rrcloud info</tt> and the job is 'completed' (or 'failed'), the results reside in <tt>tasks/out/*</tt>.
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
