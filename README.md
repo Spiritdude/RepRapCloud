@@ -16,7 +16,10 @@ which uses <tt>myserver.local</tt> and starts there the slicing task for <tt>hug
 % rrcloud --s=myserver.local slic3r huge.stl
 </pre>
 
-does the same, except the results are not yet exported but reside in <tt>tasks/in/*</tt>
+does the same, except the results are not yet exported but reside in <tt>tasks/in/*</tt>.
+
+<b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
+
 
 <h2>Requirements</h2>
 
@@ -190,8 +193,7 @@ You can also force that it returns JSON, e.g.
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
 
-<b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
 That's all for now,
 
-Rene K. Mueller<br>2013/02/24
+Rene K. Mueller<br>initial 2013/02/24, updated 2013/02/27
