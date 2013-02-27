@@ -71,12 +71,12 @@ Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one,
 <li>info/
 </ul>
 </ul>
-under that identity, after than if you mix CLI and CGI it may cause premission problems, e.g. <tt>www-data</tt> not having the permission to write files under directories created under your user identity.
+under that identity, after that if you mix CLI and CGI it may cause premission problems, e.g. <tt>www-data</tt> not having the permission to write files under directories created under your user identity.
 
 <h3>Solution</h3>
 
 <h4>Uniform Use</h4>
-Do not mix CLI and CGI, e.g. use <tt>rrcloud</tt> and <tt>*.cloud</tt> as CLI on a local machine, and on a sever only used it to receive requests but not operated via CLI.
+Do not mix CLI and CGI, e.g. use <tt>rrcloud</tt> and <tt>*.cloud</tt> as CLI on a local machine, and on a sever only used it to receive requests via CGI but not operated via CLI.
 
 <h4>Mixed Use</h4>
 Make user <tt>www-data</tt> part of your group (/etc/group), so user <tt>www-data</tt> can write into directories created by you (your login) - this way you can use the mixed operation.
