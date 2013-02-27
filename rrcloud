@@ -435,10 +435,11 @@ sub startTask {                           # -- service and input file(s), comput
    $o =~ s#\$fileOut#tasks/out/$fn#;      # -- form the output file
    push(@cmd,$o);
 
-   my $pid = 0;
+   my $pid = 0; my $forked;
    
    if(!$arg{synchronous}) {
       $pid = fork();                      # -- the UNIX magick starts here ...
+      $forked++;
    }
    
    if($pid||$arg{synchronous}) {          # -- if forked, write as parent, or anyway (but not as child & parent)
@@ -458,6 +459,7 @@ sub startTask {                           # -- service and input file(s), comput
    if($pid==0) {                                # -- we are the child (asynchronous)
       print STDERR "execute '@cmd' (",($arg{synchronous}?"synchronous":"asynchronous"),")\n" if($verbose);
       myExec($id,@cmd);                         # -- execute the thing (it forks again), comes back when done
+      #exit if($forked);
    }
    if($pid!=0||$arg{synchronous}) {             # -- parent (asynchronous) or already done job (synchronous)
       if($me{type}eq'cgi') {
