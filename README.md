@@ -17,7 +17,7 @@ which uses <tt>myserver.local</tt> and starts there the slicing task for <tt>hug
 id: 1361982318-371735
 </pre>
 
-does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info 1361982318-371735</tt> and see if the job is 'completed' (or 'failed'), the results reside in <tt>tasks/out/1361982318-371735*</tt>.
+does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info 1361982318-371735</tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/1361982318-371735.gcode</tt>.
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
