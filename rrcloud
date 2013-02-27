@@ -2,7 +2,7 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.011';
+$VERSION = '0.012';
 $APPNAME = 'RepRapCloud';
 #
 # History:
@@ -212,13 +212,15 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          $r{in} = join(",",@fin);   # -- make sure we maintain the in(put)-files locally
          $r{server} = $arg{s};      # -- back-reference (important!)
          putTaskInfo($r{id},%r);
-
+         print "id: $r{id}\n";
+         
       } else {
          print STDERR "ERROR: http://$arg{s}:$arg{port} doesn't seem to support $APPNAME\n";
       }
       
    } else {          # -- we are local, or a server which received a request, something to compute here
-      startTask($in{service},%in);
+      my $id = startTask($in{service},%in);
+      print "id: $id\n";
    }
 
 } elsif($in{service} eq 'status'||$in{service} eq 'info') {
@@ -457,6 +459,7 @@ sub startTask {                           # -- service and input file(s), comput
          print "error: ",join(";",@err),"\n" if($#e>=0);
       }
    }
+   return $id;
 }
 
 sub killTask { 
