@@ -67,6 +67,8 @@ my(%arg,@err);
 
 $arg{port} = 4468;   # -- don't change it unless you must
 
+delete $ENV{DISPLAY};   # -- openscad wants to open DISPLAY if set, we don't do this
+
 # -- create folders if necessary
 mkdir "tasks" unless(-d "tasks");
 foreach (qw(in out info log queue)) {
@@ -94,12 +96,7 @@ foreach my $f ("$ENV{HOME}/.rrcloudrc",'./rrcloudrc') {
       close(F);
    }
 }
-my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
-if($#s>=0) {
-   $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
-}
 $arg{timeout} = 30*60 unless($arg{timeout});
-delete $arg{s} if($arg{local});
 
 my($q,%in,%me);
 
@@ -109,6 +106,11 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    
    $s =~ s/^.+\///;           # -- remove any path in front/head, leave cmd/service 
 
+   my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
+   if($#s>=0) {
+      $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
+   }
+   
    $me{type} = 'cli';
    $arg{synchronous}++;       # -- enforce synchronous
    $in{service} = $s;
@@ -179,6 +181,13 @@ if($#ARGV>=0||$ENV{HOME}) {               # -- likely cli
    $me{type} = 'cgi';
 }
 
+if(!$arg{local}&&!$arg{s}) {
+   my(@s) = split(/,/,$arg{"$s.servers"}?$arg{"$s.servers"}:$arg{servers});
+   if($#s>=0) {
+      $arg{s} = @s[int(rand()*(($#s+1)*1000))%($#s+1)];   # -- random server
+   }
+}
+
 # -- debugging
 if(0) {
    print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
@@ -220,7 +229,8 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       
    } else {          # -- we are local, or a server which received a request, something to compute here
       my $id = startTask($in{service},%in);
-      print "id: $id\n";
+
+      # -- parent & child come here! (be aware)
    }
 
 } elsif($in{service} eq 'status'||$in{service} eq 'info') {
@@ -457,6 +467,8 @@ sub startTask {                           # -- service and input file(s), comput
             print "$_: $i{$_}\n";
          }
          print "error: ",join(";",@err),"\n" if($#e>=0);
+      } else {
+         print "id: $id\n";
       }
    }
    return $id;
