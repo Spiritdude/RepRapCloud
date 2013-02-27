@@ -254,7 +254,6 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             next if($_ eq 'in');
             $i{$_} = $r{$_} if(defined $r{$_});
          }
-         putTaskInfo($id,%i);
          if($i{status}eq'complete') {
             # -- retrieve resulting data from $i{server}/$r{out} -> $r{out}
             print STDERR "results of $id retrieving remotely http://$i{server}:$arg{port}/$r{out}\n" if($verbose);
@@ -262,6 +261,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          }
          # -- at each query when 'busy' we download the log file
          getRemoteFile($i{server},"tasks/log/$id");
+         putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
       }
       if($me{type}eq'cli') {
          print "=== id: $id\n";
