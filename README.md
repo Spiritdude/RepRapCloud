@@ -202,7 +202,117 @@ You can also force that it returns JSON, e.g.
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
 
+<h2>Web API</h2>
+
+The API is in its current form very simple:
+
+<h3>Issue Task</h3>
+
+HTTP PUT with following variables:
+<pre>
+service: <i>service</i>
+fileIn<i>n</i>: <i>fileupload</i>
+</pre>
+
+e.g.
+<pre>
+curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
+</pre>
+
+HTTP Response (text/plain):
+<pre>
+id: 1361787155-774973
+</pre>
+
+
+<h3>Query Status of Task</h3>
+
+HTTP GET with following variables:
+<pre>
+id: <i>id</i>
+</pre>
+
+e.g.
+<pre>
+curl http://server.local:4468/?id=1361787155-774973
+</pre>
+
+HTTP Response (text/plain):
+<pre>
+client: <i>ip</i>       (your remote IP)
+cmd: <i>...</i>         (actual command run on server)
+ctime: <i>time</i>      (creation time of task on server)
+etime: <i>time</i>      (end time of task on server)
+id: <i>id</i>           (id of task)
+in: <i>filelist</i>     (comma separated list of filenames)
+out: <i>filename</i>    (single filename of results)
+pid: <i>pid</i>         (process id on server)
+server: <i>ip</i>       (server IP or hostname)
+service: <i>service</i> (requested service)
+status: <i>status</i>   (status: 'busy', 'failed', or 'complete')
+</pre>
+
+e.g.
+<pre>
+client: xxx.xxx.86.120
+cmd: openscad tasks/in/1361787155-296870.scad -otasks/out/1361787155-774973.stl
+ctime: 1361787155.83115
+etime: 1361787155.89783
+id: 1361787155-774973
+in: tasks/in/1361787154-479659.scad
+out: tasks/out/1361787155-774973.stl
+pid: 32749
+server: server.local
+service: openscad
+status: complete
+</pre>
+
+<h3>Retrieve Results of Task</h3>
+
+Based on the <tt>service: info</tt> retrieved <tt>out</tt> you can request the data direct:
+<pre>
+GET http://server.local:4468/<i>out</i>
+</pre>
+
+e.g.
+<pre>
+GET http://server.local:4468/tasks/out/1361787155-774973.stl
+</pre>
+
+<h3>Retrieve Log of Task</h3>
+
+Based on the <i>id</i> you also can retrieve the log of the task:
+<pre>
+GET http://server.local:4468/tasks/log/<i>id</i>
+<pre>
+
+e.g.
+<pre>
+GET http://server.local:4468/tasks/log/1361787155-774973
+</pre>
+
+<h3>Internal Command Compisition</h3>
+
+The services/*.conf define the services, let us look at the <b>slic3r</b>.conf more closely:
+<pre>
+path = /usr/bin:/usr/local/bin         # -- where to find slic3r executable
+cmd = slic3r                           # -- the actual exectuable
+input = --load=$fileIn                 # -- possible additional input
+fileOut = $id.gcode                    # -- how does the output file look like
+output = --output=$fileOut             # -- actual argument composition for output
+<pre>
+
+from these data the actual command is composed:
+<pre>
+<i>cmd</i> <i>[input]...</i> <i>fileIn0..n</i> <i>[output]</i>
+</pre>
+
+e.g.
+<pre>
+slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode
+</pre>
+
 
 That's all for now,
 
-Rene K. Mueller<br>initial 2013/02/24, updated 2013/02/27
+Rene K. Mueller<br>initial 2013/02/24, updated 2013/03/02
