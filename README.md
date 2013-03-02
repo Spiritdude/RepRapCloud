@@ -1,6 +1,6 @@
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.012 (ALPHA)</b>
+<b>Version: 0.013 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -54,6 +54,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/02: 0.013: checking preargN for validity
 <li> 2013/03/02: 0.012: openjscad service included
 <li> 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
 <li> 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
@@ -318,12 +319,12 @@ Now, the moment we issue a task, we have to set:
 <pre>
 fileIn0: slic3r.conf
 prearg0: --load=
-fileIn0: test.stl
+fileIn1: test.stl
 </pre>
 
 which gives then:
 <pre>
-<i>cmd</i> <i>[input]...</i> <i>prearg0..n</i> <i>fileIn0..n</i> <i>[output]</i>
+<i>cmd</i> <i>[input]...</i> <i>prearg0+fileIn0</i> <i>fileIn1</i> <i>[output]</i>
 </pre>
 
 e.g.
@@ -331,7 +332,7 @@ e.g.
 slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode
 </pre>
 
-<b>Hint:</b> 
+<b>Hint:</b> This configuration and composition procedure is preliminary and might change later.
 
 
 That's all for now,
