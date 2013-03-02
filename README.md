@@ -279,7 +279,7 @@ e.g.
 GET http://server.local:4468/tasks/out/1361787155-774973.stl
 </pre>
 
-<h3>Retrieve Log of Task</h3>
+<h3>Task Log</h3>
 
 Based on the <i>id</i> you also can retrieve the log of the task:
 <pre>
