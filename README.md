@@ -207,7 +207,7 @@ Since the main transportation layer is HTTP, you can use existing load-balancing
 
 The API is in its current form very simple:
 
-<h3>Issue New Task</h3>
+<h3>Task Issuing</h3>
 
 HTTP POST with following variables:
 <pre>
@@ -224,7 +224,7 @@ curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
 
 HTTP Response (text/plain) will be the same response as "Query Info of Task" (explained as next):
 
-<h3>Query Status of Task</h3>
+<h3>Task Info</h3>
 
 HTTP GET with following variables:
 <pre>
@@ -267,7 +267,7 @@ service: openscad
 status: complete
 </pre>
 
-<h3>Retrieve Results of Task</h3>
+<h3>Task Results</h3>
 
 Based on the <tt>service: info</tt> retrieved <tt>out</tt> you can request the data direct:
 <pre>
