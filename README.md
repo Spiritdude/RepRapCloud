@@ -223,6 +223,11 @@ curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
 
 HTTP Response (text/plain):
 <pre>
+id: <i>id</i>
+</pre>
+
+e.g.
+<pre>
 id: 1361787155-774973
 </pre>
 
