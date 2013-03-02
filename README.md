@@ -299,9 +299,9 @@ e.g.
 GET http://server.local:4468/tasks/log/1361787155-774973
 </pre>
 
-<h3>Internal Command Compisition</h3>
+<h3>Internal Command Composition</h3>
 
-The services/*.conf define the services, let us look at the <b>slic3r</b>.conf more closely:
+The <tt>services/*.conf</tt> define the services available on a server. Let us look at the <b>slic3r</b>.conf more closely:
 <pre>
 path = /usr/bin:/usr/local/bin         # -- where to find slic3r executable
 cmd = slic3r                           # -- the actual exectuable
@@ -310,9 +310,20 @@ fileOut = $id.gcode                    # -- how does the output file look like
 output = --output=$fileOut             # -- actual argument composition for output
 </pre>
 
-from these data the actual command is composed:
+Now, the moment we issue a task, we have to set:
+<ul>
+<li>fileIn<i>n</i>: the actual file-upload via PUT
+<li>prearg<i>n</i>: references 'fileIn<i>n</i>' direct
+</ul>
 <pre>
-<i>cmd</i> <i>[input]...</i> <i>fileIn0..n</i> <i>[output]</i>
+fileIn0: slic3r.conf
+prearg0: --load=
+fileIn0: test.stl
+</pre>
+
+which gives then:
+<pre>
+<i>cmd</i> <i>[input]...</i> <i>prearg0..n</i> <i>fileIn0..n</i> <i>[output]</i>
 </pre>
 
 e.g.
