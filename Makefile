@@ -7,12 +7,12 @@ all::
 	@echo "make install tests clean" 
 
 install::
-	cp rrcloud *.cloud ~/bin/
-	#sudo cp rrcloud *.cloud /usr/local/bin/
+	#cp rrcloud *.cloud ~/bin/
+	tar cf - rrcloud *.cloud | (cd /usr/local/bin/ && sudo tar xf -)
 
 deinstall::
-	rm -f ~/bin/rrcloud ~/bin/*.cloud
-	#sudo rm -f /usr/local/bin/rrcloud /usr/local/bin/*.cloud
+	#rm -f ~/bin/rrcloud ~/bin/*.cloud
+	sudo rm -f /usr/local/bin/rrcloud /usr/local/bin/*.cloud
 
 tests::
 	rm -rf tmp; mkdir tmp
