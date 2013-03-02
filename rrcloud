@@ -367,7 +367,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             }
             print "</table>";
          }
-         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION</div>";
+         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION, visit <a href='https://github.com/Spiritdude/RepRapCloud'>github.com/Spiritdude/RepRapCloud>/a> for the latest version</div>";
          print "</body></html>";
       } else {
          print "Content-type: text/plain\n\nrequested service '$in{service}' does not exist (yet)" 

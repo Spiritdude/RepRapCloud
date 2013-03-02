@@ -1,6 +1,6 @@
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.013 (ALPHA)</b>
+<b>Version: 0.014 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -54,6 +54,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/03: 0.014: logging, and some code clean-up
 <li> 2013/03/02: 0.013: checking preargN for validity
 <li> 2013/03/02: 0.012: openjscad service included
 <li> 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
