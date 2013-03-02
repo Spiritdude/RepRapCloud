@@ -1,8 +1,8 @@
-VERSION=0.013
+VERSION=0.014
 
-REMOTE_HOST=server.local      # -- edit once you installed it on a 2nd machine
-                              # -- also check rrcloudrc
-                              
+# NOTE: in order to test remote access, install RepRapCloud on another system and 
+#       define 'server: <yourname>' in rrcloudrc file (in this directory)
+                      
 all::
 	@echo "make install tests clean" 
 
@@ -18,14 +18,17 @@ tests::
 	rm -rf tmp; mkdir tmp
 	./rrcloud --local echo tests/test.txt
 	./rrcloud --local openscad tests/cube.scad
+	./rrcloud --local openjscad tests/test.jscad
 	./rrcloud --local slic3r tests/cube.stl
 	#./rrcloud povray tests/scene.pov
-	./rrcloud --s=$(REMOTE_HOST) echo tests/test.txt
-	./rrcloud --s=$(REMOTE_HOST) openscad tests/cube.scad
-	./rrcloud --s=$(REMOTE_HOST) slic3r tests/cube.stl
+	./rrcloud echo tests/test.txt
+	./rrcloud openscad tests/cube.scad
+	./rrcloud openjscad tests/test.jscad
+	./rrcloud slic3r tests/cube.stl
 	#./rrcloud openscad+slic3r tests/cube.scad
 	./rrcloud info
 	./openscad.cloud tests/cube.scad -otmp/cube.stl
+	./openjscad.cloud tests/test.jscad -otmp/test.stl
 	./slic3r.cloud --load=tests/slic3r.conf tmp/cube.stl --output=tmp/cube.gcode
 
 clean::

@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.013';
+$VERSION = '0.014';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/03: 0.014: logging, and some code clean-up
 # 2013/03/02: 0.013: checking preargN for validity
 # 2013/03/02: 0.012: openjscad service included
 # 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
@@ -62,6 +63,8 @@ use File::Copy;
 use Cwd;
 use Time::HiRes qw(time);
 use POSIX;
+
+open(LOG,">>tasks/global.log");
 
 my $verbose = 0;     # -- 0, 1 or 2 -- for debugging
 
@@ -220,12 +223,14 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    }
    
    if($arg{s}) {     # -- we are a client, contacting the remote server
+      myLog("$arg{$s} request service","",%in);
       my(%r) = postServer($arg{s},service=>$in{service},%in);
 
       if($r{id}) {                  # -- we store the info, query later again for completeness
          $r{in} = join(",",@fin);   # -- make sure we maintain the in(put)-files locally
          $r{server} = $arg{s};      # -- back-reference (important!)
          putTaskInfo($r{id},%r);
+         myLog("$arg{s} response",$r{id},%r);
          print "id: $r{id}\n";
          
       } else {
@@ -268,6 +273,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          getRemoteFile($i{server},"tasks/log/$id");
 
          putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
+         myLog("update task info",$id,%i);
       }
       if($me{type}eq'cli') {
          print "=== id: $id\n";
@@ -308,6 +314,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
 
 } else {
    if($me{type}eq'cgi') {
+      myLog("info all tasks");
       if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
          my(@t) = reverse getTaskList();
          print "Content-type: text/html\n\n";
@@ -479,8 +486,9 @@ sub startTask {                           # -- service and input file(s), comput
          args=>$in{args},
          cmd=>"@cmd",
          service=>$s,
-         client=>$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost'
-         # server=$ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost
+         client=>$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost',
+         # server=$ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost,
+         status=>'busy'
       );
    }
    if($pid==0) {                                # -- we are the child (asynchronous)
@@ -496,6 +504,8 @@ sub startTask {                           # -- service and input file(s), comput
             print "$_: $i{$_}\n";
          }
          print "error: ",join(";",@err),"\n" if($#e>=0);
+         myLog("task performed",$id,%i);
+
       } else {
          print "id: $id\n";
       }
@@ -512,14 +522,19 @@ sub getTaskInfo {
    my($id) = @_;
    my(%i);
    
-   if(open(F,"tasks/info/$id")) {
-      my $s;
-      while(<F>) {
-         $s .= $_;
+   if($db{type}eq'mongodb') {
+      # %i = db('query',id=>$id);
+      
+   } else {
+      if(open(F,"tasks/info/$id")) {
+         my $s;
+         while(<F>) {
+            $s .= $_;
+         }
+         close(F);
+         %i = string2meta($s);
+         #$i{status} = 'busy' unless(defined $i{status});    # -- fallback, shouldn't happen
       }
-      close(F);
-      %i = string2meta($s);
-      $i{status} = 'busy' unless(defined $i{status});
    }
    foreach(split(/,/,$i{in})) {
       $i{status} = 'failed', push(@err,"empty input file: $_") if((stat($_))[7]==0);
@@ -538,11 +553,16 @@ sub getTaskInfo {
 
 sub putTaskInfo {
    my($id,%r) = @_;
-   open(F,">tasks/info/$id.new") || print STDERR "cannot update info of $id: $!\n";
-   #sysopen F,"tasks/info/$id",O_CREAT|O_RDWR,0777;
-   print F meta2string(%r);
-   close(F);
-   rename("tasks/info/$id.new","tasks/info/$id");
+   if($db{type}eq'mongodb') {
+      # db('set',id=>$id,%r);
+      
+   } else {
+      open(F,">tasks/info/$id.new") || print STDERR "cannot update info of $id: $!\n";
+      #sysopen F,"tasks/info/$id",O_CREAT|O_RDWR,0777;
+      print F meta2string(%r);
+      close(F);
+      rename("tasks/info/$id.new","tasks/info/$id");
+   }
 }
 
 sub readConfig {
@@ -554,7 +574,7 @@ sub readConfig {
    while(<F>) {
       chop;
       next if(/^\s*#/);       # -- ignore comments
-      s/\s*#.*//;                # -- remove trailing comments
+      s/\s*#.*//;             # -- remove trailing comments
       $s{$1} = $2 if(/^\s*([^\s:=]+)\s*[:=]\s*(\S.+)\s*$/);
    }
    close(F);
@@ -566,7 +586,7 @@ sub uniq {
    return $fn;
 }
 
-sub checkProcess {
+sub checkProcess {               # -- doesn't work yet
    my($pid,$id,$cmd) = @_;
    my(%p);
    if(open(F,"/proc/$pid/cmdline")) {
@@ -591,10 +611,23 @@ sub myExec {
       
    } else {
       wait;
-      open(F,">>tasks/info/$id");            # -- program has finished, we update the info file (our lightweight db)
-      print F "status: complete\n";
-      print F "etime: ",time(),"\n";
-      close(F);
+      # -- program has finished, we update the info file (our lightweight db)
+      if($db{type}eq'mongodb') {
+         # db('set',$id,status=>'complete',etime=>time());
+         
+      } else {
+         open(G,">tasks/info/$id.update");
+         open(F,"tasks/info/$id");
+         while(<F>) {
+            my($k,$v) = ($1,$2) if(/([^:]+): (.*)/);
+            $v = 'complete' if($k eq 'status');
+            print G "$k: $v\n";
+         }
+         print G "etime: ",time(),"\n";
+         close(F);
+         close(G);
+         rename("tasks/info/$id.update","tasks/info/$id");
+      }
    }
 }
 
@@ -644,7 +677,8 @@ sub myExecRemote {
       push(@fin,$f);
    }
    $i{in} = join(",",@fin);
-   
+
+   myLog("$s request service","",%i);
    my(%r) = postServer($s,%i);
    my $st = time();
 
@@ -664,6 +698,7 @@ sub myExecRemote {
             $r{$_} = $q{$_};
          }
          putTaskInfo($r{id},%r);
+         myLog("$s service done",$q{id},%q);
          last;
       } elsif($in{status}) {
          ;
@@ -734,4 +769,20 @@ sub largeNum {
    return $s;
 }
 
+sub myLog {
+   my($c,$id,%i) = @_;
+   my($t) = time();
+   my $m = join(' - ',
+      $ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:"localhost",
+      prettyDate($t),$t,$id,$c);
+   my $n;
+   $m .= ": ";
+   foreach (qw(service status)) {
+      if($i{$_}) {
+         $m .= ',' if($n++);
+         $m .= "$_:$i{$_}";
+      }
+   }
+   print LOG "$m\n";
+}
 
