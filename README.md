@@ -222,16 +222,7 @@ e.g.
 curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
 </pre>
 
-HTTP Response (text/plain):
-<pre>
-id: <i>id</i>
-</pre>
-
-e.g.
-<pre>
-id: 1361787155-774973
-</pre>
-
+HTTP Response (text/plain) will be the same response as "Query Info of Task" (explained as next):
 
 <h3>Query Status of Task</h3>
 
