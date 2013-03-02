@@ -206,9 +206,9 @@ Since the main transportation layer is HTTP, you can use existing load-balancing
 
 The API is in its current form very simple:
 
-<h3>Issue Task</h3>
+<h3>Issue New Task</h3>
 
-HTTP PUT with following variables:
+HTTP PUT (must be PUT, GET will be ignored) with following variables:
 <pre>
 service: <i>service</i>
 fileIn<i>n</i>: <i>fileupload</i>
