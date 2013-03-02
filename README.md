@@ -284,7 +284,7 @@ GET http://server.local:4468/tasks/out/1361787155-774973.stl
 Based on the <i>id</i> you also can retrieve the log of the task:
 <pre>
 GET http://server.local:4468/tasks/log/<i>id</i>
-<pre>
+</pre>
 
 e.g.
 <pre>
@@ -300,7 +300,7 @@ cmd = slic3r                           # -- the actual exectuable
 input = --load=$fileIn                 # -- possible additional input
 fileOut = $id.gcode                    # -- how does the output file look like
 output = --output=$fileOut             # -- actual argument composition for output
-<pre>
+</pre>
 
 from these data the actual command is composed:
 <pre>
