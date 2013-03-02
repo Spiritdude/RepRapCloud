@@ -214,6 +214,8 @@ service: <i>service</i>
 fileIn<i>n</i>: <i>fileupload</i>
 </pre>
 
+whereas n: 0,1,2,3,...
+
 e.g.
 <pre>
 curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
