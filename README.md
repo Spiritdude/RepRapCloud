@@ -53,6 +53,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/02: 0.012: openjscad service included
 <li> 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
 <li> 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
 <li> 2013/02/24: 0.008: additional prearguments (e.g. --load=file.conf as for slic3r)
