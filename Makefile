@@ -29,7 +29,7 @@ tests::
 	./slic3r.cloud --load=tests/slic3r.conf tmp/cube.stl --output=tmp/cube.gcode
 
 clean::
-	rm -rf tasks
+	rm -rf tasks tmp
 
 # --- developers only below
 

@@ -311,10 +311,15 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print "Total ",($#t+1)," tasks in pool<p>";
          if($#t>=0) {
             print "<table cellspacing=2 cellpadding=2>";
-            print "<tr><th>",join("</th><th>",(qw(id service compute client status date time comment))),"</th></tr>";
+            print "<tr><th>",join("</th><th>",(qw(id service compute client status date time in out comment))),"</th></tr>";
             foreach my $id (@t) {
                my %i = getTaskInfo($id);
                if(1) {
+                  my %size;
+                  foreach (split(/,/,$i{in})) {
+                     $size{in} += (stat($_))[7];
+                  }
+                  $size{out} += (stat($i{out}))[7];
                   print "<tr class=task$i{status}><td>",join("</td><td>",(
                         "<a href='/?service=info&id=$i{id}'>$i{id}</a>",
                         $i{service},
@@ -322,7 +327,9 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
                         $i{server}?"":$i{client},
                         $i{status},
                         prettyDate($i{ctime}),
-                        ($i{etime}?sprintf("%.3f",$i{etime}-$i{ctime})."s":''),
+                        sprintf("%.3f",$i{etime}?$i{etime}-$i{ctime}:time()-$i{ctime})."s",
+                        largeNum($size{in}/1024,2)."KB",
+                        largeNum($size{out}/1024,2)."KB",
                         $i{error}
                      )),"</td></tr>";
                   
