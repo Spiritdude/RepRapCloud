@@ -291,6 +291,8 @@ e.g.
 GET http://server.local:4468/tasks/log/1361787155-774973
 </pre>
 
+<b>Note:</b> the procedure of retrieval of the results and log of a task likely is to change soon.
+
 <h3>Internal Command Composition</h3>
 
 The <tt>services/*.conf</tt> define the services available on a server. Let us look at the <b>slic3r</b>.conf more closely:
