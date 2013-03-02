@@ -51,6 +51,9 @@ $APPNAME = 'RepRapCloud';
 #
 # Limitations:
 # - one/many file input, one file output
+#
+# Todo:
+# - how long are the data retained (24hrs, user-defineable)
 # 
 # Disclaimer:
 # There is no security or encryption done, very likely this service can be abused to take over a server.
