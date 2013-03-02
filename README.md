@@ -236,12 +236,13 @@ id: 1361787155-774973
 
 HTTP GET with following variables:
 <pre>
+service: info
 id: <i>id</i>
 </pre>
 
 e.g.
 <pre>
-curl http://server.local:4468/?id=1361787155-774973
+curl http://server.local:4468/?service=info&id=1361787155-774973
 </pre>
 
 HTTP Response (text/plain):
