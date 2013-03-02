@@ -297,9 +297,10 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    }
    print "]\n" if($in{format}eq'json'&&!$in{id});
 
+# } elsif($in{service} eq 'delete') {   
 # } elsif($in{service} eq 'kill') {   
-# } elsif($in{service} eq 'sleep') {   
 # } elsif($in{service} eq 'suspend') {   
+# } elsif($in{service} eq 'continue') {   
 
 } else {
    if($me{type}eq'cgi') {
@@ -310,17 +311,21 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print "<h1><img src='www/logo.png' height=48 align=absmiddle> $APPNAME @ $ENV{SERVER_NAME}</h1>\n";
          print "Total ",($#t+1)," tasks in pool<p>";
          if($#t>=0) {
-            print "<table cellspacing=2 cellpadding=2>";
-            print "<tr><th>",join("</th><th>",(qw(id service compute client status date time in out comment))),"</th></tr>";
+            print "<table class=taskList>";
+            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date time in out action comment))),"</th></tr>";
             foreach my $id (@t) {
                my %i = getTaskInfo($id);
                if(1) {
-                  my %size;
+                  my(%size,$buttons);
                   foreach (split(/,/,$i{in})) {
                      $size{in} += (stat($_))[7];
                   }
                   $size{out} += (stat($i{out}))[7];
+                  foreach(qw(suspend stop delete)) {
+                     $buttons .= "<img class=taskActionButton src='/www/task-${_}Off.png'>";
+                  }
                   print "<tr class=task$i{status}><td>",join("</td><td>",(
+                        "<img class=taskStatusIcon src='www/task-status-$i{status}.png'>",
                         "<a href='/?service=info&id=$i{id}'>$i{id}</a>",
                         $i{service},
                         $i{server}?$i{server}:"local",
@@ -330,6 +335,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
                         sprintf("%.3f",$i{etime}?$i{etime}-$i{ctime}:time()-$i{ctime})."s",
                         largeNum($size{in}/1024,2)."KB",
                         largeNum($size{out}/1024,2)."KB",
+                        $buttons,
                         $i{error}
                      )),"</td></tr>";
                   
