@@ -297,7 +297,7 @@ The <tt>services/*.conf</tt> define the services available on a server. Let us l
 <pre>
 path = /usr/bin:/usr/local/bin         # -- where to find slic3r executable
 cmd = slic3r                           # -- the actual exectuable
-argInput = --load=$fileIn                 # -- possible additional input
+argInput = --load=$fileIn              # -- possible additional input
 fileOut = $id.gcode                    # -- how does the output file look like
 output = --output=$fileOut             # -- actual argument composition for output
 </pre>
