@@ -41,12 +41,13 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt> (<a href="http://openscad.org/">OpenSCAD</a>)
 <li><b>openjscad</b> (single file input/output with support of OpenSCAD.js), e.g. <tt>openjscad.cloud huge.jscad -ohuge.stl</tt> (<a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad) & OpenJsCad</a>)
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
-<li>not yet but planned:
+<p>
+<li><b>not yet</b> but planned:
 <ul>
 <li>support of native arguments (e.g. of openscad or slic3r command-line arguments)
 <li>multiple input files not referenced by arguments (e.g. huge.scad including aa.scad) - likely by support of directory upload (not yet sure)
 <li>print3d
-<li>multi-stage openscad -> slic3r -> print3d
+<li>multi-stage open[j]scad -> slic3r -> print3d
 </ul>
 </ul>
 
