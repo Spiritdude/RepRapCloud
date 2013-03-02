@@ -308,6 +308,12 @@
        id="rect3320"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <path
+       sodipodi:nodetypes="csc"
+       inkscape:connector-curvature="0"
+       id="path4414"
+       d="m 156.9167,2221.0322 c 0,0 92.41603,314.2476 292.41603,354.2476 200,40 261.50023,166.2495 261.50023,166.2495"
+       style="fill:none;stroke:#5f00ff;stroke-width:8.80000019;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
        style="fill:none;stroke:#3600ff;stroke-width:8.60689545;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 21.154572,2969.3401 c 0,0 106.669558,9.1136 201.962978,-29.7943 25.1885,-16.6584 75.1721,-55.4822 139.10211,-58.3778 56.47016,0 89.40713,-5.8442 89.40713,-5.8442"
        id="path4136"
