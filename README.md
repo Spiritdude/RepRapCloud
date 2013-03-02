@@ -307,6 +307,8 @@ Now, the moment we issue a task, we have to set:
 <li>fileIn<i>n</i>: the actual file-upload via PUT
 <li>prearg<i>n</i>: references 'fileIn<i>n</i>' direct
 </ul>
+
+for example for a task:
 <pre>
 fileIn0: slic3r.conf
 prearg0: --load=
@@ -315,11 +317,12 @@ fileIn1: test.stl
 
 which gives then:
 <pre>
-<i>cmd</i> <i>[input]...</i> <i>prearg0+fileIn0</i> <i>fileIn1</i> <i>[output]</i>
+<i>cmd</i> <i>prearg0+fileIn0</i> <i>fileIn1</i> <i>[output]</i>
 </pre>
 
 e.g.
 <pre>
+<i>cmd    prearg0+fileIn0                        fileIn1                        output</i>
 slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode
 </pre>
 
