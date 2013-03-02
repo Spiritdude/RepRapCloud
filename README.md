@@ -297,7 +297,7 @@ The <tt>services/*.conf</tt> define the services available on a server. Let us l
 <pre>
 path = /usr/bin:/usr/local/bin         # -- where to find slic3r executable
 cmd = slic3r                           # -- the actual exectuable
-input = --load=$fileIn                 # -- possible additional input
+argInput = --load=$fileIn                 # -- possible additional input
 fileOut = $id.gcode                    # -- how does the output file look like
 output = --output=$fileOut             # -- actual argument composition for output
 </pre>
@@ -322,12 +322,13 @@ which gives then:
 
 e.g.
 <pre>
-<i>cmd    prearg0+fileIn0                        fileIn1                        output</i>
 slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode
+<i>cmd    prearg0+fileIn0                        fileIn1                        output</i>
 </pre>
 
-<b>Hint:</b> This configuration and composition procedure is preliminary and might change later.
+<b>Note:</b> If a prearg<i>n</i> is set which doesn't fit the <i>service</i>.conf:argInput field it will be ignored (e.g. one could set 'prearg0=; do-something-not-approved' and hack the server).
 
+<b>Hint:</b> This configuration and composition procedure is preliminary and might change later.
 
 That's all for now,
 
