@@ -209,7 +209,7 @@ The API is in its current form very simple:
 
 <h3>Issue New Task</h3>
 
-HTTP PUT (must be PUT, GET will be ignored) with following variables:
+HTTP POST with following variables:
 <pre>
 service: <i>service</i>
 fileIn<i>n</i>: <i>fileupload</i>
@@ -304,7 +304,7 @@ output = --output=$fileOut             # -- actual argument composition for outp
 
 Now, the moment we issue a task, we have to set:
 <ul>
-<li>fileIn<i>n</i>: the actual file-upload via PUT
+<li>fileIn<i>n</i>: the actual file-upload via POST
 <li>prearg<i>n</i>: references 'fileIn<i>n</i>' direct
 </ul>
 
