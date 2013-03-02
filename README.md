@@ -331,6 +331,8 @@ e.g.
 slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --output=tasks/out/1361787183-011772.gcode
 </pre>
 
+<b>Hint:</b> 
+
 
 That's all for now,
 

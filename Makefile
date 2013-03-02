@@ -1,4 +1,4 @@
-VERSION=0.012
+VERSION=0.013
 
 REMOTE_HOST=server.local      # -- edit once you installed it on a 2nd machine
                               # -- also check rrcloudrc

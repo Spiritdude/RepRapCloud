@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.012';
+$VERSION = '0.013';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/02: 0.013: checking preargN for validity
 # 2013/03/02: 0.012: openjscad service included
 # 2013/02/25: 0.011: rrcloudrc at various places considered, --local force local
 # 2013/02/24: 0.009: replaced `` by fork & exec combo, a bit code cleaning up 
@@ -136,6 +137,9 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
          $in{"fileIn$n"} = substr($a,length($in));
          $in{"prearg$n"} = $in;                  # -- remember prearg(ument) for this input file (e.g. '--load=')
          $n++;
+      } else {
+         print STDERR "ERROR: not supported switch or file not found '$a'\n";
+         exit 1;
       }
       push(@a,$a);
    }
@@ -399,7 +403,7 @@ sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or r
       }
       
    } else {
-      print STDERR "ERROR: don't know what to do, no input file? (me=$me{type})\n";
+      print STDERR "ERROR: likely file not found $fi (me=$me{type})\n";
       exit 1;
    }
    print STDERR "tasks/in/$fn\n" if($verbose>1);
@@ -432,7 +436,15 @@ sub startTask {                           # -- service and input file(s), comput
    for(my $n=0; $in{"fileIn$n"}; $n++) {
       my $k = "fileIn$n";
       if($in{"prearg$n"}) {
-         push(@cmd,$in{"prearg$n"}.$in{$k});  # -- and push the input file(s) with prearg(ument) e.g. '--load='
+         my $pa = $service{$s}{input}; $pa =~ s/\$fileIn//;
+
+         if($pa&&index($pa,$in{"prearg$n"})>=0) {   # -- approved prearg? (is prearg0 in service.conf:input line)
+            push(@cmd,$in{"prearg$n"}.$in{$k});     # -- and push the input file(s) with prearg(ument) e.g. '--load='
+            
+         } else {
+            push(@err,"not approved prearg$n: ".$in{"prearg$n"}." ($pa); wrong configuration or hacking attempt");
+         }
+         
       } else {
          push(@cmd,$in{$k});                  # -- and push the input file(s) raw
       }
@@ -496,16 +508,6 @@ sub killTask {
    # --- coming soon
 }
 
-sub sleepTask {
-   my($id) = @_;
-   # --- coming soon
-}
-
-sub suspendTask {
-   my($id) = @_;
-   # --- coming soon
-}
-
 sub getTaskInfo {
    my($id) = @_;
    my(%i);
@@ -519,7 +521,6 @@ sub getTaskInfo {
       %i = string2meta($s);
       $i{status} = 'busy' unless(defined $i{status});
    }
-   my(@err);
    foreach(split(/,/,$i{in})) {
       $i{status} = 'failed', push(@err,"empty input file: $_") if((stat($_))[7]==0);
    }
@@ -528,6 +529,7 @@ sub getTaskInfo {
       push(@err,"empty log file") if((stat("tasks/log/$id"))[7]==0);
    }
    $i{error} = join(", ",@err) if($#err>=0);
+   @err = ();
    
    # $i{status} = checkProcess($i{pid},$id,$i{cmd})?"busy":"failed" unless($i{status}eq'complete');
 
