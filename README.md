@@ -1,4 +1,4 @@
-<h1>RepRap Cloud</h1>
+<h1>RepRapCloud</h1>
 
 <b>Version: 0.012 (ALPHA)</b>
 
