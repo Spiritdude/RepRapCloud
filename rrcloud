@@ -226,14 +226,14 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    }
    
    if($arg{s}) {     # -- we are a client, contacting the remote server
-      myLog("$arg{$s} request service","",%in);
+      myLog("request remote",%in,server=>$arg{s});
       my(%r) = postServer($arg{s},service=>$in{service},%in);
 
       if($r{id}) {                  # -- we store the info, query later again for completeness
          $r{in} = join(",",@fin);   # -- make sure we maintain the in(put)-files locally
          $r{server} = $arg{s};      # -- back-reference (important!)
          putTaskInfo($r{id},%r);
-         myLog("$arg{s} response",$r{id},%r);
+         myLog("response $arg{s}",%r);
          print "id: $r{id}\n";
          
       } else {
@@ -276,7 +276,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          getRemoteFile($i{server},"tasks/log/$id");
 
          putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
-         myLog("update task info",$id,%i);
+         myLog("update task info",%i);
       }
       if($me{type}eq'cli') {
          print "=== id: $id\n";
@@ -316,8 +316,8 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
 # } elsif($in{service} eq 'continue') {   
 
 } else {
+   myLog("query all tasks");
    if($me{type}eq'cgi') {
-      myLog("info all tasks");
       if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
          my(@t) = reverse getTaskList();
          print "Content-type: text/html\n\n";
@@ -326,15 +326,11 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print "Total ",($#t+1)," tasks in pool<p>";
          if($#t>=0) {
             print "<table class=taskList>";
-            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date time in out action comment))),"</th></tr>";
+            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out action comment))),"</th></tr>";
             foreach my $id (@t) {
                my %i = getTaskInfo($id);
                if(1) {
-                  my(%size,$buttons);
-                  foreach (split(/,/,$i{in})) {
-                     $size{in} += (stat($_))[7];
-                  }
-                  $size{out} += (stat($i{out}))[7];
+                  my($buttons);
                   foreach(qw(suspend stop delete)) {
                      $buttons .= "<img class=taskActionButton src='/www/task-${_}Off.png'>";
                   }
@@ -347,8 +343,8 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
                         $i{status},
                         prettyDate($i{ctime}),
                         sprintf("%.3f",$i{etime}?$i{etime}-$i{ctime}:time()-$i{ctime})."s",
-                        largeNum($size{in}/1024,2)."KB",
-                        largeNum($size{out}/1024,2)."KB",
+                        largeNum($i{sizeIn}/1024,2)."KB",
+                        largeNum($i{sizeOut}/1024,2)."KB",
                         $buttons,
                         $i{error}
                      )),"</td></tr>";
@@ -370,7 +366,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             }
             print "</table>";
          }
-         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION, visit <a href='https://github.com/Spiritdude/RepRapCloud'>github.com/Spiritdude/RepRapCloud</a> for the latest version</div>";
+         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION (<a href='https://github.com/Spiritdude/RepRapCloud'>check</a> for the latest version)</div>";
          print "</body></html>";
       } else {
          print "Content-type: text/plain\n\nrequested service '$in{service}' does not exist (yet)" 
@@ -478,7 +474,6 @@ sub startTask {                           # -- service and input file(s), comput
       $pid = fork();                      # -- the UNIX magick starts here ...
       $forked++;
    }
-   
    if($pid||$arg{synchronous}) {          # -- if forked, write as parent, or anyway (but not as child & parent)
       putTaskInfo($id,
          id=>$id,
@@ -497,17 +492,20 @@ sub startTask {                           # -- service and input file(s), comput
    if($pid==0) {                                # -- we are the child (asynchronous)
       print STDERR "execute '@cmd' (",($arg{synchronous}?"synchronous":"asynchronous"),")\n" if($verbose);
       myExec($id,@cmd);                         # -- execute the thing (it forks again), comes back when done
+
+      my(%i) = getTaskInfo($id);                # -- we retrieve for sake of logging
+      myLog("performed",%i);           # -- perfect time to log (after the task is done)
+
       #exit if($forked);
    }
    if($pid!=0||$arg{synchronous}) {             # -- parent (asynchronous) or already done job (synchronous)
       if($me{type}eq'cgi') {
          print "Content-type: text/plain\n\n";
-         my(%i) = getTaskInfo($id);
+         my(%i) = getTaskInfo($id);             # -- in case of asynchronous, we re-read the task info (could be simplified)
          foreach (sort keys %i) {
             print "$_: $i{$_}\n";
          }
          print "error: ",join(";",@err),"\n" if($#e>=0);
-         myLog("task performed",$id,%i);
 
       } else {
          print "id: $id\n";
@@ -539,9 +537,13 @@ sub getTaskInfo {
          #$i{status} = 'busy' unless(defined $i{status});    # -- fallback, shouldn't happen
       }
    }
+   $i{sizeIn} = 0;
    foreach(split(/,/,$i{in})) {
-      $i{status} = 'failed', push(@err,"empty input file: $_") if((stat($_))[7]==0);
+      my($sz) = (stat($_))[7];
+      $i{status} = 'failed', push(@err,"empty input file: $_") if($sz==0);
+      $i{sizeIn} += $sz;
    }
+   $i{sizeOut} = (stat($i{out}))[7];
    if($i{status}eq'complete'||$i{status}eq'failed') {
       $i{status} = 'failed', push(@err,"empty output file") if((stat($i{out}))[7]==0);
       push(@err,"empty log file") if((stat("tasks/log/$id"))[7]==0);
@@ -681,7 +683,7 @@ sub myExecRemote {
    }
    $i{in} = join(",",@fin);
 
-   myLog("$s request service","",%i);
+   myLog("request remote",%i,server=>$s);
    my(%r) = postServer($s,%i);
    my $st = time();
 
@@ -701,7 +703,7 @@ sub myExecRemote {
             $r{$_} = $q{$_};
          }
          putTaskInfo($r{id},%r);
-         myLog("$s service done",$q{id},%q);
+         myLog("performed $s",%q);
          last;
       } elsif($in{status}) {
          ;
@@ -773,14 +775,14 @@ sub largeNum {
 }
 
 sub myLog {
-   my($c,$id,%i) = @_;
+   my($c,%i) = @_;
    my($t) = time();
    my $m = join(' - ',
       $ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:"localhost",
-      prettyDate($t),$t,$id,$c);
+      prettyDate($t),$t,$me{type},"\"$c\"");
    my $n;
    $m .= ": ";
-   foreach (qw(service status)) {
+   foreach (qw(id service server status ctime etime sizeIn sizeOut)) {
       if($i{$_}) {
          $m .= ',' if($n++);
          $m .= "$_:$i{$_}";
