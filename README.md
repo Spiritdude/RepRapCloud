@@ -1,6 +1,6 @@
 <h1>RepRap Cloud</h1>
 
-<b>Version: 0.011 (ALPHA)</b>
+<b>Version: 0.012 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -30,7 +30,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li>Apache HTTPD or Lighttpd
 <li>multiple machines
 <ul>
-<li><a href="http://openscad.org">OpenSCAD</a> (for .scad -> .stl)
+<li><a href="http://openscad.org">OpenSCAD.org</a> (for .scad -> .stl)
 <li><a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad)</a> & <a href="http://joostn.github.com/OpenJsCad/">OpenJsCad</a> (for .jscad -> .stl)
 <li><a href="http://slic3r.org">Slic3r.org</a> (for .stl -> .gcode)
 </ul>
