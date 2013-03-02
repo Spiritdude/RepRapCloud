@@ -119,7 +119,7 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    
    my $out = $service{$s}->{output};     # -- e.g. '-o=$fileOut'
    $out =~ s/\$fileOut//;                # -- e.g. '-o='
-   my $in = $service{$s}->{input};       # -- e.g. '--load=$fileIn'
+   my $in = $service{$s}->{argInput};    # -- e.g. '--load=$fileIn'
    $in =~ s/\$fileIn//;                  # -- e.g. '--load='
    
    my $n = 0;
@@ -436,7 +436,7 @@ sub startTask {                           # -- service and input file(s), comput
    for(my $n=0; $in{"fileIn$n"}; $n++) {
       my $k = "fileIn$n";
       if($in{"prearg$n"}) {
-         my $pa = $service{$s}{input}; $pa =~ s/\$fileIn//;
+         my $pa = $service{$s}{argInput}; $pa =~ s/\$fileIn//;
 
          if($pa&&index($pa,$in{"prearg$n"})>=0) {   # -- approved prearg? (is prearg0 in service.conf:input line)
             push(@cmd,$in{"prearg$n"}.$in{$k});     # -- and push the input file(s) with prearg(ument) e.g. '--load='
