@@ -261,6 +261,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          }
          # -- at each query when 'busy' we download the log file
          getRemoteFile($i{server},"tasks/log/$id");
+
          putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
       }
       if($me{type}eq'cli') {

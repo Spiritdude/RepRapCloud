@@ -29,11 +29,17 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li>curl
 <li>Apache HTTPD or Lighttpd
 <li>multiple machines
+<ul>
+<li><a href="http://openscad.org">OpenSCAD</a> (for .scad -> .stl)
+<li><a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad)</a> & <a href="http://joostn.github.com/OpenJsCad/">OpenJsCad</a> (for .jscad -> .stl)
+<li><a href="http://slic3r.org">Slic3r.org</a> (for .stl -> .gcode)
+</ul>
 </ul>
 
 <h2>What Works</h2>
 <ul>
-<li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt>
+<li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt> (<a href="http://openscad.org/">OpenSCAD</a>)
+<li><b>openjscad</b> (single file input/output with support of OpenSCAD.js), e.g. <tt>openjscad.cloud huge.jscad -ohuge.stl</tt> (<a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad) & OpenJsCad</a>)
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
 <li>not yet but planned:
 <ul>
