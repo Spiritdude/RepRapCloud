@@ -326,14 +326,14 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print "Total ",($#t+1)," tasks in pool<p>";
          if($#t>=0) {
             print "<table class=taskList>";
-            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out action comment))),"</th></tr>";
+            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out comment))),"</th></tr>";
             foreach my $id (@t) {
                my %i = getTaskInfo($id);
                if(1) {
-                  my($buttons);
-                  foreach(qw(suspend stop delete)) {
-                     $buttons .= "<img class=taskActionButton src='/www/task-${_}Off.png'>";
-                  }
+                  #my($buttons);
+                  #foreach(qw(suspend stop delete)) {
+                  #   $buttons .= "<img class=taskActionButton src='/www/task-${_}Off.png'>";
+                  #}
                   print "<tr class=task$i{status}><td>",join("</td><td>",(
                         "<img class=taskStatusIcon src='www/task-status-$i{status}.png'>",
                         "<a href='/?service=info&id=$i{id}'>$i{id}</a>",
@@ -345,7 +345,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
                         sprintf("%.3f",$i{etime}?$i{etime}-$i{ctime}:time()-$i{ctime})."s",
                         largeNum($i{sizeIn}/1024,2)."KB",
                         largeNum($i{sizeOut}/1024,2)."KB",
-                        $buttons,
+                        #$buttons,
                         $i{error}
                      )),"</td></tr>";
                   
@@ -417,6 +417,7 @@ sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or r
 }
    
 sub getTaskList {
+   # db('query','task');
    opendir(D,"tasks/info");
    my(@t) = sort grep(!/\./,readdir(D));     # -- ignore . and .. 
    closedir(D);
@@ -476,9 +477,9 @@ sub startTask {                           # -- service and input file(s), comput
       $forked++;
    }
    if($pid||$arg{synchronous}) {          # -- if forked, write as parent, or anyway (but not as child & parent)
-      putTaskInfo($id,
-         id=>$id,
-         in=>join(',',@fin),
+      putTaskInfo($id,                    #       because only the parent knows the pid
+         id=>$id,                         #    race condition: in few cases this is executed AFTER the child
+         in=>join(',',@fin),              #                    has ended, and added etime already (fast execution)
          out=>join(',',map { $_="tasks/out/$_" } ($fn)),
          ctime=>time(),
          pid=>$pid,
@@ -560,11 +561,15 @@ sub getTaskInfo {
 sub putTaskInfo {
    my($id,%r) = @_;
    if($db{type}eq'mongodb') {
-      # db('set',id=>$id,%r);
+      # db('set','task',id=>$id,%r);
       
    } else {
+      my $n; 
+      while(-e "tasks/info/$id.new") {    # -- another process doing something?
+         sleep 1;
+         last if($n++>2);
+      }
       open(F,">tasks/info/$id.new") || print STDERR "cannot update info of $id: $!\n";
-      #sysopen F,"tasks/info/$id",O_CREAT|O_RDWR,0777;
       print F meta2string(%r);
       close(F);
       rename("tasks/info/$id.new","tasks/info/$id");
@@ -612,6 +617,7 @@ sub checkProcess {               # -- doesn't work yet
 sub myExec {
    my($id,@a) = @_;
    my($pid);
+   my($st) = time();
    if(($pid=fork())==0) {                    # -- real perl magic here ...
       open STDOUT, '>', "tasks/log/$id";
       open STDERR, ">&STDOUT";
@@ -624,20 +630,22 @@ sub myExec {
       wait;
       # -- program has finished, we update the info file (our lightweight db)
       if($db{type}eq'mongodb') {
-         # db('set',$id,status=>'complete',etime=>time());
+         # db('update','task',id=>$id,status=>'complete',etime=>time());
          
       } else {
-         open(G,">tasks/info/$id.update");
-         open(F,"tasks/info/$id");
-         while(<F>) {
-            my($k,$v) = ($1,$2) if(/([^:]+): (.*)/);
-            $v = 'complete' if($k eq 'status');
-            print G "$k: $v\n";
+         my $n;
+         while(1) {
+            my(%q) = getTaskInfo($id);
+            if($q{status} eq 'busy') {       # -- we make sure parent/parent has written the info
+               $q{status} = 'complete';
+               $q{etime} = time();
+               putTaskInfo($id,%q);
+               last;
+            } else {
+               sleep 1;
+               last if($n++>3);
+            }
          }
-         print G "etime: ",time(),"\n";
-         close(F);
-         close(G);
-         rename("tasks/info/$id.update","tasks/info/$id");
       }
    }
 }
@@ -795,5 +803,14 @@ sub myLog {
       }
    }
    print LOG "$m\n";
+}
+
+sub db {
+   my($c,$t,@a) = @_;
+   if($c eq 'set'||$c eq 'put') {
+   } elsif($c eq 'query'||$c eq 'search'||$c eq 'get') {
+   } elsif($c eq 'update') {
+   } elsif($c eq 'delete') {
+   }
 }
 
