@@ -708,7 +708,7 @@ sub myExecRemote {
             $r{$_} = $q{$_};
          }
          putTaskInfo($r{id},%r);
-         myLog("performed $s",%q);
+         myLog("performed remote",%q);
          last;
       } elsif($in{status}) {
          ;
