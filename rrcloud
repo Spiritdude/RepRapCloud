@@ -587,7 +587,12 @@ sub readConfig {
 }
 
 sub uniq {
-   my $fn = int(time())."-".sprintf("%06d",int(rand()*1_000_000));
+   my $t = time();
+   my $fn = join('-',         # -- creating unique id (for this machine)
+      int($t),
+      sprintf("%05d",($t-int($t))*100_000),
+      sprintf("%06d",int(rand()*(1_000_000-1)))
+   );
    return $fn;
 }
 
