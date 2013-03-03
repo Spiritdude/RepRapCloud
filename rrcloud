@@ -787,7 +787,7 @@ sub myLog {
       prettyDate($t),$t,$me{type},"\"$c\"");
    my $n;
    $m .= ": ";
-   foreach (qw(id service server status ctime etime sizeIn sizeOut)) {
+   foreach (qw(id service server client status ctime etime sizeIn sizeOut)) {
       if($i{$_}) {
          $m .= ',' if($n++);
          $m .= "$_:$i{$_}";
