@@ -441,10 +441,11 @@ sub startTask {                           # -- service and input file(s), comput
    my @fin;
    for(my $n=0; $in{"fileIn$n"}; $n++) {
       my $k = "fileIn$n";
+      
       if($in{"prearg$n"}) {
          my $pa = $service{$s}{argInput}; $pa =~ s/\$fileIn//;
 
-         if($pa&&index($pa,$in{"prearg$n"})>=0) {   # -- approved prearg? (is prearg0 in service.conf:input line)
+         if($pa&&$pa eq $in{"prearg$n"}) {          # -- approved prearg? (is prearg0 in service.conf:input line)
             push(@cmd,$in{"prearg$n"}.$in{$k});     # -- and push the input file(s) with prearg(ument) e.g. '--load='
             
          } else {
