@@ -1,6 +1,6 @@
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.014 (ALPHA)</b>
+<b>Version: 0.015 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
