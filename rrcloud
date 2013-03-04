@@ -265,6 +265,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    print "[\n" if($in{format}eq'json'&&!$in{id});
    foreach my $id (@t) {
       my %i = getTaskInfo($id);
+
       if($i{etime}&&(time()-$i{etime}>$arg{maxDataRetention}*60*60)) {     # -- garbage collector
          foreach(/,/,$i{in}) {
             unlink($_);

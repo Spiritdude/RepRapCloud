@@ -54,6 +54,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
 <li> 2013/03/03: 0.014: logging, and some code clean-up
 <li> 2013/03/02: 0.013: checking preargN for validity
 <li> 2013/03/02: 0.012: openjscad service included
