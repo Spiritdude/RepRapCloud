@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.014';
+$VERSION = '0.015';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
 # 2013/03/03: 0.014: logging, and some code clean-up
 # 2013/03/02: 0.013: checking preargN for validity
 # 2013/03/02: 0.012: openjscad service included
@@ -64,18 +65,22 @@ use CGI;
 use IO::Handle;
 use File::Copy;
 use Cwd;
-use Time::HiRes qw(time);
+use Time::HiRes qw(time usleep);
 use POSIX;
 
 open(LOG,">>tasks/global.log");
 
 my $verbose = 0;     # -- 0, 1 or 2 -- for debugging
 
-my(%arg,@err);
+my(%db,%arg,@err);
 
-$arg{port} = 4468;   # -- don't change it unless you must
+$db{type} = 'flatfile';    # -- flatfile (default), mongodb, mysql (not yet, but preparing)
+$db{dir} = '.';
 
-delete $ENV{DISPLAY};   # -- openscad wants to open DISPLAY if set, we don't do this
+$arg{port} = 4468;         # -- don't change it unless you must
+$arg{maxDataRetention} = 24;   # -- hours
+
+delete $ENV{DISPLAY};      # -- openscad wants to open DISPLAY if set, we don't do this
 
 # -- create folders if necessary
 mkdir "tasks" unless(-d "tasks");
@@ -260,6 +265,16 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    print "[\n" if($in{format}eq'json'&&!$in{id});
    foreach my $id (@t) {
       my %i = getTaskInfo($id);
+      if($i{etime}&&(time()-$i{etime}>$arg{maxDataRetention}*60*60)) {     # -- garbage collector
+         foreach(/,/,$i{in}) {
+            unlink($_);
+         }
+         foreach(/,/,$i{out}) {
+            unlink($_);
+         }
+         db('delete','tasks.info',$id);
+         next;
+      }
       if($i{server}&&$i{status}eq'busy') { #&&$me{type}ne'cgi') {
          print STDERR "update status of $id\n" if($verbose);
          my(%r) = postServer($i{server},service=>$in{service},id=>$id);
@@ -323,7 +338,8 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print "Content-type: text/html\n\n";
          print "<html><head><title>$APPNAME @ $ENV{SERVER_NAME} ($VERSION): ",$#t+1," tasks</title><link rel='shortcut icon' href='/www/favicon.png'/></head><body><link rel=stylesheet href='/www/style.css'/>";
          print "<h1><img src='www/logo.png' height=48 align=absmiddle> $APPNAME @ $ENV{SERVER_NAME}</h1>\n";
-         print "Total ",($#t+1)," tasks in pool<p>";
+         print "Services: <b>",join(', ',keys %service),"</b>, ";
+         print "total <b>",($#t+1)," tasks</b> in pool ($arg{maxDataRetention} hrs max data retention)<p>";
          if($#t>=0) {
             print "<table class=taskList>";
             print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out comment))),"</th></tr>";
@@ -417,11 +433,7 @@ sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or r
 }
    
 sub getTaskList {
-   # db('query','task');
-   opendir(D,"tasks/info");
-   my(@t) = sort grep(!/\./,readdir(D));     # -- ignore . and .. 
-   closedir(D);
-   return @t;
+   return db('query','tasks.info');
 }
 
 sub startTask {                           # -- service and input file(s), compute something here and now
@@ -525,20 +537,8 @@ sub getTaskInfo {
    my($id) = @_;
    my(%i);
    
-   if($db{type}eq'mongodb') {
-      # %i = db('query',id=>$id);
-      
-   } else {
-      if(open(F,"tasks/info/$id")) {
-         my $s;
-         while(<F>) {
-            $s .= $_;
-         }
-         close(F);
-         %i = string2meta($s);
-         #$i{status} = 'busy' unless(defined $i{status});    # -- fallback, shouldn't happen
-      }
-   }
+   %i = db('get','tasks.info',$id);
+
    $i{sizeIn} = 0;
    foreach(split(/,/,$i{in})) {
       my($sz) = (stat($_))[7];
@@ -560,20 +560,7 @@ sub getTaskInfo {
 
 sub putTaskInfo {
    my($id,%r) = @_;
-   if($db{type}eq'mongodb') {
-      # db('set','task',id=>$id,%r);
-      
-   } else {
-      my $n; 
-      while(-e "tasks/info/$id.new") {    # -- another process doing something?
-         sleep 1;
-         last if($n++>2);
-      }
-      open(F,">tasks/info/$id.new") || print STDERR "cannot update info of $id: $!\n";
-      print F meta2string(%r);
-      close(F);
-      rename("tasks/info/$id.new","tasks/info/$id");
-   }
+   db('set','tasks.info',$id,%r);
 }
 
 sub readConfig {
@@ -627,24 +614,18 @@ sub myExec {
       # -- never reaches here
       
    } else {
-      wait;
-      # -- program has finished, we update the info file (our lightweight db)
-      if($db{type}eq'mongodb') {
-         # db('update','task',id=>$id,status=>'complete',etime=>time());
-         
-      } else {
-         my $n;
-         while(1) {
-            my(%q) = getTaskInfo($id);
-            if($q{status} eq 'busy') {       # -- we make sure parent/parent has written the info
-               $q{status} = 'complete';
-               $q{etime} = time();
-               putTaskInfo($id,%q);
-               last;
-            } else {
-               sleep 1;
-               last if($n++>3);
-            }
+      wait;              # -- cmd has been ended (successful or failed)
+      
+      # -- program has finished, we update the info 
+      my $n;
+      while(1) {
+         my %q = db('get','tasks.info',$id);
+         if($q{id}) { # -- had parent/parent time to write the data?
+            db('update','tasks.info',$id,status=>'complete',etime=>time());
+            last;
+         } else {
+            usleep(100_000), next;
+            last if($n++>4);
          }
       }
    }
@@ -805,12 +786,98 @@ sub myLog {
    print LOG "$m\n";
 }
 
-sub db {
-   my($c,$t,@a) = @_;
-   if($c eq 'set'||$c eq 'put') {
-   } elsif($c eq 'query'||$c eq 'search'||$c eq 'get') {
+sub db {       # -- NoSQL CRUD: Create, Read, Update, Delete 
+   my($c,$p,$d,@a) = @_;   # -- command, database/path, document, %data (key-value) or @list of keys in case of delete
+   my %q;
+   
+   if($db{type}eq'flatfile') {
+      $p =~ s/\./\//g;                 # -- convert path to actual filepath
+      my $fp = "$db{dir}/$p";
+      unless(-d $fp) {                 # -- doesn't exist?
+         my $lp;
+         foreach (split(/\//,$fp)) {
+            $lp .= "$_/";
+            unless(-d $lp) {
+               print STDERR "creating $lp\n" if($verbose);
+               mkdir $lp || die "ERROR: cannot create directory $lp: $!\n";
+            }
+         }
+      }
+   }
+   if($c eq 'set'||$c eq 'put'||$c eq 'write'||$c eq 'create') {
+      if($db{type}eq'mongodb') {          # -- mongodb
+      } elsif($db{type}eq'mysql') {       # -- mysql
+      } elsif($db{type}eq'sqlite') {      # -- sqlite
+      } else {                            # -- flatfile
+         my $n;
+         while(-e "$db{dir}/$p/$d.new") {    # -- make sure not another process is updating
+            usleep 100_000;
+            last if($n++>3);
+         }
+         %q = @a;
+         open(F,">$db{dir}/$p/$d.new") || die "ERROR: cannot write to $db{dir}/$p/$d.new: $!\n";
+         foreach (sort keys %q) {
+            print F "$_: $q{$_}\n";
+         }
+         close(F);
+         rename("$db{dir}/$p/$d.new","$db{dir}/$p/$d");
+      }
+   } elsif($c eq 'query'||$c eq 'search') {
+      if($db{type}eq'mongodb') {          # -- mongodb
+      } elsif($db{type}eq'mysql') {       # -- mysql
+      } elsif($db{type}eq'sqlite') {      # -- sqlite
+      } else {                            # -- flatfile
+         opendir(D,"$db{dir}/$p");
+         my(@t) = sort grep(!/\./,readdir(D));     # -- ignore . and .. 
+         closedir(D);
+         return @t;
+      }
+      return;
+      
+   } elsif($c eq 'get'||$c eq 'read') {
+      if($db{type}eq'mongodb') {          # -- mongodb
+      } elsif($db{type}eq'mysql') {       # -- mysql
+      } elsif($db{type}eq'sqlite') {      # -- sqlite
+      } else {                            # -- flatfile
+         open(F,"$db{dir}/$p/$d");
+         while(<F>) {
+            chop;
+            $q{$1} = $2 if(/^(\S+): (.*)$/);
+         }
+         close(F);
+      }
+      return %q;
+            
    } elsif($c eq 'update') {
+      if($db{type}eq'mongodb') {          # -- mongodb
+      } elsif($db{type}eq'mysql') {       # -- mysql
+      } elsif($db{type}eq'sqlite') {      # -- sqlite
+      } else {                            # -- flatfile
+         %q = db('read',$p,$d);
+         my %a = @a;
+         foreach (keys %a) {
+            $q{$_} = $a{$_};
+         }
+         db('write',$p,$d,%q);
+      }
+      
    } elsif($c eq 'delete') {
+      if($db{type}eq'mongodb') {          # -- mongodb
+      } elsif($db{type}eq'mysql') {       # -- mysql
+      } elsif($db{type}eq'sqlite') {      # -- sqlite
+      } else {                            # -- flatfile
+         if($#a<0) {
+            return unlink("$db{dir}/$p/$d");
+         } else {
+            %q = db('read',$p,$d);
+            foreach (@a) {
+               delete $q{$_};
+            }
+            db('write',$p,$d,%q);
+         }
+      }
+   } else {
+      print STDERR "db() c = '$c' not implemented (yet)\n";
    }
 }
 
