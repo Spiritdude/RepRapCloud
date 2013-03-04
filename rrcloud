@@ -331,12 +331,13 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    myLog("query all tasks");
    if($me{type}eq'cgi') {
       if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
-         my(@t) = reverse getTaskList();
+         my(@t) = reverse getTaskList();     # -- last listed first (reverse)
          print "Content-type: text/html\n\n";
          print "<html><head><title>$APPNAME @ $ENV{SERVER_NAME} ($VERSION): ",$#t+1," tasks</title><link rel='shortcut icon' href='/www/favicon.png'/></head><body><link rel=stylesheet href='/www/style.css'/>";
-         print "<h1><img src='www/logo.png' height=48 align=absmiddle> $APPNAME @ $ENV{SERVER_NAME}</h1>\n";
-         print "Services: <b>",join(', ',keys %service),"</b>, ";
-         print "total <b>",($#t+1)," tasks</b> in pool ($arg{maxDataRetention} hrs max data retention)<p>";
+         print "<a href='https://github.com/Spiritdude/RepRapCloud'><img src='www/logo.png' class=logo></a> <div class=serverID>$ENV{SERVER_NAME}</div>\n";
+         print "<div class=headerInfo>$APPNAME ($VERSION), ";
+         print "Services: <b>",join(', ',keys %service),"</b><br>";
+         print "Total <b>",($#t+1)," tasks</b> in pool ($arg{maxDataRetention} hrs max data retention)</div>";
          if($#t>=0) {
             print "<table class=taskList>";
             print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out comment))),"</th></tr>";
@@ -379,7 +380,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             }
             print "</table>";
          }
-         print "<div class=footer><img src='/www/logo.png' height=20 align=absmiddle> $APPNAME $VERSION (<a href='https://github.com/Spiritdude/RepRapCloud'>check</a> for the latest version)</div>";
+         print "<div class=footer><a href='https://github.com/Spiritdude/RepRapCloud'><img src='/www/logo.png' height=20 border=0 align=absmiddle></a> $APPNAME $VERSION (<a href='https://github.com/Spiritdude/RepRapCloud'>check</a> for the latest version)</div>";
          print "</body></html>";
       } else {
          print "Content-type: text/plain\n\nrequested service '$in{service}' does not exist (yet)" 

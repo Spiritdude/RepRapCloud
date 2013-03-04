@@ -1,11 +1,15 @@
-body { background: white; font-family: helvetica, arial; font-size: 0.8em; }
-a { text-decoration: none; font-weight: bold }
-.taskList { }
+body { background: white; font-family: helvetica, arial; font-size: 0.8em; margin: 2em }
+a { text-decoration: none; font-weight: bold; color: #00f; }
+a:visited { color: #00f; }
+.logo { height: 6em; float: left; margin-right: 1em; border: 0px; }
+.serverID { font-weight: bold; font-size: 1.5em; padding-top: 0.5em; padding-bottom: 0.5em }
+.headerInfo { font-size: 0.7em }
+.taskList { clear: both; border: 1px solid #ccc; margin-top: 2em }
 .taskList th { background: black; color: white; font-size: 0.8em; padding: 3px }
 .taskList td { margin: 2px; padding: 2px; font-size: 0.8em; text-align: right }
 .taskcomplete { background: #ccf; }
 .taskbusy { background: #fec; }
 .taskfailed { background: #fcc; }
-.footer { font-size: 12px; font-weight: bold }
+.footer { clear: both; padding-top: 2em; font-size: 0.8em }
 .taskStatusIcon { width: 20px; height: 20px }
 .taskActionButton { width: 20px; height: 20px }
