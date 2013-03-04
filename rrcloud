@@ -6,7 +6,7 @@ $VERSION = '0.015';
 $APPNAME = 'RepRapCloud';
 #
 # History:
-# 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
+# 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flatfile (default))
 # 2013/03/03: 0.014: logging, and some code clean-up
 # 2013/03/02: 0.013: checking preargN for validity
 # 2013/03/02: 0.012: openjscad service included
@@ -259,6 +259,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    } else {
       @t = getTaskList();
    }
+   myLog("query task info (".($#t+1).")");
    my $n = 0;
    print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
    
@@ -331,12 +332,12 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    myLog("query all tasks");
    if($me{type}eq'cgi') {
       if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
-         my(@t) = reverse getTaskList();     # -- last listed first (reverse)
+         my(@t) = reverse getTaskList();         # -- last listed first (reverse)
          print "Content-type: text/html\n\n";
          print "<html><head><title>$APPNAME @ $ENV{SERVER_NAME} ($VERSION): ",$#t+1," tasks</title><link rel='shortcut icon' href='/www/favicon.png'/></head><body><link rel=stylesheet href='/www/style.css'/>";
          print "<a href='https://github.com/Spiritdude/RepRapCloud'><img src='www/logo.png' class=logo></a> <div class=serverID>$ENV{SERVER_NAME}</div>\n";
          print "<div class=headerInfo>$APPNAME ($VERSION), ";
-         print "Services: <b>",join(', ',keys %service),"</b><br>";
+         print "Services: <b>",join(', ',sort keys %service),"</b><br>";
          print "Total <b>",($#t+1)," tasks</b> in pool ($arg{maxDataRetention} hrs max data retention)</div>";
          if($#t>=0) {
             print "<table class=taskList>";
@@ -816,9 +817,9 @@ sub db {       # -- NoSQL CRUD: Create, Read, Update, Delete
          my $lp;
          foreach (split(/\//,$fp)) {
             $lp .= "$_/";
-            unless(-d $lp) {
-               print STDERR "creating $lp\n" if($verbose);
-               mkdir $lp || die "ERROR: cannot create directory $lp: $!\n";
+            unless(-d "$db{dir}/$lp") {
+               print STDERR "creating $db{dir}/$lp\n" if($verbose);
+               mkdir "$db{dir}/$lp" || die "ERROR: cannot create directory $db{dir}/$lp: $!\n";
             }
          }
       }
@@ -872,7 +873,7 @@ sub db {       # -- NoSQL CRUD: Create, Read, Update, Delete
       } elsif($db{type}eq'mysql') {       # -- mysql
       } elsif($db{type}eq'sqlite') {      # -- sqlite
       } else {                            # -- flatfile
-         %q = db('read',$p,$d);
+         %q = db('read',$p,$d);           # -- I love recursion!! ;-)
          my %a = @a;
          foreach (keys %a) {
             $q{$_} = $a{$_};
