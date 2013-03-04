@@ -125,7 +125,7 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    }
    
    $me{type} = 'cli';
-   $arg{synchronous}++;       # -- enforce synchronous
+   $arg{synchronous}++;       # -- enforce synchronous operation
    $in{service} = $s;
    
    my $out = $service{$s}->{output};     # -- e.g. '-o=$fileOut'
@@ -161,7 +161,7 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
 
    } elsif($lout) {
       print STDERR "remote ($arg{s}): $cmd @a\n" if($verbose);
-      $in{args} = join(' ',@a);
+      # $in{args} = join(' ',@a);
       my(%r) = myExecRemote($arg{s},service=>$s,%in);
       if(-f $r{out}) {
          copy($r{out},$lout);
@@ -267,19 +267,13 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       my %i = getTaskInfo($id);
 
       if($i{etime}&&(time()-$i{etime}>$arg{maxDataRetention}*60*60)) {     # -- garbage collector
-         foreach(/,/,$i{in}) {
-            unlink($_);
-         }
-         foreach(/,/,$i{out}) {
-            unlink($_);
-         }
-         db('delete','tasks.info',$id);
+         deleteTask($i{id},%i);
          next;
       }
       if($i{server}&&$i{status}eq'busy') { #&&$me{type}ne'cgi') {
          print STDERR "update status of $id\n" if($verbose);
          my(%r) = postServer($i{server},service=>$in{service},id=>$id);
-         foreach (sort keys %r) {
+         foreach (keys %r) {
             next if($_ eq 'in');
             $i{$_} = $r{$_} if(defined $r{$_});
          }
@@ -327,7 +321,9 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    print "]\n" if($in{format}eq'json'&&!$in{id});
 
 # } elsif($in{service} eq 'delete') {   
-# } elsif($in{service} eq 'kill') {   
+} elsif($in{service} eq 'kill') {   
+   killTask($in{id}) if($in{id});
+
 # } elsif($in{service} eq 'suspend') {   
 # } elsif($in{service} eq 'continue') {   
 
@@ -482,7 +478,7 @@ sub startTask {                           # -- service and input file(s), comput
    }
    $o =~ s#\$fileOut#tasks/out/$fn#;      # -- form the output file
    push(@cmd,$o);
-
+   
    my $pid = 0; my $forked;
    
    if(!$arg{synchronous}) {
@@ -496,7 +492,7 @@ sub startTask {                           # -- service and input file(s), comput
          out=>join(',',map { $_="tasks/out/$_" } ($fn)),
          ctime=>time(),
          pid=>$pid,
-         args=>$in{args},
+         #args=>$in{args},
          cmd=>"@cmd",
          service=>$s,
          client=>$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost',
@@ -531,7 +527,28 @@ sub startTask {                           # -- service and input file(s), comput
 
 sub killTask { 
    my($id) = @_;
-   # --- coming soon
+   my(%q) = getTaskInfo($id);
+   if($q{status} eq 'busy'&&$q{pid}) {
+      kill $q{pid};
+      $q{status} = 'failed';
+      putTaskInfo($id,%q);
+   }
+}
+
+sub deleteTask {
+   my($id,%i) = @_;
+
+   return unless($id);
+   %i = getTaskInfo($id) unless($i{id});     # -- full info provided, if not retrieve it
+   killTask($id) if($i{status}eq'busy');     # -- kill task if it's still busy
+
+   foreach(/,/,$i{in}) {            # -- delete input files
+      unlink($_);
+   }
+   foreach(/,/,$i{out}) {           # -- delete output files
+      unlink($_);
+   }
+   db('delete','tasks.info',$id);
 }
 
 sub getTaskInfo {

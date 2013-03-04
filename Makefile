@@ -17,19 +17,19 @@ deinstall::
 tests::
 	rm -rf tmp; mkdir tmp
 	./rrcloud --local echo tests/test.txt
-	./rrcloud --local openscad tests/cube.scad
+	./rrcloud --local openscad tests/sphere.scad
 	./rrcloud --local openjscad tests/test.jscad
 	./rrcloud --local slic3r tests/cube.stl
 	#./rrcloud povray tests/scene.pov
 	./rrcloud echo tests/test.txt
-	./rrcloud openscad tests/cube.scad
+	./rrcloud openscad tests/sphere.scad
 	./rrcloud openjscad tests/test.jscad
 	./rrcloud slic3r tests/cube.stl
-	#./rrcloud openscad+slic3r tests/cube.scad
+	#./rrcloud openscad+slic3r tests/sphere.scad
 	./rrcloud info
-	./openscad.cloud tests/cube.scad -otmp/cube.stl
+	./openscad.cloud tests/sphere.scad -otmp/sphere.stl
 	./openjscad.cloud tests/test.jscad -otmp/test.stl
-	./slic3r.cloud --load=tests/slic3r.conf tmp/cube.stl --output=tmp/cube.gcode
+	./slic3r.cloud --load=tests/slic3r.conf tmp/sphere.stl --output=tmp/sphere.gcode
 
 clean::
 	rm -rf tasks tmp
