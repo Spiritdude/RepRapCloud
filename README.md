@@ -7,7 +7,8 @@
 <img src="doc/workflow.png">
 
 <pre>
-% openjscad test.jscad -otest.stl
+% openscad.cloud test.scad -otest.stl
+% openjscad.cloud test.jscad -otest.stl
 % slic3r.cloud --load=prusa.conf huge.stl --output=huge.gcode
 % print3d.cloud huge.gcode
 </pre>
@@ -15,6 +16,8 @@
 which uses <tt>myserver.local</tt> (as defined in rrcloudrc) and starts there to do the work (openjscad, slicing etc) on the particular server, and returns when the task is done (synchronous).
 
 <pre>
+% rrcloud --s=myserver.local openscad test.scad
+id: 1361982308-837500
 % rrcloud --s=myserver.local openjscad test.jscad
 id: 1361982310-219223
 % rrcloud --s=myserver.local slic3r --load=prusa.conf huge.stl
