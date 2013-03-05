@@ -33,7 +33,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><a href="http://openscad.org">OpenSCAD.org</a> (for .scad -> .stl)
 <li><a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad)</a> & <a href="http://joostn.github.com/OpenJsCad/">OpenJsCad</a> (for .jscad -> .stl)
 <li><a href="http://slic3r.org">Slic3r.org</a> (for .stl -> .gcode)
-<li><a href="https://github.com/kliment/Printrun">Printrun (for .gcode to printer)
+<li><a href="https://github.com/kliment/Printrun">Printrun</a> (for .gcode to printer)
 </ul>
 </ul>
 
