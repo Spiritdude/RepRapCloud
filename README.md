@@ -7,13 +7,13 @@
 <img src="doc/workflow.png">
 
 <pre>
-% slic3r.cloud huge.stl --output=huge.gcode
+% slic3r.cloud --load=prusa.conf huge.stl --output=huge.gcode
 </pre>
 
 which uses <tt>myserver.local</tt> and starts there the slicing task for <tt>huge.stl</tt> there, and returns when the task is done (synchronous).
 
 <pre>
-% rrcloud --s=myserver.local slic3r huge.stl
+% rrcloud --s=myserver.local slic3r --load=prusa.conf huge.stl
 id: 1361982318-371735
 </pre>
 

@@ -206,18 +206,50 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    }
    exit 0;
 }
-   
+
 if($#ARGV>=0||$ENV{HOME}) {               # -- likely cli
-   my $n = 0;
+   my $n = 0; my $na = 0; my $pa = 0;
+   my %nativeArg, %argInput; my $s;
    while($#ARGV>=0) {
-      $_ = shift(@ARGV);
-      $arg{$1} = $2, next if(/^--([^=\s]+)=(\S+)/);
-      $arg{$1}++, next if(/^--([^=\s]+)/);
-      $in{service} = $_, next unless($in{service});
-      if(-e $_) {
-         $in{"fileIn$n"} = $_, $n++, next;
+      my $a = shift(@ARGV);
+
+      if($s) {       # -- service known? check for native arguments (with variables)
+         my $validPrearg;
+         foreach (keys %argInput) {
+            if(index($a,$_)==0) {
+               $in{"prearg$pa"} = $_;
+               $in{"fileIn$n"} = substr($a,length($_)); $n++;
+               $validPrearg++;
+               last;
+            }
+         }
+         next if($validPrearg);
+         $in{nativeArgs} .= ($in{nativeArgs}?',':'').$a, next if($nativeArg{$a});  # -- just a native switch?
+         my $validArg;
+         foreach (keys %nativeArg) {
+            $in{"arg$na"} = $a, $na++, $validArg++ if(index($a,$_)==0);  # -- additional arguments with values, e.g. --skirt=2
+         }
+         next if($validArg);
+      }
+      $arg{$1} = $2, next if($a=~/^--([^=\s]+)=(\S+)/);
+      $arg{$1}++, next if($a=~/^--([^=\s]+)/);
+
+      unless($in{service}) {         # -- service defined, let's define it's native and argInput stuff so follow switches are considered
+         $s = $in{service} = $a;
+         foreach (split(/,/,$service{$s}->{nativeArgs})) {
+            $nativeArg{$_}++;
+         }
+         foreach (split(/,/,$service{$s}->{argInput})) {
+            s/\$fileIn//;
+            $argInput{$_}++;
+         }
+         next;
+      }
+
+      if(-e $a) {
+         $in{"fileIn$n"} = $a, $n++, next;
       } else {
-         $in{id} = $_, next;
+         $in{id} = $a, next;
       }
    }
    $me{type} = 'cli';
