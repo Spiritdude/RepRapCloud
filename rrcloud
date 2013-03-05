@@ -275,7 +275,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
          print STDERR "update status of $id\n" if($verbose);
          my(%r) = postServer($i{server},service=>$in{service},id=>$id);
          foreach (keys %r) {
-            next if($_ eq 'in');
+            next if($_ eq 'in'||$_ eq 'ctime');
             $i{$_} = $r{$_} if(defined $r{$_});
          }
          if($i{status}eq'complete') {
@@ -714,7 +714,7 @@ sub myExecRemote {
          }
          getRemoteFile($s,"tasks/log/$r{id}");
          foreach (keys %q) {
-            next if($_ eq 'in');
+            next if($_ eq 'in'||$_ eq 'ctime');
             $r{$_} = $q{$_};
          }
          putTaskInfo($r{id},%r);
