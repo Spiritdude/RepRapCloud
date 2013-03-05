@@ -261,7 +261,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.32432831"
      inkscape:cx="758.12699"
-     inkscape:cy="-1353.9978"
+     inkscape:cy="-1847.3251"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -289,7 +289,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -565,8 +565,8 @@
        sodipodi:rx="120"
        sodipodi:cy="252.36218"
        sodipodi:cx="120"
-       id="path4385"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;opacity:1"
+       id="path4148"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        sodipodi:type="arc"
        transform="matrix(1.3333334,0,0,1,1400,2140)" />
     <text
@@ -574,7 +574,7 @@
        id="text4341"
        y="2384.7627"
        x="1560.1367"
-       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;opacity:0.5"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;opacity:1"
        xml:space="preserve"><tspan
          y="2384.7627"
          x="1560.1367"
@@ -708,16 +708,6 @@
        sodipodi:ry="120"
        d="m 240,252.36218 a 120,120 0 1 1 -240,0 120,120 0 1 1 240,0 z"
        transform="matrix(0.78417975,0,0,0.78417975,873.35451,3117.5694)" />
-    <path
-       transform="matrix(0.78417975,0,0,0.78417975,1092.9248,3117.5694)"
-       d="m 240,252.36218 a 120,120 0 1 1 -240,0 120,120 0 1 1 240,0 z"
-       sodipodi:ry="120"
-       sodipodi:rx="120"
-       sodipodi:cy="252.36218"
-       sodipodi:cx="120"
-       id="path4430"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.93300104;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       sodipodi:type="arc" />
     <text
        sodipodi:linespacing="125%"
        id="text4432"
@@ -740,12 +730,22 @@
          x="966.77454"
          id="tspan4438"
          sodipodi:role="line">slic3r</tspan></text>
+    <path
+       transform="matrix(0.78417975,0,0,0.78417975,1093.3545,3117.5694)"
+       d="m 240,252.36218 a 120,120 0 1 1 -240,0 120,120 0 1 1 240,0 z"
+       sodipodi:ry="120"
+       sodipodi:rx="120"
+       sodipodi:cy="252.36218"
+       sodipodi:cx="120"
+       id="path4161"
+       style="fill:#ffb9e3;fill-opacity:1;stroke:#000000;stroke-width:2.93300104;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       sodipodi:type="arc" />
     <text
        sodipodi:linespacing="125%"
        id="text4440"
        y="3323.3928"
        x="1187.1335"
-       style="font-size:31.36718941px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;opacity:0.5;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:31.36718941000000200px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        xml:space="preserve"><tspan
          y="3323.3928"
          x="1187.1335"
@@ -1511,7 +1511,7 @@
          y="3585.2988"
          x="2287.2666"
          id="tspan3293"
-         sodipodi:role="line">by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.05, 2013/03/02 </tspan><tspan
+         sodipodi:role="line">by Rene K. Mueller &lt;spiritdude@gmail.com&gt;, Version 1.06, 2013/03/05 </tspan><tspan
          id="tspan3295"
          y="3621.1311"
          x="2279.3164"

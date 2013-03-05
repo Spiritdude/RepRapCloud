@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.015';
+$VERSION = '0.016';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
 # 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flatfile (default))
 # 2013/03/03: 0.014: logging, and some code clean-up
 # 2013/03/02: 0.013: checking preargN for validity
@@ -25,7 +26,7 @@ $APPNAME = 'RepRapCloud';
 # The main aim is provide a very simple framework to provide remote (a)synchronous services:
 #    + 3d triangulation (openscad): .scad to .stl 
 #    + 3d slicing (slic3r): .stl to .gcode
-#    - 3d printing: .gcode to machine(s)
+#    + 3d printing: .gcode to machine(s)
 #    - 3d raytracing (povray): .stl/.pov to .png (just for sake of fun)
 #
 # Examples:
@@ -132,25 +133,40 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
    $out =~ s/\$fileOut//;                # -- e.g. '-o='
    my $in = $service{$s}->{argInput};    # -- e.g. '--load=$fileIn'
    $in =~ s/\$fileIn//;                  # -- e.g. '--load='
-   
-   my $n = 0;
+
+   my %nativeArg;
+   foreach (split(/,/,$service{$s}->{nativeArgs})) {
+      $nativeArg{$_}++;
+   }
+   my $n = 0; my $na = 0;
    while($#ARGV>=0) {
       my $a = shift(@ARGV);
       if(-e $a) {
          $in{"fileIn$n"} = $a;
          $n++;
          
-      } elsif(index($a,$out)==0) {               # -- original output?
+      } elsif($out&&index($a,$out)==0) {         # -- original output?
          my $o = $a;
          $lout = substr($o,length($out));        # -- original filename to write things to
 
-      } elsif(index($a,$in)==0) {                # -- additional input
+      } elsif($in&&index($a,$in)==0) {           # -- additional input
          $in{"fileIn$n"} = substr($a,length($in));
          $in{"prearg$n"} = $in;                  # -- remember prearg(ument) for this input file (e.g. '--load=')
          $n++;
+
+      } elsif($nativeArg{$a}) {                  # -- additional switches (without variables) e.g. --enableSomething
+         $in{nativeArgs} .= ',' if($in{nativeArgs});
+         $in{nativeArgs} .= $a;
+         
       } else {
-         print STDERR "ERROR: not supported switch or file not found '$a'\n";
-         exit 1;
+         my $validArg;
+         foreach (keys %nativeArg) {
+            $in{"arg$na"} = $a, $na++, $validArg++ if(index($a,$_)==0);  # -- additional arguments with values, e.g. --skirt=2
+         }
+         unless($validArg) {
+            print STDERR "ERROR: not supported switch or file not found '$a'\n";
+            exit 1;
+         }
       }
       push(@a,$a);
    }
@@ -159,15 +175,30 @@ if($0=~/^(\S+)\.cloud$/) {    # -- local wrapper, e.g. slic3r.cloud
       print STDERR "local: $cmd @a\n" if($verbose);
       exec($cmd,@a);
 
-   } elsif($lout) {
-      print STDERR "remote ($arg{s}): $cmd @a\n" if($verbose);
+   } elsif($lout||$service{$s}{noOutput}) {
+      if($verbose) {
+         print STDERR "remote ($arg{s}) $s:\n";
+         foreach (sort keys %in) {
+            print STDERR "\t$_: '$in{$_}'\n";
+         }
+      }
       # $in{args} = join(' ',@a);
       my(%r) = myExecRemote($arg{s},service=>$s,%in);
+      if($r{status}eq'failed') {
+         print STDERR "ERROR: remote service failed\n";
+         open(F,"tasks/log/$r{id}");
+         while(<F>) {
+            print STDERR $_;
+         }
+         close(F);
+      }
       if(-f $r{out}) {
          copy($r{out},$lout);
       } else {
-         print STDERR "ERROR: remote service failed, no results\n";
-         exit -1;
+         unless($service{$s}->{noOutput}) {
+            print STDERR "ERROR: remote service failed, no results\n";
+            exit -1;
+         }
       }
    } else {
       print STDERR "ERROR: likely wrong command-line argument for output, something like '$out' ($service{$s}->{output}) expected\n";
@@ -444,12 +475,25 @@ sub startTask {                           # -- service and input file(s), comput
    $ENV{PATH} = $service{$s}->{path}      # -- limit search PATH
       if($service{$s}->{path});
    
-   push(@cmd,$service{$s}->{cmd});        # -- main executable
+   push(@cmd,split(/\s+/,$service{$s}->{cmd}));        # -- main executable (and possible hard-coded default args)
 
-   #foreach my $k (sort keys %in) {        # -- pass on the arguments (out of order)
-   #   push(@cmd,"--$1=$in{$k}") if($k=~/^$s\.(\S+)/);
-   #}
-
+   my %nativeArg; 
+   foreach (split(/,/,$service{$s}->{nativeArgs})) {
+      $nativeArg{$_}++;
+   }
+  
+   foreach (split(/,/,$in{nativeArgs})) {    # -- native arguments (just switches)
+      push(@cmd,$_) if($nativeArg{$_});
+   }
+   
+   for(my $n=0; $in{"arg$n"}; $n++) {        # -- native arguments (with values)
+      my $validArg;
+      foreach (keys %nativeArg) {
+         $validArg++ if(index($in{"arg$n"},$_)==0);
+      }
+      push(@cmd,$in{"arg$n"}) if($validArg);
+   }
+   
    my @fin;
    for(my $n=0; $in{"fileIn$n"}; $n++) {
       my $k = "fileIn$n";
@@ -472,15 +516,16 @@ sub startTask {                           # -- service and input file(s), comput
 
    my $o = $service{$s}->{output};        # -- compose output 
    my $fn;
-   if($service{$s}->{fileOut}) {
-      $fn = $service{$s}->{fileOut};
-      $fn =~ s/\$id/$id/;
-   } else {
-      $fn = $id;
+   unless($service{$s}->{noOutput}) {
+      if($service{$s}->{fileOut}) {
+         $fn = $service{$s}->{fileOut};
+         $fn =~ s/\$id/$id/;
+      } else {
+         $fn = $id;
+      }
+      $o =~ s#\$fileOut#tasks/out/$fn#;      # -- form the output file
+      push(@cmd,$o);
    }
-   $o =~ s#\$fileOut#tasks/out/$fn#;      # -- form the output file
-   push(@cmd,$o);
-   
    my $pid = 0; my $forked;
    
    if(!$arg{synchronous}) {
@@ -488,19 +533,22 @@ sub startTask {                           # -- service and input file(s), comput
       $forked++;
    }
    if($pid||$arg{synchronous}) {          # -- if forked, write as parent, or anyway (but not as child & parent)
-      putTaskInfo($id,                    #       because only the parent knows the pid
-         id=>$id,                         #    race condition: in few cases this is executed AFTER the child
-         in=>join(',',@fin),              #                    has ended, and added etime already (fast execution)
-         out=>join(',',map { $_="tasks/out/$_" } ($fn)),
-         ctime=>time(),
-         pid=>$pid,
-         #args=>$in{args},
-         cmd=>"@cmd",
-         service=>$s,
-         client=>$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost',
-         # server=$ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost,
-         status=>'busy'
-      );
+      my %q;
+      # -- let's define the data for the process, which is written to db then
+      $q{id} = $id;
+      $q{in} = join(',',@fin);
+      if($fn) { $q{out} = join(',',map { $_="tasks/out/$_" } ($fn)); }
+      $q{ctime} = time();
+      $q{pid} = $pid;
+      $q{cmd} = "@cmd";
+      $q{service} = $s;
+      $q{client} = $ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost';
+      # $q{server} = $ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost;
+      $q{status} = 'busy';
+
+      putTaskInfo($id,%q);                #       because only the parent knows the pid
+                                          #    race condition: in few cases this is executed AFTER the child
+                                          #                    has ended, and added etime already (fast execution)
    }
    if($pid==0) {                                # -- we are the child (asynchronous)
       print STDERR "execute '@cmd' (",($arg{synchronous}?"synchronous":"asynchronous"),")\n" if($verbose);
@@ -658,12 +706,12 @@ sub postServer {
    push(@cmd,'curl','-s');
 
    foreach(keys %i) {
-      my $f; $f = '@' if(-f $i{$_});      # -- is a file
+      my $f; $f = '@' if(-f $i{$_}&&($_ ne 'in'&&$_ ne 'out'));      # -- is a file (ignore 'in'&&'out')
       push(@cmd,'-F',"$_=$f$i{$_}");
    }
    push(@cmd,"http://$s:$arg{port}");
    
-   print STDERR "-> $s: request service/info ('@cmd')\n" if($verbose);
+   print STDERR "-> $s: request service ('@cmd')\n" if($verbose);
 
    # -- insecure: $_ = `@cmd`;      # -- we request the service or info remotely, and receive a feedback
 
@@ -687,7 +735,7 @@ sub postServer {
    return %r;
 }
 
-sub myExecRemote {
+sub myExecRemote {                  # -- synchronous remote request
    my($s,%i) = @_;
    
    my @fin;

@@ -1,6 +1,6 @@
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.015 (ALPHA)</b>
+<b>Version: 0.016 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy framework to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -33,6 +33,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><a href="http://openscad.org">OpenSCAD.org</a> (for .scad -> .stl)
 <li><a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad)</a> & <a href="http://joostn.github.com/OpenJsCad/">OpenJsCad</a> (for .jscad -> .stl)
 <li><a href="http://slic3r.org">Slic3r.org</a> (for .stl -> .gcode)
+<li><a href="https://github.com/kliment/Printrun">Printrun (for .gcode to printer)
 </ul>
 </ul>
 
@@ -41,6 +42,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt> (<a href="http://openscad.org/">OpenSCAD</a>)
 <li><b>openjscad</b> (single file input/output with support of OpenSCAD.js), e.g. <tt>openjscad.cloud huge.jscad -ohuge.stl</tt> (<a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad) & OpenJsCad</a>)
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
+<li><b>print3d</b> e.g. <tt>print3d /dev/ttyUSB3 huge.gcode</tt>
 <p>
 <li><b>not yet</b> but planned:
 <ul>
@@ -54,6 +56,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
 <li> 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
 <li> 2013/03/03: 0.014: logging, and some code clean-up
 <li> 2013/03/02: 0.013: checking preargN for validity
@@ -333,6 +336,13 @@ slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --o
 <b>Note:</b> If a prearg<i>n</i> is set which doesn't fit the <i>service</i>.conf:argInput field it will be ignored (e.g. one could set 'prearg0=; do-something-not-approved' and hack the server).
 
 <b>Hint:</b> This configuration and composition procedure is preliminary and might change later.
+
+<h2>See Also</h2>
+<ul>
+<li><a href="https://github.com/triffid/netrap">Netrap</a>, distributed printing over several hosts
+<li><a href="http://www.botqueue.com">BotQueue V2</a>, distributed slicing & printing over several hosts
+<li><a href="https://github.com/foosel/OctoPrint">OctoPrint</a>, distributed printing from one host
+</ul>
 
 That's all for now,
 
