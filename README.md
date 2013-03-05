@@ -1,4 +1,4 @@
-<img src="www/logo.png" align=right>
+<img src="www/logo.png" align=left>
 <h1>RepRapCloud</h1>
 
 <b>Version: 0.016 (ALPHA)</b>
