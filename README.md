@@ -121,6 +121,7 @@ Edit <tt>rrcloudrc</tt> in the same directory (or <tt>~/.rrcloudrc</tt>):
 servers = server.local,server2.local      # , separated list
 slic3r.servers = server.local             # server(s) for slic3r.cloud only
 openscad.servers = server2.local          # server(s) for openscad.cloud only
+print3d.servers = raspberrypi.local       # server(s) for print3d.cloud only
 </pre>
 
 then
