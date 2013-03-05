@@ -46,7 +46,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <ul>
 <li>support of native arguments (e.g. of openscad or slic3r command-line arguments)
 <li>multiple input files not referenced by arguments (e.g. huge.scad including aa.scad) - likely by support of directory upload (not yet sure)
-<li>print3d
+<li>print3d (likely using Printrun:printcore.py)
 <li>multi-stage open[j]scad -> slic3r -> print3d
 </ul>
 </ul>
