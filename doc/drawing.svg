@@ -251,6 +251,67 @@
          x="-399.87338"
          y="2806.6453" />
     </clipPath>
+    <linearGradient
+       spreadMethod="reflect"
+       gradientUnits="userSpaceOnUse"
+       y2="538.07648"
+       x2="511.42856"
+       y1="260.93362"
+       x1="328.57138"
+       id="linearGradient3797"
+       xlink:href="#linearGradient3773"
+       inkscape:collect="always" />
+    <filter
+       id="filter3787"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur3789"
+         stdDeviation="13.002923"
+         inkscape:collect="always" />
+    </filter>
+    <linearGradient
+       spreadMethod="reflect"
+       gradientUnits="userSpaceOnUse"
+       y2="546.08447"
+       x2="-100.81444"
+       y1="277.51309"
+       x1="-287.75702"
+       id="linearGradient3779"
+       xlink:href="#linearGradient3773"
+       inkscape:collect="always" />
+    <linearGradient
+       id="linearGradient3773">
+      <stop
+         id="stop3775"
+         offset="0"
+         style="stop-color:#07ae00;stop-opacity:1;" />
+      <stop
+         id="stop3777"
+         offset="1"
+         style="stop-color:#41ff39;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3773"
+       id="linearGradient4240"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       x1="328.57138"
+       y1="260.93362"
+       x2="511.42856"
+       y2="538.07648"
+       gradientTransform="translate(-1454.0004,1637.3701)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3773"
+       id="linearGradient4255"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       x1="-287.75702"
+       y1="277.51309"
+       x2="-100.81444"
+       y2="546.08447"
+       gradientTransform="translate(-1454.0004,1637.3701)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -260,19 +321,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.32432831"
-     inkscape:cx="758.12699"
-     inkscape:cy="-1847.3251"
+     inkscape:cx="560.79608"
+     inkscape:cy="-1498.9127"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showborder="false"
      inkscape:snap-global="true"
      showguides="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="748"
-     inkscape:window-x="-8"
-     inkscape:window-y="1016"
-     inkscape:window-maximized="1">
+     inkscape:window-width="895"
+     inkscape:window-height="645"
+     inkscape:window-x="75"
+     inkscape:window-y="1099"
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid2985"
@@ -289,7 +350,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
