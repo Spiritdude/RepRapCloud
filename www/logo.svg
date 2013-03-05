@@ -19,6 +19,17 @@
   <defs
      id="defs4">
     <linearGradient
+       id="linearGradient3783">
+      <stop
+         id="stop3785"
+         offset="0"
+         style="stop-color:#51ff49;stop-opacity:1;" />
+      <stop
+         id="stop3787"
+         offset="1"
+         style="stop-color:#07a600;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
        id="linearGradient3773">
       <stop
          style="stop-color:#07ae00;stop-opacity:1;"
@@ -29,16 +40,6 @@
          offset="1"
          id="stop3777" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3773"
-       id="linearGradient3779"
-       x1="-436.32843"
-       y1="97.5131"
-       x2="-280.81445"
-       y2="294.65591"
-       gradientUnits="userSpaceOnUse"
-       spreadMethod="reflect" />
     <filter
        inkscape:collect="always"
        id="filter3787">
@@ -47,16 +48,30 @@
          stdDeviation="13.002923"
          id="feGaussianBlur3789" />
     </filter>
-    <linearGradient
+    <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3773"
-       id="linearGradient3797"
-       x1="239.99995"
-       y1="129.50505"
-       x2="460"
-       y2="346.64792"
+       xlink:href="#linearGradient3783"
+       id="radialGradient3781"
+       cx="-455.24969"
+       cy="193.43964"
+       fx="-455.24969"
+       fy="193.43964"
+       r="233.47128"
+       gradientTransform="matrix(0.87762337,0.59964548,-0.55588439,0.81357593,52.782141,295.98083)"
        gradientUnits="userSpaceOnUse"
-       spreadMethod="reflect" />
+       spreadMethod="pad" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3783"
+       id="radialGradient3789"
+       cx="405.71429"
+       cy="250.87862"
+       fx="405.71429"
+       fy="250.87862"
+       r="233.48734"
+       gradientTransform="matrix(0.95907963,0.96812925,-0.97651286,0.9673849,261.58817,-384.65711)"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -108,14 +123,14 @@
        id="rect4052"
        width="599.99994"
        height="580.18433"
-       x="-580"
+       x="-596"
        y="2.0764694"
        ry="0"
        inkscape:export-xdpi="21.68"
        inkscape:export-ydpi="21.68"
        inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\www\logo.png" />
     <rect
-       style="fill:url(#linearGradient3779);fill-opacity:1;stroke:#000000;stroke-width:4.08543587000000040;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:url(#radialGradient3781);fill-opacity:1;stroke:#000000;stroke-width:4.08543587000000040;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3985"
        width="462.85715"
        height="456.01611"
@@ -198,7 +213,7 @@
        height="463.20724"
        width="462.85715"
        id="rect2996"
-       style="fill:url(#linearGradient3797);fill-opacity:1;stroke:#000000;stroke-width:4.11752223999999960;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:url(#radialGradient3789);fill-opacity:1;stroke:#000000;stroke-width:4.11752223999999960;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        inkscape:export-filename="\\BRAHMA\kiwi\Projects\RepRapCloud\www\favicon.png"
        inkscape:export-xdpi="24.67"
        inkscape:export-ydpi="24.67" />
