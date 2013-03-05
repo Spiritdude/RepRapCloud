@@ -10,7 +10,7 @@
 % openscad.cloud test.scad -otest.stl
 % openjscad.cloud test.jscad -otest.stl
 % slic3r.cloud --load=prusa.conf huge.stl --output=huge.gcode
-% print3d.cloud huge.gcode
+% print3d.cloud /dev/ttyUSB3 huge.gcode
 </pre>
 
 which uses <tt>myserver.local</tt> (as defined in rrcloudrc) and starts there to do the work (openjscad, slicing etc) on the particular server, and returns when the task is done (synchronous).
