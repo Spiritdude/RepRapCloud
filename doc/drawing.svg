@@ -261,14 +261,6 @@
        id="linearGradient3797"
        xlink:href="#linearGradient3773"
        inkscape:collect="always" />
-    <filter
-       id="filter3787"
-       inkscape:collect="always">
-      <feGaussianBlur
-         id="feGaussianBlur3789"
-         stdDeviation="13.002923"
-         inkscape:collect="always" />
-    </filter>
     <linearGradient
        spreadMethod="reflect"
        gradientUnits="userSpaceOnUse"
@@ -322,7 +314,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.32432831"
      inkscape:cx="560.79608"
-     inkscape:cy="-1498.9127"
+     inkscape:cy="-1992.24"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -635,12 +627,12 @@
        id="text4341"
        y="2384.7627"
        x="1560.1367"
-       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;opacity:1"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        xml:space="preserve"><tspan
          y="2384.7627"
          x="1560.1367"
          id="tspan4343"
-         sodipodi:role="line">print3d.cloud</tspan><tspan
+         sodipodi:role="line">printrun.cloud</tspan><tspan
          y="2434.7627"
          x="1560.1367"
          sodipodi:role="line"
@@ -806,12 +798,12 @@
        id="text4440"
        y="3323.3928"
        x="1187.1335"
-       style="font-size:31.36718941000000200px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       style="font-size:31.36718941px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
        xml:space="preserve"><tspan
          y="3323.3928"
          x="1187.1335"
          id="tspan4442"
-         sodipodi:role="line">print3d</tspan></text>
+         sodipodi:role="line">printrun</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
        d="m 748.21859,3221.0169 0,-125.6365"

@@ -11,7 +11,7 @@
 % openscad.cloud test.scad -otest.stl
 % openjscad.cloud test.jscad -otest.stl
 % slic3r.cloud --load=prusa.conf huge.stl --output=huge.gcode
-% print3d.cloud /dev/ttyUSB3 huge.gcode
+% printrun.cloud /dev/ttyUSB3 huge.gcode
 </pre>
 
 which uses <tt>myserver.local</tt> (as defined in rrcloudrc) and starts there to do the work (openjscad, slicing etc) on the particular server, and returns when the task is done (synchronous).
@@ -23,7 +23,7 @@ id: 1361982308-837500
 id: 1361982310-219223
 % rrcloud --s=myserver.local slic3r --load=prusa.conf huge.stl
 id: 1361982318-371735
-% rrcloud --s=myserver.local print3d /dev/ttyUSB3 huge.gcode
+% rrcloud --s=myserver.local printrun /dev/ttyUSB3 huge.gcode
 id: 1361982322-198887
 </pre>
 
@@ -52,21 +52,21 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt> (<a href="http://openscad.org/">OpenSCAD</a>)
 <li><b>openjscad</b> (single file input/output with support of OpenSCAD.js), e.g. <tt>openjscad.cloud huge.jscad -ohuge.stl</tt> (<a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad) & OpenJsCad</a>)
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
-<li><b>print3d</b> e.g. <tt>print3d.cloud /dev/ttyUSB3 huge.gcode</tt>
+<li><b>printrun</b> e.g. <tt>printrun.cloud /dev/ttyUSB3 huge.gcode</tt>
 <p>
 <li><b>not yet</b> but planned:
 <ul>
 <li>multiple input files not referenced by arguments (e.g. huge.scad including aa.scad) - likely by support of directory upload (not yet sure)
-<li>multi-stage open[j]scad -> slic3r -> print3d
+<li>multi-stage open[j]scad -> slic3r -> printrun
 <li>fine-grained progress indicator
-<li>suspend/resume/kill of jobs, in particular useful for print3d service
+<li>suspend/resume/kill of jobs, in particular useful for printrun service
 </ul>
 </ul>
 
 
 <h2>History</h2>
 <ul>
-<li> 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
+<li> 2013/03/05: 0.016: native arguments (switches and variables) supported, printrun service added (via Printrun:printcore.py)
 <li> 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
 <li> 2013/03/03: 0.014: logging, and some code clean-up
 <li> 2013/03/02: 0.013: checking preargN for validity
@@ -131,7 +131,7 @@ Edit <tt>rrcloudrc</tt> in the same directory (or <tt>~/.rrcloudrc</tt>):
 servers = server.local,server2.local      # , separated list
 slic3r.servers = server.local             # server(s) for slic3r.cloud only
 openscad.servers = server2.local          # server(s) for openscad.cloud only
-print3d.servers = raspberrypi.local       # server(s) for print3d.cloud only
+printrun.servers = raspberrypi.local      # server(s) for printrun.cloud only
 </pre>
 
 then

@@ -30,7 +30,7 @@ tests::
 	./openscad.cloud tests/sphere.scad -otmp/sphere.stl
 	./openjscad.cloud tests/test.jscad -otmp/test.stl
 	./slic3r.cloud --load=tests/slic3r.conf tmp/sphere.stl --output=tmp/sphere.gcode
-	./print3d.cloud /dev/ttyUSB0 tmp/sphere.gcode
+	./printrun.cloud /dev/ttyUSB0 tmp/sphere.gcode
 
 clean::
 	rm -rf tasks tmp
