@@ -7,17 +7,23 @@
 <img src="doc/workflow.png">
 
 <pre>
+% openjscad test.jscad -otest.stl
 % slic3r.cloud --load=prusa.conf huge.stl --output=huge.gcode
+% print3d.cloud huge.gcode
 </pre>
 
-which uses <tt>myserver.local</tt> and starts there the slicing task for <tt>huge.stl</tt> there, and returns when the task is done (synchronous).
+which uses <tt>myserver.local</tt> (as defined in rrcloudrc) and starts there to do the work (openjscad, slicing etc) on the particular server, and returns when the task is done (synchronous).
 
 <pre>
+% rrcloud --s=myserver.local openjscad test.jscad
+id: 1361982310-219223
 % rrcloud --s=myserver.local slic3r --load=prusa.conf huge.stl
 id: 1361982318-371735
+% rrcloud --s=myserver.local print3d /dev/ttyUSB3 huge.gcode
+id: 1361982322-198887
 </pre>
 
-does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info 1361982318-371735</tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/1361982318-371735.gcode</tt>.
+does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info <i>id</i></tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/<i>id</i>[.ext]</tt> (depending on service proper extension is set).
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
