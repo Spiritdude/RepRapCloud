@@ -42,7 +42,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li><b>openscad</b> (single file input/output), e.g. <tt>openscad.cloud huge.scad -ohuge.stl</tt> (<a href="http://openscad.org/">OpenSCAD</a>)
 <li><b>openjscad</b> (single file input/output with support of OpenSCAD.js), e.g. <tt>openjscad.cloud huge.jscad -ohuge.stl</tt> (<a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad) & OpenJsCad</a>)
 <li><b>slic3r</b>, e.g. <tt>slic3r.cloud --load=my.conf huge.stl --output=huge.gcode</tt>
-<li><b>print3d</b> e.g. <tt>print3d /dev/ttyUSB3 huge.gcode</tt>
+<li><b>print3d</b> e.g. <tt>print3d.cloud /dev/ttyUSB3 huge.gcode</tt>
 <p>
 <li><b>not yet</b> but planned:
 <ul>
