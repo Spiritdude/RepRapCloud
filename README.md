@@ -37,7 +37,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <ul>
 <li>Perl 
 <li>Curl
-<li>Apache HTTPD or Lighttpd
+<li>Apache HTTP or <a href="http://lighttpd.net/">Lighttpd</a>
 <li>Multiple machines
 <li>Further:
 <ul>
