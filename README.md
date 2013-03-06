@@ -35,8 +35,8 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <h2>Requirements</h2>
 
 <ul>
-<li>perl
-<li>curl
+<li>Perl 
+<li>Curl
 <li>Apache HTTPD or Lighttpd
 <li>multiple machines
 <ul>
@@ -83,6 +83,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <h2>Install</h2>
 
 <pre>
+% cpan Time:HiRes
 % make install
 </pre>
 
