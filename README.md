@@ -38,7 +38,8 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 <li>Perl 
 <li>Curl
 <li>Apache HTTPD or Lighttpd
-<li>multiple machines
+<li>Multiple machines
+<li>Further:
 <ul>
 <li><a href="http://openscad.org">OpenSCAD.org</a> (for .scad -> .stl)
 <li><a href="https://github.com/Spiritdude/OpenSCAD.jscad">OpenSCAD.js(cad)</a> & <a href="http://joostn.github.com/OpenJsCad/">OpenJsCad</a> (for .jscad -> .stl)
