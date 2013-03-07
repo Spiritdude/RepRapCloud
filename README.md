@@ -343,7 +343,7 @@ $.get("http://server.local:4468/",
    { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
       var task = $.parseJSON(data);
       task.status; // 'busy', 'failed', or 'complete'
-      task.out;    // contains URL of the result (if task.status=='complete')
+      task.out;    // contains path of the result (if task.status=='complete')
       // -- your code to process results
    });
 
@@ -353,7 +353,7 @@ $.get("http://server.local:4468/",
       var tasks = $.parseJSON(data);
       for(var i=0; i&lt;tasks.length; i++) {
          tasks[i].status; // 'busy', 'failed', or 'complete'
-         tasks[i].out;    // contains URL of the result (if tasks[i].status=='complete')
+         tasks[i].out;    // contains path of the result (if tasks[i].status=='complete')
          // -- your code to process results
       }
    });
