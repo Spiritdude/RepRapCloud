@@ -1,7 +1,12 @@
+# --- Example rrcloudrc (~/.rrcloudrc is also considered afterwards)
 
-#port = 4468   # (default)
-#servers = myserver.local
-#slic3r.servers = myserver.local  # only for slic3r
+#port = 4468                        # (default)
+#servers = myserver.local           # servers for all services
+#slic3r.servers = myserver.local    # only for slic3r
+#openscad.servers = myserver.local,server2.local   # only for openscad
+#openjscad.servers = ...            # etc 
+#printrun.servers = localhost
 
-timeout = 600           # [s] 600secs = 10mins (increase when you expect huge slicing/openscad tasks)
-maxDataRetention = 24   # [hr] 24hrs, after that tasks data will be purged
+#timeout = 1800           # [s] 1800secs = 30mins (increase when you expect huge slicing/openscad tasks)
+#maxDataRetention = 24    # [hr] 24hrs, after that tasks data will be purged
+

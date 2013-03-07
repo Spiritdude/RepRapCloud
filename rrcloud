@@ -410,7 +410,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    }
    if(open(F,"/proc/loadavg")) {
       $_ = <F>; close(F);
-      $m{cpu} = $1 if(/(\S+)/);
+      $m{cpuLoad} = $1 if(/(\S+)/);
    }
    if(open(F,"/proc/uptime")) {
       $_ = <F>; close(F);
