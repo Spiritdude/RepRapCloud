@@ -9,7 +9,7 @@
 $(document).ready(function(){
    $.get("/", 
       { service: 'info', format: 'json' }).done(function(data) {
-         var tasks = jQuery.parseJSON(data).reverse();   // reverse() to latest is first
+         var tasks = jQuery.parseJSON(data).reverse();   // reverse() so latest is first
          document.getElementById('plist').innerHTML = '';
          for(var i=0; i<tasks.length; i++) {
             document.getElementById('plist').innerHTML += 
