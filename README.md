@@ -235,10 +235,19 @@ fileIn<i>n</i>: <i>fileupload</i>
 
 whereas n: 0,1,2,3,...
 
-e.g.
+CLI:
 <pre>
-curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
+% curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
 </pre>
+
+JQuery:
+<pre>
+$.post("http://server.local:4468/", 
+   { service: 'openscad', fileIn0: '...', format: 'json' }).done(function(data) {
+      // -- your code to process results
+   });
+</pre>
+
 
 HTTP Response (text/plain) will be the same response as "Task Info" (explained as next):
 
@@ -250,10 +259,19 @@ service: info
 id: <i>id</i>
 </pre>
 
-e.g.
+CLI:
 <pre>
-curl http://server.local:4468/?service=info&id=1361787155-774973
+% curl http://server.local:4468/?service=info&id=1361787155-774973
 </pre>
+
+JQuery:
+<pre>
+$.get("http://server.local:4468/", 
+   { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
+      // -- your code to process results
+   });
+</pre>
+
 
 HTTP Response (text/plain):
 <pre>
