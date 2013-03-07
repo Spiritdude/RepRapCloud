@@ -306,8 +306,8 @@ $.get("http://server.local:4468/",
    { service: 'info', format: 'json' }).done(function(data) {
       var tasks = jQuery.parseJSON(data);
       for(var i=0; i&lt;tasks.length; i++) {
-         task[i].status; // 'busy', 'failed', or 'complete'
-         task[i].out;    // contains URL of the result (if task.status=='complete')
+         tasks[i].status; // 'busy', 'failed', or 'complete'
+         tasks[i].out;    // contains URL of the result (if tasks[i].status=='complete')
          // -- your code to process results
       }
    });
