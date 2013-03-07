@@ -378,6 +378,8 @@ uptime: 0d 06h 00m 52s        // uptime of server
 version: RepRapCloud 0.017    // version of software
 </pre>
 
+and if format=json is set, it is given in JSON format; see <a href="www/index.html">this example</a> where AJAX technology is used to fetch the information.
+
 <h3>Task Results</h3>
 
 Based on the <tt>service: info</tt> retrieved <tt>out</tt> you can request the data direct:
