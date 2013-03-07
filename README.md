@@ -249,7 +249,7 @@ Since the main transportation layer is HTTP, you can use existing load-balancing
 
 The API is in its current form very simple:
 
-<h3>Task Issuing</h3>
+<h3>Task Issuing, service: xyz</h3>
 
 HTTP POST with following variables:
 <pre>
@@ -275,7 +275,7 @@ $.post("http://server.local:4468/",
 
 HTTP Response (text/plain) will be the same response as "Task Info" (explained as next):
 
-<h3>Task Info</h3>
+<h3>Task Info, service: info</h3>
 
 HTTP GET with following variables:
 <pre>
@@ -356,6 +356,26 @@ $.get("http://server.local:4468/",
          // -- your code to process results
       }
    });
+</pre>
+
+<h3>Server Info, service: meta</h3>
+
+HTTP GET with following variables:
+<pre>
+service: info
+id: <i>id</i>           // (omit 'id:' and you get info on all tasks)
+</pre>
+
+and provides results like:
+<pre>
+cpuLoad: 1.91                 // current cpu load
+maxDataRetention: 24          // max data retention [hrs]
+serverName: brahma
+services: echo,openjscad,openscad,povray,printrun,slic3r
+tasks: 12                     // currently 12 tasks in pool
+timeout: 1800                 // timeout [s]
+uptime: 0d 06h 00m 52s        // uptime of server
+version: RepRapCloud 0.017    // version of software
 </pre>
 
 <h3>Task Results</h3>
