@@ -324,8 +324,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.22933475"
-     inkscape:cx="223.76142"
-     inkscape:cy="-1992.24"
+     inkscape:cx="1673.3136"
+     inkscape:cy="-1817.8225"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -334,8 +334,8 @@
      showguides="false"
      inkscape:window-width="895"
      inkscape:window-height="645"
-     inkscape:window-x="197"
-     inkscape:window-y="1094"
+     inkscape:window-x="172"
+     inkscape:window-y="1045"
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
@@ -849,54 +849,36 @@
        width="40"
        height="40"
        x="1900"
-       y="3132.3623" />
-    <rect
-       y="3052.3623"
-       x="1900"
-       height="40"
-       width="40"
-       id="rect5558"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+       y="3052.3623" />
     <rect
        style="fill:#b9ceff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect5560"
        width="40"
        height="40"
        x="1900"
-       y="3212.3623" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="1963.1572"
-       y="3087.8647"
-       id="text5562"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5564"
-         x="1963.1572"
-         y="3087.8647">program (planned)</tspan></text>
+       y="3132.3623" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="1967.1978"
-       y="3166.677"
+       y="3086.677"
        id="text5566"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5568"
          x="1967.1978"
-         y="3166.677">file</tspan></text>
+         y="3086.677">file</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        x="1967.1978"
-       y="3247.4487"
+       y="3167.4487"
        id="text5570"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5572"
          x="1967.1978"
-         y="3247.4487">remote service</tspan></text>
+         y="3167.4487">remote service</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:97.50389099px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -1928,7 +1910,9 @@
        id="text3293"
        sodipodi:linespacing="125%"
        clip-path="url(#clipPath3338)"
-       transform="matrix(0.89698867,0,0,0.89698867,-7.499334,573.82854)"><tspan
+       transform="matrix(0.89698867,0,0,0.89698867,-7.499334,573.82854)"
+       inkscape:export-xdpi="25.709999"
+       inkscape:export-ydpi="25.709999"><tspan
          sodipodi:role="line"
          id="tspan3296"
          x="-402.86185"
