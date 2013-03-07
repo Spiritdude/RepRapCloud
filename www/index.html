@@ -26,8 +26,9 @@ function updateInfo() {
    $.get("/", 
       { service: 'info', format: 'json' }).done(function(data) {
          var tasks = $.parseJSON(data).reverse();   // reverse() so latest is first
+         var s = "";
          if(tasks.length>0) {
-            var s = "<table class=taskList>";
+            s += "<table class=taskList>";
             var h = [ '.','id','service','status','server','client','date','duration','in','out','comment' ];
             for(var i=0; i<h.length; i++) {
                s += "<th>"+h[i]+"</th>";
@@ -51,8 +52,8 @@ function updateInfo() {
                s += "</tr>";
             }
             s += "</table>";
-            $("#plist").html(s);
          }
+         $("#plist").html(s);
       });
    setTimeout(updateInfo,10*1000);
 }
