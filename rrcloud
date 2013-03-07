@@ -595,10 +595,22 @@ sub startTask {                           # -- service and input file(s), comput
       if($me{type}eq'cgi') {
          print "Content-type: text/plain\n\n";
          my(%i) = getTaskInfo($id);             # -- in case of asynchronous, we re-read the task info (could be simplified)
+         print "{\n" if($in{format}eq'json');
          foreach (sort keys %i) {
-            print "$_: $i{$_}\n";
+            if($in{format}eq'json') {
+               print "$_: $i{$_}\n";
+            } else {
+               print "$_: \"$i{$_}\",\n";
+            }
          }
-         print "error: ",join(";",@err),"\n" if($#e>=0);
+         if($#e>=0) {
+            if($in{format}eq'json') {
+               print "error: \"",join(";",@err),"\",\n";
+            } else {
+               print "error: ",join(";",@err),"\n";
+            }
+         }
+         print "}\n" if($in{format}eq'json');
 
       } else {
          print "id: $id\n";
