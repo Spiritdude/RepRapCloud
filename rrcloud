@@ -81,8 +81,9 @@ my(%db,%arg,@err);
 $db{type} = 'flatfile';    # -- flatfile (default), mongodb, mysql (not yet, but preparing)
 $db{dir} = '.';
 
-$arg{port} = 4468;         # -- don't change it unless you must
-$arg{maxDataRetention} = 24;   # -- hours
+$arg{port} = 4468;             # -- don't change it unless you must
+$arg{maxDataRetention} = 24;   # -- 24 hours
+$arg{timeout} = 30*60;         # -- 30 mins
 
 delete $ENV{DISPLAY};      # -- openscad wants to open DISPLAY if set, we don't do this
 
