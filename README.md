@@ -148,13 +148,35 @@ then
 
 <h3>Apache HTTPD</h3>
 
-(coming soon)
+Add in <tt>/etc/apache2/ports.conf</tt>:
+<pre>
+NameVirtualHost *:4468
+Listen 80
+Listen 4468
+</pre>
+and in <tt>/etc/apache2/sites-enabled/rrcloud</tt>
+<pre>
+&lt;VirtualHost *:4468&gt;
+   ServerAdmin webmaster@localhost
+   
+   DocumentRoot /path/to/RepRapCloud
+   &lt;Directory /&gt;
+      Options Indexes FollowSymLinks ExecCGI 
+      DirectoryIndex index.cgi
+   &lt;/Directory&gt;
+&lt;/VirtualHosts&gt;
+</pre>
+and make a symlink in <tt>/etc/apache2/sites-enabled/</tt>
+<pre>
+% cd /etc/apache2/sites-enabled; ln -s ../sites-available/rrcloud
+</pre>
+and make sure <tt>/etc/apacha2/mod-enabled/cgi.load</tt> exists.
 
 <h3>Lighttpd</h3>
 Add to your <tt>/etc/lighttpd/lighttpd.conf</tt> something like this:
 <pre>
 $SERVER["socket"] == ":4468" {
-   server.document-root = "/your-path-to-files/RepRapCloud/"
+   server.document-root = "/path/to/RepRapCloud/"
    server.reject-expect-100-with-417 = "disable"
    index-file.names = ( "index.cgi" )
    cgi.assign = ( ".cgi" => "/usr/bin/perl" )
