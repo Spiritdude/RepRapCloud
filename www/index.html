@@ -34,7 +34,7 @@ function updateInfo() {
          for(var i=0; i<tasks.length; i++) {
             var t = tasks[i];
             var d = new Date(t.ctime*1000);
-            d = sprintf("%04d/%02d/%02d %02d:%02d:%02d",d.getFullYear(),d.getMonth(),d.getDay(),d.getHours(),d.getMinutes(),d.getSeconds());
+            d = sprintf("%04d/%02d/%02d %02d:%02d:%02d",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
             s += "<tr class=task"+t.status+">";
             s += "<td><img class=taskStatusIcon src='/www/task-status-"+t.status+".png'></td>";
             s += "<td><a href='/?service=info&id="+t.id+"'>"+t.id+"</td>";
