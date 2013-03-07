@@ -154,7 +154,7 @@ NameVirtualHost *:4468
 Listen 80
 Listen 4468
 </pre>
-and in <tt>/etc/apache2/sites-enabled/rrcloud</tt>
+and create <tt>/etc/apache2/sites-available/rrcloud</tt>
 <pre>
 &lt;VirtualHost *:4468&gt;
    ServerAdmin webmaster@localhost
@@ -166,7 +166,7 @@ and in <tt>/etc/apache2/sites-enabled/rrcloud</tt>
    &lt;/Directory&gt;
 &lt;/VirtualHosts&gt;
 </pre>
-and make a symlink in <tt>/etc/apache2/sites-enabled/</tt>
+and "activate" it:
 <pre>
 % cd /etc/apache2/sites-enabled; ln -s ../sites-available/rrcloud
 </pre>
