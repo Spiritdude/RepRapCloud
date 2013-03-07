@@ -7,7 +7,7 @@
 <div id="plist"></div>
 <script>
 $(document).ready(function(){
-   $.get("/", 
+   $.get(".", 
       { service: 'info', format: 'json' }).done(function(data) {
          var tasks = $.parseJSON(data).reverse();   // reverse() so latest is first
          var s = "";

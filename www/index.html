@@ -1,11 +1,11 @@
 <html><head>
 <title>RepRapCloud</title>
 <meta charset="utf-8">
-<script src="/www/js/jquery-1.9.1.min.js"></script>
-<script src="/www/js/sprintf-0.7-beta1.js"></script>
+<script src="www/js/jquery-1.9.1.min.js"></script>
+<script src="www/js/sprintf-0.7-beta1.js"></script>
 <link rel='shortcut icon' href='/www/favicon.png'/>
 </head><body>
-<link rel=stylesheet href='/www/style.css'/>
+<link rel=stylesheet href='www/style.css'/>
 <a href='https://github.com/Spiritdude/RepRapCloud'><img src='www/logo.png' class=logo></a> 
 <div id=serverId class=serverID>...</div>
 <div id=headerInfo class=headerInfo>...</div>
@@ -21,7 +21,7 @@ function updateInfo() {
       { service: 'meta', format: 'json' }).done(function(data) {
          var m = $.parseJSON(data);
          $("#serverId").html(m.serverName);
-         $("#headerInfo").html(m.version+", Services: <b>"+m.services+"</b><br>Total "+m.tasks+" tasks ("+m.maxDataRetention+" hrs max data retention), autoupdate");
+         $("#headerInfo").html(m.version+", Services: <b>"+m.services+"</b><br>Total "+m.tasks+" tasks ("+m.maxDataRetention+" hrs max data retention), Uptime: "+m.uptime);
       });
    $.get("/", 
       { service: 'info', format: 'json' }).done(function(data) {
@@ -38,7 +38,7 @@ function updateInfo() {
                d = sprintf("%04d/%02d/%02d %02d:%02d:%02d",d.getFullYear(),d.getMonth()+1,d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds());
                s += "<tr class=task"+t.status+">";
                s += "<td><img class=taskStatusIcon src='/www/task-status-"+t.status+".png'></td>";
-               s += "<td><a href='/?service=info&id="+t.id+"'>"+t.id+"</td>";
+               s += "<td><a href='?service=info&id="+t.id+"'>"+t.id+"</td>";
                s += "<td>"+t.service+"</td>";
                s += "<td>"+t.status+"</td>";
                s += "<td>"+(t.server?t.server:'local')+"</td>";
