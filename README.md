@@ -249,7 +249,7 @@ Since the main transportation layer is HTTP, you can use existing load-balancing
 
 The API is in its current form very simple:
 
-<h3>Task Issuing, service: xyz</h3>
+<h3>Task Issuing (service: xyz)</h3>
 
 HTTP POST with following variables:
 <pre>
@@ -257,7 +257,8 @@ service: <i>service</i>
 fileIn<i>n</i>: <i>fileupload</i>
 </pre>
 
-whereas n: 0,1,2,3,...
+
+whereas service: { openscad, openjscad, slic3r, printrun } etc (see later in this description how to query available services), and n: 0,1,2,3,...
 
 CLI:
 <pre>
@@ -275,7 +276,7 @@ $.post("http://server.local:4468/",
 
 HTTP Response (text/plain) will be the same response as "Task Info" (explained as next):
 
-<h3>Task Info, service: info</h3>
+<h3>Task Info (service: info)</h3>
 
 HTTP GET with following variables:
 <pre>
@@ -358,7 +359,7 @@ $.get("http://server.local:4468/",
    });
 </pre>
 
-<h3>Server Info, service: meta</h3>
+<h3>Server Info (service: meta)</h3>
 
 HTTP GET with following variables:
 <pre>
