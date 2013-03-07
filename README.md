@@ -288,7 +288,7 @@ service: <i>service</i> (requested service)
 status: <i>status</i>   (status: 'busy', 'failed', or 'complete')
 </pre>
 
-e.g.
+text:
 <pre>
 client: xxx.xxx.86.120
 cmd: openscad tasks/in/1361787155-296870.scad -otasks/out/1361787155-774973.stl
@@ -301,6 +301,23 @@ pid: 32749
 server: server.local
 service: openscad
 status: complete
+</pre>
+
+json:
+<pre>
+{
+   client: "xxx.xxx.86.120",
+   cmd: "openscad tasks/in/1361787155-296870.scad -otasks/out/1361787155-774973.stl",
+   ctime: "1361787155.83115",
+   etime: "1361787155.89783",
+   id: "1361787155-774973",
+   in: "tasks/in/1361787154-479659.scad",
+   out: "tasks/out/1361787155-774973.stl",
+   pid: "32749",
+   server: "server.local",
+   service: "openscad",
+   status: "complete"
+}
 </pre>
 
 <h3>Task Results</h3>
