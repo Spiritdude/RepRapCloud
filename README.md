@@ -268,9 +268,6 @@ JQuery:
 $.post("http://server.local:4468/", 
    { service: 'openscad', fileIn0: '...', format: 'json' }).done(function(data) {
       var task = jQuery.parseJSON(data);
-      // -- your code to process results
-      task.status; // 'busy', 'failed', or 'complete'
-      task.out;    // contains URL of the result (if task.status=='complete')
    });
 </pre>
 
@@ -282,37 +279,13 @@ HTTP Response (text/plain) will be the same response as "Task Info" (explained a
 HTTP GET with following variables:
 <pre>
 service: info
-id: <i>id</i>
+id: <i>id</i>           // (omit 'id:' and you get info on all tasks)
 </pre>
 
 CLI:
 <pre>
 % curl http://server.local:4468/?service=info&id=1361787155-774973
 </pre>
-
-JQuery:
-<pre>
-// request info on task
-$.get("http://server.local:4468/", 
-   { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
-      var task = jQuery.parseJSON(data);
-      task.status; // 'busy', 'failed', or 'complete'
-      task.out;    // contains URL of the result (if task.status=='complete')
-      // -- your code to process results
-   });
-
-// get all tasks
-$.get("http://server.local:4468/", 
-   { service: 'info', format: 'json' }).done(function(data) {
-      var tasks = jQuery.parseJSON(data);
-      for(var i=0; i&lt;tasks.length; i++) {
-         tasks[i].status; // 'busy', 'failed', or 'complete'
-         tasks[i].out;    // contains URL of the result (if tasks[i].status=='complete')
-         // -- your code to process results
-      }
-   });
-</pre>
-
 
 HTTP Response (text/plain):
 <pre>
@@ -359,6 +332,29 @@ json:
    service: "openscad",
    status: "complete"
 }
+</pre>
+
+JQuery:
+<pre>
+// request info on task
+$.get("http://server.local:4468/", 
+   { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
+      var task = jQuery.parseJSON(data);
+      task.status; // 'busy', 'failed', or 'complete'
+      task.out;    // contains URL of the result (if task.status=='complete')
+      // -- your code to process results
+   });
+
+// get all tasks
+$.get("http://server.local:4468/", 
+   { service: 'info', format: 'json' }).done(function(data) {
+      var tasks = jQuery.parseJSON(data);
+      for(var i=0; i&lt;tasks.length; i++) {
+         tasks[i].status; // 'busy', 'failed', or 'complete'
+         tasks[i].out;    // contains URL of the result (if tasks[i].status=='complete')
+         // -- your code to process results
+      }
+   });
 </pre>
 
 <h3>Task Results</h3>
