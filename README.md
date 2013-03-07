@@ -90,7 +90,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h3>Permissions</h3>
 
-Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one, the CLI is execute under your login, whereas the CGI is executed as user <tt>www-data</tt> or so (depends on your UNIX).
+Be aware that <tt>rrcloud</tt> is a command-line program (CLI) and a CGI in one, the CLI is executed under your login, whereas the CGI is executed as user <tt>www-data</tt> or so (depends on your UNIX flavour).
 <tt>rrcloud</tt> (and <tt>*.cloud</tt>) create
 <ul>
 <li>tasks/
