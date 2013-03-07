@@ -358,12 +358,15 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             print "\t$k: $i{$k}\n";
          }
          print "\n";
+   
       } elsif($me{type}eq'cgi') {
-         print ", // #$n, $id\n" if($in{format}eq'json'&&$n>0);
+         print ",\n" if($in{format}eq'json'&&$n>0);
          print "{\n" if($in{format}eq'json');
+         my $m;
          foreach my $k (sort keys %i) {
             if($in{format}eq'json') {
-               print "\t$k: \"$i{$k}\",\n";
+               print "," if($m++);
+               print "\t\"$k\": \"$i{$k}\"\n";
             } else {
                print "$k: $i{$k}\n";
             }
@@ -378,7 +381,6 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
             print "\n";
             close(F);
          }
-         print "\n";
       }
       $n++;
    }

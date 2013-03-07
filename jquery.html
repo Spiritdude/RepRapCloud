@@ -1,0 +1,21 @@
+<html><head>
+<title>RepRapCloud (JQuery)</title>
+<meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head><body>
+<h1>RepRapCloud JQuery Example</h1>
+<div id=plist></div>
+<script>
+$(document).ready(function(){
+   $.get("/", 
+      { service: 'info', format: 'json' }).done(function(data) {
+         var tasks = jQuery.parseJSON(data).reverse();   // reverse() to latest is first
+         document.getElementById('plist').innerHTML = '';
+         for(var i=0; i<tasks.length; i++) {
+            document.getElementById('plist').innerHTML += 
+               tasks[i].id+": "+tasks[i].service+": "+tasks[i].status+"<br>";
+         }
+      });
+});
+</script>
+</body></html>

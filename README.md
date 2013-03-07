@@ -240,6 +240,7 @@ You can also force that it returns JSON, e.g.
    status: "complete",
 }
 </pre>
+which you can process with JQuery (see next chapter).
 
 Since the main transportation layer is HTTP, you can use existing load-balancing software to distribute the tasks within one single IP.
 
@@ -266,7 +267,10 @@ JQuery:
 <pre>
 $.post("http://server.local:4468/", 
    { service: 'openscad', fileIn0: '...', format: 'json' }).done(function(data) {
+      var task = jQuery.parseJSON(data);
       // -- your code to process results
+      task.status; // 'busy', 'failed', or 'complete'
+      task.out;    // contains URL of the result (if task.status=='complete')
    });
 </pre>
 
@@ -288,9 +292,24 @@ CLI:
 
 JQuery:
 <pre>
+// request info on task
 $.get("http://server.local:4468/", 
    { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
+      var task = jQuery.parseJSON(data);
+      task.status; // 'busy', 'failed', or 'complete'
+      task.out;    // contains URL of the result (if task.status=='complete')
       // -- your code to process results
+   });
+
+// get all tasks
+$.get("http://server.local:4468/", 
+   { service: 'info', format: 'json' }).done(function(data) {
+      var tasks = jQuery.parseJSON(data);
+      for(var i=0; i<tasks.length; i++) {
+         task[i].status; // 'busy', 'failed', or 'complete'
+         task[i].out;    // contains URL of the result (if task.status=='complete')
+         // -- your code to process results
+      }
    });
 </pre>
 
