@@ -1,7 +1,7 @@
-VERSION=0.016
+VERSION=0.017
 
 # NOTE: in order to test remote access, install RepRapCloud on another system and 
-#       define 'server: <yourname>' in rrcloudrc file (in this directory)
+#       define 'server: <serverHostorIP>' in rrcloudrc file (in this directory)
                       
 all::
 	@echo "make install tests clean" 

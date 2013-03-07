@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.016';
+$VERSION = '0.017';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/07: 0.017: increased JSON support through all operations
 # 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
 # 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flatfile (default))
 # 2013/03/03: 0.014: logging, and some code clean-up
@@ -354,24 +355,16 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       }
       if($me{type}eq'cli') {
          print "=== id: $id\n";
-         foreach my $k (sort keys %i) {
-            print "\t$k: $i{$k}\n";
-         }
+         print meta2string(%i);
          print "\n";
    
       } elsif($me{type}eq'cgi') {
          print ",\n" if($in{format}eq'json'&&$n>0);
-         print "{\n" if($in{format}eq'json');
-         my $m;
-         foreach my $k (sort keys %i) {
-            if($in{format}eq'json') {
-               print "," if($m++);
-               print "\t\"$k\": \"$i{$k}\"\n";
-            } else {
-               print "$k: $i{$k}\n";
-            }
+         if($in{format}eq'json') {
+            print meta2json(%i);
+         } else {
+            print meta2string(%i);
          }
-         print "}\n" if($in{format}eq'json');
          if($ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {
             print "log (seen by browser only):\n";
             open(F,"tasks/log/$id");
@@ -598,16 +591,18 @@ sub startTask {                           # -- service and input file(s), comput
          print "Content-type: text/plain\n\n";
          my(%i) = getTaskInfo($id);             # -- in case of asynchronous, we re-read the task info (could be simplified)
          print "{\n" if($in{format}eq'json');
+         my $n;
          foreach (sort keys %i) {
             if($in{format}eq'json') {
-               print "$_: $i{$_}\n";
+               print "," if($n++>0);
+               print "\t\"$_\": \"$i{$_}\"\n";
             } else {
-               print "$_: \"$i{$_}\",\n";
+               print "$_: $i{$_}\n";
             }
          }
          if($#e>=0) {
             if($in{format}eq'json') {
-               print "error: \"",join(";",@err),"\",\n";
+               print ",\t\"error\": \"",join(";",@err),"\",\n";
             } else {
                print "error: ",join(";",@err),"\n";
             }
@@ -841,6 +836,7 @@ sub getRemoteFile {
 sub string2meta {
    my($s) = @_;
    my(%r);
+
    #print "string -> data:\n" if($verbose);
    foreach (split(/\n/,$s)) {       # -- processing feedback
       $r{$1} = $2 if(/^([^\s:]+): (\S.+)\s*$/);
@@ -852,11 +848,25 @@ sub string2meta {
 sub meta2string {
    my(%r) = @_;
    my($s);
+
    #print STDERR "data -> string:\n" if($verbose);
    foreach (sort keys %r) {
       $s .= "$_: $r{$_}\n";
    }
    #print STDERR $s if($verbose);
+   return $s;
+}
+
+sub meta2json {
+   my(%r) = @_;
+   my($s);
+   my $n;
+   $s .= "{\n";
+   foreach (sort keys %r) {
+      $s .= "," if($n++>0);
+      $s .= "\t\"$_\": \"$r{$_}\"\n";
+   }
+   $s .= "}\n";
    return $s;
 }
 
