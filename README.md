@@ -362,7 +362,7 @@ $.get("http://server.local:4468/",
 
 HTTP GET with following variables:
 <pre>
-service: info
+service: meta
 </pre>
 
 and provides results like:
