@@ -1,4 +1,7 @@
+
+#port = 4468   # (default)
 #servers = myserver.local
 #slic3r.servers = myserver.local  # only for slic3r
+
 timeout = 600           # [s] 600secs = 10mins (increase when you expect huge slicing/openscad tasks)
 maxDataRetention = 24   # [hr] 24hrs, after that tasks data will be purged
