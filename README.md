@@ -363,7 +363,6 @@ $.get("http://server.local:4468/",
 HTTP GET with following variables:
 <pre>
 service: info
-id: <i>id</i>           // (omit 'id:' and you get info on all tasks)
 </pre>
 
 and provides results like:
