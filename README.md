@@ -267,7 +267,7 @@ JQuery:
 <pre>
 $.post("http://server.local:4468/", 
    { service: 'openscad', fileIn0: '...', format: 'json' }).done(function(data) {
-      var task = jQuery.parseJSON(data);
+      var task = $.parseJSON(data);
    });
 </pre>
 
@@ -339,7 +339,7 @@ JQuery:
 // request info on task
 $.get("http://server.local:4468/", 
    { service: 'info', id: '1361787155-774973', format: 'json' }).done(function(data) {
-      var task = jQuery.parseJSON(data);
+      var task = $.parseJSON(data);
       task.status; // 'busy', 'failed', or 'complete'
       task.out;    // contains URL of the result (if task.status=='complete')
       // -- your code to process results
@@ -348,7 +348,7 @@ $.get("http://server.local:4468/",
 // get all tasks
 $.get("http://server.local:4468/", 
    { service: 'info', format: 'json' }).done(function(data) {
-      var tasks = jQuery.parseJSON(data);
+      var tasks = $.parseJSON(data);
       for(var i=0; i&lt;tasks.length; i++) {
          tasks[i].status; // 'busy', 'failed', or 'complete'
          tasks[i].out;    // contains URL of the result (if tasks[i].status=='complete')
