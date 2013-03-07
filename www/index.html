@@ -1,0 +1,58 @@
+<html><head>
+<title>RepRapCloud</title>
+<meta charset="utf-8">
+<script src="/www/js/jquery-1.9.1.min.js"></script>
+<script src="/www/js/sprintf-0.7-beta1.js"></script>
+<link rel='shortcut icon' href='/www/favicon.png'/>
+</head><body>
+<link rel=stylesheet href='/www/style.css'/>
+<a href='https://github.com/Spiritdude/RepRapCloud'><img src='www/logo.png' class=logo></a> 
+<div id=serverId class=serverID>...</div>
+<div id=headerInfo class=headerInfo>...</div>
+<p>
+<div id="plist"></div>
+<script>
+$(document).ready(function(){
+   updateInfo();
+});
+
+function updateInfo() {
+   $.get("/", 
+      { service: 'meta', format: 'json' }).done(function(data) {
+         var m = $.parseJSON(data);
+         $("#serverId").html(m.serverName);
+         $("#headerInfo").html(m.version+", Services: <b>"+m.services+"</b><br>Total "+m.tasks+" tasks ("+m.maxDataRetention+" hrs max data retention)");
+      });
+   $.get("/", 
+      { service: 'info', format: 'json' }).done(function(data) {
+         var tasks = $.parseJSON(data).reverse();   // reverse() so latest is first
+         var s = "<table class=taskList>";
+         var h = [ '.','id','service','status','server','client','date','duration','in','out','comment' ];
+         for(var i=0; i<h.length; i++) {
+            s += "<th>"+h[i]+"</th>";
+         }
+         for(var i=0; i<tasks.length; i++) {
+            var t = tasks[i];
+            var d = new Date(t.ctime*1000);
+            d = sprintf("%04d/%02d/%02d %02d:%02d:%02d",d.getFullYear(),d.getMonth(),d.getDay(),d.getHours(),d.getMinutes(),d.getSeconds());
+            s += "<tr class=task"+t.status+">";
+            s += "<td><img class=taskStatusIcon src='/www/task-status-"+t.status+".png'></td>";
+            s += "<td><a href='/?service=info&id="+t.id+"'>"+t.id+"</td>";
+            s += "<td>"+t.service+"</td>";
+            s += "<td>"+t.status+"</td>";
+            s += "<td>"+(t.server?t.server:'local')+"</td>";
+            s += "<td>"+(t.client?t.client:'')+"</td>";
+            s += "<td>"+d+"</td>";
+            s += "<td>"+(t.etime?sprintf("%.2fs",t.etime-t.ctime):"")+"</td>";
+            s += "<td>"+sprintf("%.2fKB",t.sizeIn/1024)+"</td>";
+            s += "<td>"+sprintf("%.2fKB",t.sizeOut/1024)+"</td>";
+            s += "<td>"+(t.error?t.error:'')+"</td>";
+            s += "</tr>";
+         }
+         s += "</table>";
+         $("#plist").html(s);
+      });
+   setTimeout(updateInfo,10*1000);
+}
+</script>
+</body></html>

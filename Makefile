@@ -48,4 +48,4 @@ backup::	clean
 	scp ../Backup/rrcloud-${VERSION}.tar.gz the-labs.com:Backup/
 
 edit::
-	dee4 rrcloud Makefile README.md www/style.css services/*
+	dee4 rrcloud Makefile README.md jquery.html www/index.html www/style.css services/*

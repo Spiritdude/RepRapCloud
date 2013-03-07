@@ -67,8 +67,10 @@ use CGI;
 use IO::Handle;
 use File::Copy;
 use Cwd;
-use Time::HiRes qw(time usleep);
 use POSIX;
+use Sys::Hostname;
+
+use Time::HiRes qw(time usleep);       # -- external module (install via 'cpan Time::HiRes')
 
 open(LOG,">>tasks/global.log");
 
@@ -271,14 +273,10 @@ if(!$arg{local}&&!$arg{s}) {
 # -- debugging
 if(0) {
    print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
-   foreach(sort keys %in) {
-      print "$_: $in{$_}\n";
-   }
+   print meta2string(%in);
 }
 if(0) {
-   foreach(sort keys %ENV) {
-      print "$_: $ENV{$_}\n";
-   }
+   print meta2string(%ENV);
 }
 
 $in{service} =~ s/\W//;    # -- sanetize input
@@ -315,7 +313,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       # -- parent & child come here! (be aware)
    }
 
-} elsif($in{service} eq 'status'||$in{service} eq 'info') {
+} elsif($in{service} eq 'status'||$in{service} eq 'info'||!$in{service}) {
    my(@t);
    
    if($in{id}) {                    # -- query info
@@ -325,125 +323,109 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    }
    myLog("query task info (".($#t+1).")");
    my $n = 0;
-   print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
-   
-   print "[\n" if($in{format}eq'json'&&!$in{id});
-   foreach my $id (@t) {
-      my %i = getTaskInfo($id);
 
-      if($i{etime}&&(time()-$i{etime}>$arg{maxDataRetention}*60*60)) {     # -- garbage collector
-         deleteTask($i{id},%i);
-         next;
+   if(!$in{service}&&$ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {     # -- browser (but not json)
+      print "Content-type: text/html\n\n";
+      open(F,"www/index.html");
+      while(<F>) {
+         print $_;
       }
-      if($i{server}&&$i{status}eq'busy') { #&&$me{type}ne'cgi') {
-         print STDERR "update status of $id\n" if($verbose);
-         my(%r) = postServer($i{server},service=>$in{service},id=>$id);
-         foreach (keys %r) {
-            next if($_ eq 'in'||$_ eq 'ctime');
-            $i{$_} = $r{$_} if(defined $r{$_});
+      close(F);
+   } else {
+    
+      print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+      print "[\n" if($in{format}eq'json'&&!$in{id});
+      foreach my $id (@t) {
+         my %i = getTaskInfo($id);
+      
+         if($i{etime}&&(time()-$i{etime}>$arg{maxDataRetention}*60*60)) {     # -- garbage collector
+            deleteTask($i{id},%i);
+            next;
          }
-         if($i{status}eq'complete') {
-            # -- retrieve resulting data from $i{server}/$r{out} -> $r{out}
-            print STDERR "results of $id retrieving remotely http://$i{server}:$arg{port}/$r{out}\n" if($verbose);
-            getRemoteFile($i{server},$r{out});
-         }
-         # -- at each query when 'busy' we download the log file
-         getRemoteFile($i{server},"tasks/log/$id");
-
-         putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
-         myLog("update task info",%i);
-      }
-      if($me{type}eq'cli') {
-         print "=== id: $id\n";
-         print meta2string(%i);
-         print "\n";
-   
-      } elsif($me{type}eq'cgi') {
-         print ",\n" if($in{format}eq'json'&&$n>0);
-         if($in{format}eq'json') {
-            print meta2json(%i);
-         } else {
-            print meta2string(%i);
-         }
-         if($ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {
-            print "log (seen by browser only):\n";
-            open(F,"tasks/log/$id");
-            while(<F>) {
-               print $_;
+         if($i{server}&&$i{status}eq'busy') { #&&$me{type}ne'cgi') {
+            print STDERR "update status of $id\n" if($verbose);
+            my(%r) = postServer($i{server},service=>$in{service},id=>$id);
+            foreach (keys %r) {
+               next if($_ eq 'in'||$_ eq 'ctime');
+               $i{$_} = $r{$_} if(defined $r{$_});
             }
-            print "\n";
-            close(F);
+            if($i{status}eq'complete') {
+               # -- retrieve resulting data from $i{server}/$r{out} -> $r{out}
+               print STDERR "results of $id retrieving remotely http://$i{server}:$arg{port}/$r{out}\n" if($verbose);
+               getRemoteFile($i{server},$r{out});
+            }
+            # -- at each query when 'busy' we download the log file
+            getRemoteFile($i{server},"tasks/log/$id");
+      
+            putTaskInfo($id,%i);          # -- possibly 'complete', log and data for sure arrived
+            myLog("update task info",%i);
          }
+         if($me{type}eq'cli') {
+            print "=== id: $id\n";
+            print meta2string(%i);
+            print "\n";
+      
+         } elsif($me{type}eq'cgi') {
+            print ",\n" if($in{format}eq'json'&&$n>0);
+            if($in{format}eq'json') {
+               print meta2json(%i);
+            } else {
+               print meta2string(%i);
+            }
+            if($ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {
+               print "log (seen by browser only):\n";
+               open(F,"tasks/log/$id");
+               while(<F>) {
+                  print $_;
+               }
+               print "\n";
+               close(F);
+            }
+         }
+         $n++;
       }
-      $n++;
+      print "]\n" if($in{format}eq'json'&&!$in{id});
    }
-   print "]\n" if($in{format}eq'json'&&!$in{id});
-
 # } elsif($in{service} eq 'delete') {   
+
 } elsif($in{service} eq 'kill') {   
    killTask($in{id}) if($in{id});
 
 # } elsif($in{service} eq 'suspend') {   
 # } elsif($in{service} eq 'continue') {   
 
+} elsif($in{service} eq 'meta') {         # -- meta: informations about the server itself
+   my(%m);
+   $m{services} = join(",",sort keys %service);
+   $m{tasks} = getTaskList();
+   $m{version} = "$APPNAME $VERSION";
+   if($ENV{SERVER_NAME}) {
+      $m{serverName} = $ENV{SERVER_NAME};
+   } else {
+      $m{serverName} = hostname;
+   }
+   foreach (qw(maxDataRetention timeout)) {
+      $m{$_} = $arg{$_};
+   }
+   if(open(F,"/proc/loadavg")) {
+      $_ = <F>; close(F);
+      $m{cpu} = $1 if(/(\S+)/);
+   }
+   if(open(F,"/proc/uptime")) {
+      $_ = <F>; close(F);
+      $m{uptime} = prettyTime($1) if(/(\S+)/);
+   }
+   print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+   if($in{format}eq'json') {
+      print meta2json(%m);
+   } else {
+      print meta2string(%m);
+   }
+
 } else {
-   myLog("query all tasks");
    if($me{type}eq'cgi') {
-      if($ENV{HTTP_USER_AGENT}=~/Mozilla/) {     # -- browser
-         my(@t) = reverse getTaskList();         # -- last listed first (reverse)
-         print "Content-type: text/html\n\n";
-         print "<html><head><title>$APPNAME @ $ENV{SERVER_NAME} ($VERSION): ",$#t+1," tasks</title><link rel='shortcut icon' href='/www/favicon.png'/></head><body><link rel=stylesheet href='/www/style.css'/>";
-         print "<a href='https://github.com/Spiritdude/RepRapCloud'><img src='www/logo.png' class=logo></a> <div class=serverID>$ENV{SERVER_NAME}</div>\n";
-         print "<div class=headerInfo>$APPNAME ($VERSION), ";
-         print "Services: <b>",join(', ',sort keys %service),"</b><br>";
-         print "Total <b>",($#t+1)," tasks</b> in pool ($arg{maxDataRetention} hrs max data retention)</div>";
-         if($#t>=0) {
-            print "<table class=taskList>";
-            print "<tr><th>",join("</th><th>",(qw(. id service compute client status date duration in out comment))),"</th></tr>";
-            foreach my $id (@t) {
-               my %i = getTaskInfo($id);
-               if(1) {
-                  #my($buttons);
-                  #foreach(qw(suspend stop delete)) {
-                  #   $buttons .= "<img class=taskActionButton src='/www/task-${_}Off.png'>";
-                  #}
-                  print "<tr class=task$i{status}><td>",join("</td><td>",(
-                        "<img class=taskStatusIcon src='www/task-status-$i{status}.png'>",
-                        "<a href='/?service=info&id=$i{id}'>$i{id}</a>",
-                        $i{service},
-                        $i{server}?$i{server}:"local",
-                        $i{server}?"":$i{client},
-                        $i{status},
-                        prettyDate($i{ctime}),
-                        sprintf("%.3f",$i{etime}?$i{etime}-$i{ctime}:time()-$i{ctime})."s",
-                        largeNum($i{sizeIn}/1024,2)."KB",
-                        largeNum($i{sizeOut}/1024,2)."KB",
-                        #$buttons,
-                        $i{error}
-                     )),"</td></tr>";
-                  
-               } else {
-                  print "<b>$id</b>:<br>";
-                  foreach (sort keys %i) {
-                     print "<li>$_: $i{$_}\n";
-                  }
-                  print "<p>log:<br><tt>\n";
-                  open(F,"tasks/log/$id");
-                  while(<F>) {
-                     print "$_<br/>\n";
-                  }
-                  print "</tt>\n";
-                  close(F);
-                  print "<hr>";
-               }
-            }
-            print "</table>";
-         }
-         print "<div class=footer><a href='https://github.com/Spiritdude/RepRapCloud'><img src='/www/logo.png' height=20 border=0 align=absmiddle></a> $APPNAME $VERSION (<a href='https://github.com/Spiritdude/RepRapCloud'>check</a> for the latest version)</div>";
-         print "</body></html>";
-      } else {
-         print "Content-type: text/plain\n\nrequested service '$in{service}' does not exist (yet)" 
-      }
+      print "Content-type: text/plain\n\n";
+      print STDERR "Requested service '$in{service}' does not exist (yet).\n";
    } else {
       print STDERR "ERROR: requested service '$in{service}' does not exist (yet).\n";
    }

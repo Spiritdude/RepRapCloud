@@ -1,7 +1,7 @@
 <img src="www/logo.png" align=left>
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.016 (ALPHA)</b>
+<b>Version: 0.017 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy <b>backend framework</b> to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -67,6 +67,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/07: 0.017: increased JSON support through all operations
 <li> 2013/03/05: 0.016: native arguments (switches and variables) supported, printrun service added (via Printrun:printcore.py)
 <li> 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))
 <li> 2013/03/03: 0.014: logging, and some code clean-up
