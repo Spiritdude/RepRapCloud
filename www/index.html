@@ -21,7 +21,7 @@ function updateInfo() {
       { service: 'meta', format: 'json' }).done(function(data) {
          var m = $.parseJSON(data);
          $("#serverId").html(m.serverName);
-         $("#headerInfo").html(m.version+", Services: <b>"+m.services+"</b><br>Total "+m.tasks+" tasks ("+m.maxDataRetention+" hrs max data retention)");
+         $("#headerInfo").html(m.version+", Services: <b>"+m.services+"</b><br>Total "+m.tasks+" tasks ("+m.maxDataRetention+" hrs max data retention), autoupdate");
       });
    $.get("/", 
       { service: 'info', format: 'json' }).done(function(data) {
