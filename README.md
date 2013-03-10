@@ -447,6 +447,7 @@ slic3r --load=tasks/in/1361787183-742842.conf tasks/in/1361787183-933412.stl --o
 
 <h2>See Also</h2>
 <ul>
+<li><a href="https://github.com/hendricksonrw/slicerhub">SlicerHub</a>, distributed slicing
 <li><a href="https://github.com/triffid/netrap">Netrap</a>, distributed printing over several hosts
 <li><a href="http://www.botqueue.com">BotQueue V2</a>, distributed slicing & printing over several hosts
 <li><a href="https://github.com/foosel/OctoPrint">OctoPrint</a>, distributed printing from one host
