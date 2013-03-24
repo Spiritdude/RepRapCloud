@@ -1,7 +1,7 @@
 <img src="www/logo.png" align=left>
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.017 (ALPHA)</b>
+<b>Version: 0.018 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy <b>backend framework</b> to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -21,13 +21,14 @@ which uses <tt>myserver.local</tt> (as defined in rrcloudrc) and starts there to
 id: 1361982308-837500
 % rrcloud --s=myserver.local openjscad test.jscad
 id: 1361982310-219223
-% rrcloud --s=myserver.local slic3r --load=prusa.conf huge.stl
+% rrcloud '--notifier=http://someserver.local/ping-$id' --s=myserver.local slic3r --load=prusa.conf huge.stl
 id: 1361982318-371735
-% rrcloud --s=myserver.local printrun /dev/ttyUSB3 huge.gcode
+% rrcloud '--notifier=http://$myip/done?$id' --s=myserver.local printrun /dev/ttyUSB3 huge.gcode
 id: 1361982322-198887
 </pre>
 
 does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info <i>id</i></tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/<i>id</i>[.ext]</tt> (depending on service proper extension is set).
+The <tt>--notifier</tt> takes an URL, which is called once the server finished with the task, <tt>$id</tt> will be replaced with the task id, and <tt>$myip</tt> with the ip of the client requesting the task on the server (linking back).
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
 
@@ -67,6 +68,7 @@ does nearly the same, except it returns right away (asynchronous), and if you ca
 
 <h2>History</h2>
 <ul>
+<li> 2013/03/24: 0.018: integrating http:// notifier/callback for async requests
 <li> 2013/03/07: 0.017: increased JSON support through all operations
 <li> 2013/03/05: 0.016: native arguments (switches and variables) supported, printrun service added (via Printrun:printcore.py)
 <li> 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flat-file (default))

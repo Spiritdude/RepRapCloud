@@ -1,4 +1,4 @@
-VERSION=0.017
+VERSION=0.018
 
 # NOTE: in order to test remote access, install RepRapCloud on another system and 
 #       define 'server: <serverHostorIP>' in rrcloudrc file (in this directory)
@@ -25,6 +25,7 @@ tests::
 	./rrcloud openscad tests/sphere.scad
 	./rrcloud openjscad tests/test.jscad
 	./rrcloud slic3r --load=tests/slic3r.conf tests/cube.stl
+	./rrcloud '--notifier=http://the-labs.com/ping-$id' slic3r --load=tests/slic3r.conf tests/cube.stl
 	#./rrcloud openscad+slic3r tests/sphere.scad
 	./rrcloud info
 	./openscad.cloud tests/sphere.scad -otmp/sphere.stl

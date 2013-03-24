@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.017';
+$VERSION = '0.018';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/03/24: 0.018: integrating http:// notifier/callback for async requests
 # 2013/03/07: 0.017: increased JSON support through all operations
 # 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
 # 2013/03/04: 0.015: preparing general interface for several dbs (mongodb, mysql, flatfile (default))
@@ -292,6 +293,9 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       $in{"fileIn$n"} = $f;
       push(@fin,$f);
    }
+   if($arg{notifier}) {
+      $in{notifier} = $arg{notifier};
+   }
    
    if($arg{s}) {     # -- we are a client, contacting the remote server
       myLog("request remote",%in,server=>$arg{s});
@@ -556,6 +560,12 @@ sub startTask {                           # -- service and input file(s), comput
       # $q{server} = $ENV{SERVER_NAME}?$ENV{SERVER_NAME}:'localhost;
       $q{status} = 'busy';
 
+      if($in{notifier}) {
+         $q{notifier} = $in{notifier};
+         $q{notifier} =~ s/\$id/$id/g;
+         $q{notifier} =~ s/\$myip/$ENV{REMOTE_ADDR}?$ENV{REMOTE_ADDR}:'localhost'/eg;
+      }
+
       putTaskInfo($id,%q);                #       because only the parent knows the pid
                                           #    race condition: in few cases this is executed AFTER the child
                                           #                    has ended, and added etime already (fast execution)
@@ -565,6 +575,9 @@ sub startTask {                           # -- service and input file(s), comput
       myExec($id,@cmd);                         # -- execute the thing (it forks again), comes back when done
 
       my(%i) = getTaskInfo($id);                # -- we retrieve for sake of logging
+      if($i{notifier}) {                        # -- do we need to notify anyone
+         getRemoteFile($i{notifier});           # -- let's ping it ...
+      }
       myLog("performed",%i);           # -- perfect time to log (after the task is done)
 
       #exit if($forked);
@@ -806,11 +819,22 @@ sub myExecRemote {                  # -- synchronous remote request
 
 sub getRemoteFile {
    my($s,$p) = @_;
+   my $fo = $p;
+   my $url;
 
-   # -- insecure: `wget -q http://$s:$arg{port}/$p -O $p`;
+   $fo = '/dev/null' unless($fo);
+
+   if($s=~/^http:\/\//) {    # -- server address is already an url?
+      $url = $s;
+   } else {
+      $url = "http://$s:$arg{port}/$p";
+   }
+   print STDERR "retrieve $url to $fo\n" if($verbose);
+   
+   # -- insecure: `wget -q $url -O $fo`;
    if(fork()==0) {      # -- properly done:
-      # exec('wget','-q',"http://$s:$arg{port}/$p",'-O',$p);     # -- more secure
-      exec('curl','-s',"http://$s:$arg{port}/$p",'-o',$p);     # -- more secure
+      #exec('wget','-q',$url,'-O',$fo);     # -- more secure
+      exec('curl','-s',$url,'-o',$fo);     # -- more secure
    } else {
       wait;
    }
