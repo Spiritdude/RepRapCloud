@@ -291,6 +291,7 @@ $.post("http://server.local:4468/",    // issue a task and respond back to when 
    });
 </pre>
 
+<tt>fileIn0..n</tt> can be an actual fileup, or the content itself (e.g. a string containing .stl or .gcode direct).
 
 HTTP Response (text/plain) will be the same response as "Task Info" (explained as next):
 
