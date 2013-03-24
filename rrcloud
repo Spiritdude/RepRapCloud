@@ -253,6 +253,8 @@ if($#ARGV>=0||$ENV{HOME}) {               # -- likely cli
 
       if(-e $a) {
          $in{"fileIn$n"} = $a, $n++, next;
+      } elsif($a=~/[\n\r ]/) {   # -- looks like text..
+         $in{"fileIn$n"} = $a, $n++, next;
       } else {
          $in{id} = $a, next;
       }
@@ -447,25 +449,40 @@ sub acquireFileIn {     # -- we acquire a local-file and make a copy (cli), or r
    my($ext) = (($q&&$q->param($fi)?$q->param($fi):$fi)=~/\.([^\.]+)$/);    # -- some programs require proper extension, so we retrieve it now
    
    # -- info http://perldoc.perl.org/CGI.html#PROCESSING-A-FILE-UPLOAD-FIELD
-   if($me{type}eq'cgi'&&-f $q->tmpFileName($fh)) {                         # -- uploaded file copy into tasks/in/
-      if($ext eq 'tgz') {
-         mkdir "tasks/in/$fn" unless(-d "tasks/in/$fn");
-         # `cd tasks/in/$fn && tar xfz $q->tmpFileName($fh)`;                # -- untar if its .tgz into tasks/in/$fn
-         
-      } else {
-         $fn .= ".$ext" if($ext);     
-         copy($q->tmpFileName($fh),"tasks/in/$fn") || 
-            push(@err,"file copy failed to tasks/in/$fn due '$!'");        # -- be aware of file permissions
+   if($me{type}eq'cgi') {
+      if(-f $q->tmpFileName($fh)) {                         # -- uploaded file copy into tasks/in/
+         if($ext eq 'tgz') {
+            mkdir "tasks/in/$fn" unless(-d "tasks/in/$fn");
+            # `cd tasks/in/$fn && tar xfz $q->tmpFileName($fh)`;                # -- untar if its .tgz into tasks/in/$fn
+            
+         } else {
+            $fn .= ".$ext" if($ext);     
+            copy($q->tmpFileName($fh),"tasks/in/$fn") || 
+               push(@err,"file copy failed to tasks/in/$fn due '$!'");        # -- be aware of file permissions
+         }
+      } else {    # -- not a file, but the source itself
+         print STDERR "$fi seems not a file, but content itself, writing to tasks/in/$fn\n" if($verbose);
+         open(F,">tasks/in/$fn");
+         print F $q&&$q->param($fi)?$q->param($fi):'';
+         close(F);
       }
-
-   } elsif($me{type}eq'cli'&&-e $fi) {                                     # -- local file copy into tasks/in/
-      if(-d $fi) {
-         $fn .= ".tgz";
-         # `tar cfz tasks/in/$fn $fi`;                                       # -- tar it when it's a directory
-         
-      } else {
-         $fn .= ".$ext" if($ext);                                          
-         copy($fi,"tasks/in/$fn");
+      
+   } elsif($me{type}eq'cli') { 
+      if(-e $fi) {                                     # -- local file copy into tasks/in/
+         if(-d $fi) {
+            $fn .= ".tgz";
+            # `tar cfz tasks/in/$fn $fi`;                                       # -- tar it when it's a directory
+            
+         } else {
+            $fn .= ".$ext" if($ext);                                          
+            copy($fi,"tasks/in/$fn");
+         }
+      
+      } else {    # -- not a file, but the source itself
+         print STDERR "$fi seems not a file, but content itself, writing to tasks/in/$fn\n" if($verbose);
+         open(F,">tasks/in/$fn");
+         print F $fi;
+         close(F);
       }
       
    } else {
