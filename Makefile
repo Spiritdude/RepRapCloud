@@ -26,7 +26,7 @@ tests::
 	./rrcloud openscad "difference() { cube(5); sphere(2.5); }"
 	./rrcloud openjscad tests/test.jscad
 	./rrcloud slic3r --load=tests/slic3r.conf tests/cube.stl
-	./rrcloud --notifier=http://the-labs.com/ping-$$id slic3r --load=tests/slic3r.conf tests/cube.stl
+	./rrcloud '--notifier=http://the-labs.com/ping-$$id' slic3r --load=tests/slic3r.conf tests/cube.stl
 	#./rrcloud openscad+slic3r tests/sphere.scad
 	./rrcloud info
 	./openscad.cloud tests/sphere.scad -otmp/sphere.stl
