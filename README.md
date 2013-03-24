@@ -28,6 +28,7 @@ id: 1361982322-198887
 </pre>
 
 does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info <i>id</i></tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/<i>id</i>[.ext]</tt> (depending on service proper extension is set).
+
 The <tt>--notifier</tt> takes an URL, which is called once the server finished with the task, <tt>$id</tt> will be replaced with the task id, and <tt>$myip</tt> with the ip of the client requesting the task on the server (linking back).
 
 <b>Note: This is <u>ALPHA</u> software, no thorough security code-review has happened yet, so use it solely in a trusted (local) network.</b>
