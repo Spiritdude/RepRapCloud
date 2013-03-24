@@ -286,7 +286,7 @@ $.post("http://server.local:4468/",
    });
 
 $.post("http://server.local:4468/",    // issue a task and respond back to when done
-   { service: 'openscad', fileIn0: '...', notifer: 'http://$myip/done?$id', format: 'json' }).done(function(data) {
+   { service: 'openscad', fileIn0: '...', notifier: 'http://$myip/done?$id', format: 'json' }).done(function(data) {
       var task = $.parseJSON(data);
    });
 </pre>
