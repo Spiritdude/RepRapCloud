@@ -27,7 +27,7 @@ id: 1361982318-371735
 id: 1361982322-198887
 </pre>
 
-does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info <i>id</i></tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/<i>id</i>[.ext]</tt> (depending on service proper extension is set).
+does nearly the same, except it returns right away (asynchronous), and if you call <tt>rrcloud info <i>id</i></tt> and see if the job is 'completed' (or 'failed'), the result is found at <tt>tasks/out/<i>id</i>[.ext]</tt>, depending on service proper extension is set.
 
 The <tt>--notifier</tt> takes an URL, which is called once the server finished with the task, <tt>$id</tt> will be replaced with the task id, and <tt>$myip</tt> with the ip of the client requesting the task on the server (linking back).
 
@@ -260,18 +260,33 @@ service: <i>service</i>
 fileIn<i>n</i>: <i>fileupload</i>
 </pre>
 
+and optionally:
+<pre>
+notifier: <i>url</i>
+</pre>
 
 whereas service: { openscad, openjscad, slic3r, printrun } etc (see later in this description how to query available services), and n: 0,1,2,3,...
+and the in case of the notifier, you can formulate the url as you wish, with two replacing variables:
+<pre>
+$id -> task-id
+$myip -> ip of client
+</pre>
 
 CLI:
 <pre>
 % curl -F service=openscad -F fileIn0=@test.scad http://service.local:4468/
+% curl -F service=openscad -F 'notifier=http://$myip/done?$id' -F fileIn0=@test.scad http://service.local:4468/
 </pre>
 
 JQuery:
 <pre>
 $.post("http://server.local:4468/", 
    { service: 'openscad', fileIn0: '...', format: 'json' }).done(function(data) {
+      var task = $.parseJSON(data);
+   });
+
+$.post("http://server.local:4468/",    // issue a task and respond back to when done
+   { service: 'openscad', fileIn0: '...', notifer: 'http://$myip/done?$id', format: 'json' }).done(function(data) {
       var task = $.parseJSON(data);
    });
 </pre>
@@ -301,6 +316,7 @@ etime: <i>time</i>      (end time of task on server)
 id: <i>id</i>           (id of task)
 in: <i>filelist</i>     (comma separated list of filenames)
 out: <i>filename</i>    (single filename of results)
+notifier: <i>url</i>    (in case notifier is set, it's listed as such)
 pid: <i>pid</i>         (process id on server)
 server: <i>ip</i>       (server IP or hostname)
 service: <i>service</i> (requested service)
