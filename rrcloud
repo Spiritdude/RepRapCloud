@@ -885,12 +885,13 @@ sub meta2json {
    my(%r) = @_;
    my($s);
    my $n;
-   $s .= "{\n";
-   foreach (sort keys %r) {
-      $s .= "," if($n++>0);
-      $s .= "\t\"$_\": \"$r{$_}\"\n";
+   $s .= "{\n\t";
+   foreach my $k (sort keys %r) {
+      my $v = $r{$k}; $v =~ s/([\\"])/\\$1/g;
+      $s .= ",\n\t" if($n++>0);
+      $s .= "\"$k\": \"$v\"";
    }
-   $s .= "}\n";
+   $s .= "\n}\n";
    return $s;
 }
 
