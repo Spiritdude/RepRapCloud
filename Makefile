@@ -1,4 +1,4 @@
-VERSION=0.018
+VERSION=0.019
 
 # NOTE: in order to test remote access, install RepRapCloud on another system and 
 #       define 'server: <serverHostorIP>' in rrcloudrc file (in this directory)

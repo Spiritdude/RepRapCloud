@@ -2,10 +2,11 @@
 
 # -- RepRap Cloud, written by Rene K. Mueller <spiritdude@gmail.com>
 #
-$VERSION = '0.018';
+$VERSION = '0.019';
 $APPNAME = 'RepRapCloud';
 #
 # History:
+# 2013/05/20: 0.019: better XHR support Access-Control-Allow-Origin: * in header
 # 2013/03/24: 0.018: integrating http:// notifier/callback for async requests
 # 2013/03/07: 0.017: increased JSON support through all operations
 # 2013/03/05: 0.016: native arguments (switches and variables) supported, print3d service added (via Printrun:printcore.py)
@@ -332,7 +333,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
    my $n = 0;
 
    if(!$in{service}&&$ENV{HTTP_USER_AGENT}=~/Mozilla/&&$in{format}ne'json') {     # -- browser (but not json)
-      print "Content-type: text/html\n\n";
+      print "Access-Control-Allow-Origin: *\nContent-type: text/html\n\n";
       open(F,"www/index.html");
       while(<F>) {
          print $_;
@@ -340,7 +341,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       close(F);
    } else {
     
-      print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+      print "Access-Control-Allow-Origin: *\nContent-type: text/plain\n\n" if($me{type}eq'cgi');
       print "[\n" if($in{format}eq'json'&&!$in{id});
       foreach my $id (@t) {
          my %i = getTaskInfo($id);
@@ -422,7 +423,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
       $_ = <F>; close(F);
       $m{uptime} = prettyTime($1) if(/(\S+)/);
    }
-   print "Content-type: text/plain\n\n" if($me{type}eq'cgi');
+   print "Access-Control-Allow-Origin: *\nContent-type: text/plain\n\n" if($me{type}eq'cgi');
    if($in{format}eq'json') {
       print meta2json(%m);
    } else {
@@ -431,7 +432,7 @@ if(($in{service}||$ENV{REQUEST_METHOD}=~/PUT/)&&-f "services/$in{service}.conf")
 
 } else {
    if($me{type}eq'cgi') {
-      print "Content-type: text/plain\n\n";
+      print "Access-Control-Allow-Origin: *\nContent-type: text/plain\n\n";
       print STDERR "Requested service '$in{service}' does not exist (yet).\n";
    } else {
       print STDERR "ERROR: requested service '$in{service}' does not exist (yet).\n";
@@ -601,7 +602,7 @@ sub startTask {                           # -- service and input file(s), comput
    }
    if($pid!=0||$arg{synchronous}) {             # -- parent (asynchronous) or already done job (synchronous)
       if($me{type}eq'cgi') {
-         print "Content-type: text/plain\n\n";
+         print "Access-Control-Allow-Origin: *\nContent-type: text/plain\n\n";
          my(%i) = getTaskInfo($id);             # -- in case of asynchronous, we re-read the task info (could be simplified)
          print "{\n" if($in{format}eq'json');
          my $n;

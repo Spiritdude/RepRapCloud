@@ -1,7 +1,7 @@
 <img src="www/logo.png" align=left>
 <h1>RepRapCloud</h1>
 
-<b>Version: 0.018 (ALPHA)</b>
+<b>Version: 0.019 (ALPHA)</b>
 
 <b>RepRapCloud</b> (<tt>rrcloud</tt>) is a small but powerful perl-script which provides an easy <b>backend framework</b> to relay computational work remote among many servers and retrieve the results locally; both synchronous (returns when done) and asynchronous (returns immediately telling you the state of task 'busy', 'complete' or 'failed').
 
@@ -69,6 +69,7 @@ The <tt>--notifier</tt> takes an URL, which is called once the server finished w
 
 <h2>History</h2>
 <ul>
+<li> 2013/05/20: 0.019: better XHR support Access-Control-Allow-Origin: * in header
 <li> 2013/03/24: 0.018: integrating http:// notifier/callback for async requests
 <li> 2013/03/07: 0.017: increased JSON support through all operations
 <li> 2013/03/05: 0.016: native arguments (switches and variables) supported, printrun service added (via Printrun:printcore.py)
